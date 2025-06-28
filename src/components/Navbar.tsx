@@ -52,11 +52,11 @@ const Navbar = () => {
             e.preventDefault();
             scrollToTop();
           }}
-          aria-label="Pulse Robot"
+          aria-label="Software Agency"
         >
           <img 
             src="/logo.svg" 
-            alt="Pulse Robot Logo" 
+            alt="Software Agency Logo" 
             className="h-7 sm:h-8" 
           />
         </a>
@@ -73,7 +73,7 @@ const Navbar = () => {
           >
             Home
           </a>
-          <a href="#features" className="nav-link">About</a>
+          <a href="#features" className="nav-link">Services</a>
           <a href="#details" className="nav-link">Contact</a>
         </nav>
 
@@ -113,7 +113,7 @@ const Navbar = () => {
               document.body.style.overflow = '';
             }}
           >
-            About
+            Services
           </a>
           <a 
             href="#details" 
