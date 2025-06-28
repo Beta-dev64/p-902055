@@ -1,11 +1,23 @@
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 const PartnersScroll = () => {
-  const [scrollY, setScrollY] = useState(0);
+  const [scrollDirection, setScrollDirection] = useState('left');
+  const [isPaused, setIsPaused] = useState(false);
+  const lastScrollY = useRef(0);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY.current) {
+        setScrollDirection('left');
+      } else {
+        setScrollDirection('right');
+      }
+      lastScrollY.current = currentScrollY;
+    };
+
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -19,8 +31,8 @@ const PartnersScroll = () => {
     { name: "Tesla", logo: "/lovable-uploads/af412c03-21e4-4856-82ff-d1a975dc84a9.png" },
   ];
 
-  // Create duplicated array for seamless scrolling
-  const duplicatedPartners = [...partners, ...partners];
+  // Triple the array for seamless infinite scroll
+  const infinitePartners = [...partners, ...partners, ...partners];
 
   return (
     <section className="w-full py-8 bg-white overflow-hidden">
@@ -30,13 +42,16 @@ const PartnersScroll = () => {
       
       <div className="relative">
         <div 
-          className="flex space-x-16 animate-scroll-left"
+          ref={scrollContainerRef}
+          className={`flex space-x-16 ${isPaused ? '' : scrollDirection === 'left' ? 'animate-scroll-left' : 'animate-scroll-right'}`}
           style={{
-            transform: `translateX(${-scrollY * 0.5}px)`,
-            width: 'calc(200% + 4rem)'
+            width: 'calc(300% + 8rem)',
+            animationDuration: '60s'
           }}
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
         >
-          {duplicatedPartners.map((partner, index) => (
+          {infinitePartners.map((partner, index) => (
             <div
               key={`${partner.name}-${index}`}
               className="flex-shrink-0 w-32 h-16 flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-300 opacity-60 hover:opacity-100"
