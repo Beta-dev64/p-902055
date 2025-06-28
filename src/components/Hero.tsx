@@ -96,7 +96,17 @@ const Hero = () => {
         padding: isMobile ? '100px 12px 40px' : '120px 20px 60px'
       }}
     >
-      <div className="absolute -top-[10%] -right-[5%] w-1/2 h-[70%] bg-pulse-gradient opacity-20 blur-3xl rounded-full"></div>
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-[10%] -right-[5%] w-1/2 h-[70%] bg-pulse-gradient opacity-20 blur-3xl rounded-full animate-pulse"></div>
+        <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-pulse-500/10 rounded-full animate-bounce" style={{animationDuration: '3s'}}></div>
+        <div className="absolute bottom-1/4 right-1/3 w-24 h-24 bg-pulse-600/15 rounded-full animate-bounce" style={{animationDuration: '4s', animationDelay: '1s'}}></div>
+        <div className="absolute top-1/2 left-1/6 w-16 h-16 bg-pulse-400/20 rounded-full animate-bounce" style={{animationDuration: '5s', animationDelay: '2s'}}></div>
+        
+        {/* Floating geometric shapes */}
+        <div className="absolute top-1/3 right-1/4 w-8 h-8 border-2 border-pulse-500/30 rotate-45 animate-spin" style={{animationDuration: '8s'}}></div>
+        <div className="absolute bottom-1/3 left-1/3 w-6 h-6 bg-pulse-600/20 transform rotate-12 animate-pulse" style={{animationDuration: '6s'}}></div>
+      </div>
       
       <div className="container px-4 sm:px-6 lg:px-8" ref={containerRef}>
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-12 items-center">
@@ -128,7 +138,7 @@ const Hero = () => {
               style={{ animationDelay: "0.7s" }}
             >
               <a 
-                href="#get-access" 
+                href="#details" 
                 className="flex items-center justify-center group w-full sm:w-auto text-center" 
                 style={{
                   backgroundColor: '#d4784c',

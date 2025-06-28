@@ -48,7 +48,7 @@ const Portfolio = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 animate-on-scroll">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 animate-on-scroll mb-12">
           {caseStudies.map((study, index) => (
             <Link
               key={study.id}
@@ -88,6 +88,19 @@ const Portfolio = () => {
               </div>
             </Link>
           ))}
+        </div>
+
+        {/* See More Button */}
+        <div className="text-center">
+          <Link
+            to="/portfolio"
+            className="inline-flex items-center justify-center bg-pulse-500 hover:bg-pulse-600 text-white font-medium py-3 px-8 rounded-full transition-colors duration-300 group"
+          >
+            See All Projects
+            <svg className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </Link>
         </div>
       </div>
     </section>
