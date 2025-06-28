@@ -7,6 +7,8 @@ import SpecsSection from "@/components/SpecsSection";
 import DetailsSection from "@/components/DetailsSection";
 import ImageShowcaseSection from "@/components/ImageShowcaseSection";
 import Features from "@/components/Features";
+import Portfolio from "@/components/Portfolio";
+import PartnersScroll from "@/components/PartnersScroll";
 import Testimonials from "@/components/Testimonials";
 import Newsletter from "@/components/Newsletter";
 import MadeByHumans from "@/components/MadeByHumans";
@@ -61,13 +63,15 @@ const Index = () => {
   return (
     <div className="min-h-screen">
       <Navbar />
-      <main className="space-y-4 sm:space-y-8"> {/* Reduced space on mobile */}
+      <main className="space-y-4 sm:space-y-8">
         <Hero />
         <HumanoidSection />
         <SpecsSection />
         <DetailsSection />
         <ImageShowcaseSection />
         <Features />
+        <Portfolio />
+        <PartnersScroll />
         <Testimonials />
         <Newsletter />
         <MadeByHumans />
