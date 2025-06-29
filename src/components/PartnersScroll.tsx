@@ -3,7 +3,6 @@ import React, { useEffect, useState, useRef } from "react";
 
 const PartnersScroll = () => {
   const [scrollDirection, setScrollDirection] = useState('left');
-  const [isPaused, setIsPaused] = useState(false);
   const lastScrollY = useRef(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -43,18 +42,16 @@ const PartnersScroll = () => {
       <div className="relative">
         <div 
           ref={scrollContainerRef}
-          className={`flex space-x-16 ${isPaused ? '' : scrollDirection === 'left' ? 'animate-scroll-left' : 'animate-scroll-right'}`}
+          className={`flex space-x-16 ${scrollDirection === 'left' ? 'animate-scroll-left' : 'animate-scroll-right'}`}
           style={{
             width: 'calc(300% + 8rem)',
             animationDuration: '60s'
           }}
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
         >
           {infinitePartners.map((partner, index) => (
             <div
               key={`${partner.name}-${index}`}
-              className="flex-shrink-0 w-32 h-16 flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-300 opacity-60 hover:opacity-100"
+              className="flex-shrink-0 w-32 h-16 flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-300 opacity-60 hover:opacity-100 hover:scale-110"
             >
               <img
                 src={partner.logo}

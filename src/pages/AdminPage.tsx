@@ -6,6 +6,7 @@ import AdminLogin from "@/components/AdminLogin";
 import AdminPortfolios from "@/components/admin/AdminPortfolios";
 import AdminPartners from "@/components/admin/AdminPartners";
 import AdminTestimonials from "@/components/admin/AdminTestimonials";
+import AdminTeam from "@/components/admin/AdminTeam";
 
 const AdminPage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -15,6 +16,7 @@ const AdminPage = () => {
     { id: "portfolios", label: "Portfolio Cases", component: AdminPortfolios },
     { id: "partners", label: "Trusted Partners", component: AdminPartners },
     { id: "testimonials", label: "Testimonials", component: AdminTestimonials },
+    { id: "team", label: "Team Members", component: AdminTeam },
   ];
 
   const ActiveComponent = tabs.find(tab => tab.id === activeTab)?.component || AdminPortfolios;
@@ -34,7 +36,7 @@ const AdminPage = () => {
               Admin Dashboard
             </h1>
             <p className="text-gray-600">
-              Manage your portfolio cases, partner logos, and client testimonials
+              Manage your portfolio cases, partner logos, client testimonials, and team members
             </p>
           </div>
 
