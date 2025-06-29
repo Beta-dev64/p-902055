@@ -48,12 +48,12 @@ const Portfolio = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 animate-on-scroll mb-12">
+        <div className="flex flex-col space-y-6 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-8 md:space-y-0 animate-on-scroll mb-12">
           {caseStudies.map((study, index) => (
             <Link
               key={study.id}
               to={`/case-study/${study.slug}`}
-              className="group bg-white rounded-2xl overflow-hidden shadow-elegant hover:shadow-elegant-hover transition-all duration-300 hover:-translate-y-2"
+              className="group bg-white rounded-2xl overflow-hidden shadow-elegant hover:shadow-elegant-hover transition-all duration-300 hover:-translate-y-2 flex flex-col"
             >
               <div className="aspect-video overflow-hidden">
                 <img
@@ -62,7 +62,7 @@ const Portfolio = () => {
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
               </div>
-              <div className="p-6">
+              <div className="p-6 flex-1 flex flex-col">
                 <div className="flex flex-wrap gap-2 mb-3">
                   {study.tags.map((tag) => (
                     <span
@@ -76,7 +76,7 @@ const Portfolio = () => {
                 <h3 className="text-xl font-display font-semibold mb-3 group-hover:text-pulse-500 transition-colors">
                   {study.title}
                 </h3>
-                <p className="text-gray-600 text-sm leading-relaxed">
+                <p className="text-gray-600 text-sm leading-relaxed flex-1">
                   {study.description}
                 </p>
                 <div className="mt-4 flex items-center text-pulse-500 font-medium text-sm">
