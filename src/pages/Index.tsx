@@ -74,7 +74,6 @@ const Index = () => {
         <Testimonials />
         <Team />
         <DetailsSection />
-        <SpecsSection />
         <Newsletter />
         <MadeByHumans />
       </main>
