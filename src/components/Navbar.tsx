@@ -106,14 +106,16 @@ const Navbar = () => {
 
       {/* Mobile Navigation */}
       <div className={cn(
-        "fixed inset-0 z-40 bg-white flex flex-col pt-16 px-6 md:hidden transition-all duration-300 ease-in-out",
+        "fixed inset-0 z-40 flex flex-col pt-16 px-6 md:hidden transition-all duration-300 ease-in-out",
+        "bg-white/95 backdrop-blur-xl backdrop-saturate-200",
+        "border border-white/20 shadow-2xl",
         isMenuOpen ? "opacity-100 translate-x-0" : "opacity-0 translate-x-full pointer-events-none"
       )}>
         {/* Close button inside mobile menu */}
         <button
           onClick={closeMenu}
           className={cn(
-            "self-end mb-8 p-2 rounded-full hover:bg-gray-100 transition-all duration-300",
+            "self-end mb-8 p-2 rounded-full hover:bg-gray-100/80 transition-all duration-300",
             isClosing && "animate-spin"
           )}
         >
@@ -123,7 +125,7 @@ const Navbar = () => {
         <nav className="flex flex-col space-y-8 items-center">
           <a 
             href="#" 
-            className="text-xl font-medium py-3 px-6 w-full text-center rounded-lg hover:bg-gray-100" 
+            className="text-xl font-medium py-3 px-6 w-full text-center rounded-lg hover:bg-gray-100/80 backdrop-blur-sm" 
             onClick={(e) => {
               e.preventDefault();
               scrollToTop();
@@ -134,21 +136,21 @@ const Navbar = () => {
           </a>
           <a 
             href="#features" 
-            className="text-xl font-medium py-3 px-6 w-full text-center rounded-lg hover:bg-gray-100" 
+            className="text-xl font-medium py-3 px-6 w-full text-center rounded-lg hover:bg-gray-100/80 backdrop-blur-sm" 
             onClick={closeMenu}
           >
             Services
           </a>
           <a 
             href="#portfolio" 
-            className="text-xl font-medium py-3 px-6 w-full text-center rounded-lg hover:bg-gray-100" 
+            className="text-xl font-medium py-3 px-6 w-full text-center rounded-lg hover:bg-gray-100/80 backdrop-blur-sm" 
             onClick={closeMenu}
           >
             Portfolio
           </a>
           <a 
             href="#details" 
-            className="text-xl font-medium py-3 px-6 w-full text-center rounded-lg hover:bg-gray-100" 
+            className="text-xl font-medium py-3 px-6 w-full text-center rounded-lg hover:bg-gray-100/80 backdrop-blur-sm" 
             onClick={closeMenu}
           >
             Contact
