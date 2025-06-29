@@ -67,13 +67,13 @@ const Index = () => {
       <main className="space-y-4 sm:space-y-8">
         <Hero />
         <HumanoidSection />
-        <DetailsSection />
         <ImageShowcaseSection />
         <Features />
         <Portfolio />
         <PartnersScroll />
         <Testimonials />
         <Team />
+        <DetailsSection />
         <SpecsSection />
         <Newsletter />
         <MadeByHumans />

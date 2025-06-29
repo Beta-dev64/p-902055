@@ -81,7 +81,7 @@ const Testimonials = () => {
       <div className="section-container opacity-0 animate-on-scroll">
         <div className="flex items-center gap-4 mb-6">
           <div className="inline-flex items-center px-4 py-2 rounded-xl text-sm font-medium bg-pulse-100 text-pulse-600 border border-pulse-200">
-            <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-pulse-500 text-white mr-2">04</span>
+            <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-pulse-500 text-white mr-2">03</span>
             <span>Client Success</span>
           </div>
         </div>
