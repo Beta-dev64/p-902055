@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, ExternalLink } from "lucide-react";
@@ -95,7 +94,7 @@ const CaseStudyDetail = () => {
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-black/50 flex items-center">
-          <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
+          <div className="container px-4 sm:px-6 lg:px-8 mx-auto pt-16 md:pt-0">
             <Link
               to="/"
               className="inline-flex items-center text-white mb-6 hover:text-pulse-300 transition-colors"

@@ -2,11 +2,13 @@
 import React, { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import AdminLogin from "@/components/AdminLogin";
 import AdminPortfolios from "@/components/admin/AdminPortfolios";
 import AdminPartners from "@/components/admin/AdminPartners";
 import AdminTestimonials from "@/components/admin/AdminTestimonials";
 
 const AdminPage = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [activeTab, setActiveTab] = useState("portfolios");
 
   const tabs = [
@@ -16,6 +18,10 @@ const AdminPage = () => {
   ];
 
   const ActiveComponent = tabs.find(tab => tab.id === activeTab)?.component || AdminPortfolios;
+
+  if (!isLoggedIn) {
+    return <AdminLogin onLogin={() => setIsLoggedIn(true)} />;
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">

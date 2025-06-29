@@ -3,18 +3,18 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-white py-12">
+    <footer className="bg-gray-900 text-white py-8 md:py-12">
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-8 mb-6 md:mb-8">
           <div className="col-span-1 md:col-span-2">
-            <div className="flex items-center space-x-2 mb-4">
+            <div className="flex items-center space-x-2 mb-3 md:mb-4">
               <img 
                 src="/logo.svg" 
                 alt="Software Agency Logo" 
                 className="h-8 brightness-0 invert" 
               />
             </div>
-            <p className="text-gray-300 mb-4 max-w-md">
+            <p className="text-gray-300 mb-3 md:mb-4 max-w-md text-sm md:text-base">
               We craft digital solutions that transform your business vision into powerful, 
               scalable applications that drive growth and innovation.
             </p>
@@ -41,35 +41,42 @@ const Footer = () => {
           </div>
           
           <div>
-            <h3 className="text-lg font-semibold mb-4">Services</h3>
-            <ul className="space-y-2">
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Custom Development</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Cloud Solutions</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">AI & ML</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Consulting</a></li>
+            <h3 className="text-base md:text-lg font-semibold mb-2 md:mb-4">Services</h3>
+            <ul className="space-y-1 md:space-y-2">
+              <li><a href="#" className="text-gray-300 hover:text-white transition-colors text-sm md:text-base">Custom Development</a></li>
+              <li><a href="#" className="text-gray-300 hover:text-white transition-colors text-sm md:text-base">Cloud Solutions</a></li>
+              <li><a href="#" className="text-gray-300 hover:text-white transition-colors text-sm md:text-base">AI & ML</a></li>
+              <li><a href="#" className="text-gray-300 hover:text-white transition-colors text-sm md:text-base">Consulting</a></li>
             </ul>
           </div>
           
           <div>
-            <h3 className="text-lg font-semibold mb-4">Company</h3>
-            <ul className="space-y-2">
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">About</a></li>
-              <li><a href="#portfolio" className="text-gray-300 hover:text-white transition-colors">Portfolio</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-white transition-colors">Careers</a></li>
-              <li><a href="#details" className="text-gray-300 hover:text-white transition-colors">Contact</a></li>
+            <h3 className="text-base md:text-lg font-semibold mb-2 md:mb-4">Company</h3>
+            <ul className="space-y-1 md:space-y-2">
+              <li><a href="#" className="text-gray-300 hover:text-white transition-colors text-sm md:text-base">About</a></li>
+              <li><a href="#portfolio" className="text-gray-300 hover:text-white transition-colors text-sm md:text-base">Portfolio</a></li>
+              <li><a href="#" className="text-gray-300 hover:text-white transition-colors text-sm md:text-base">Careers</a></li>
+              <li><a href="#details" className="text-gray-300 hover:text-white transition-colors text-sm md:text-base">Contact</a></li>
             </ul>
           </div>
         </div>
         
-        <div className="border-t border-gray-800 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-gray-400 text-sm">
-              © 2024 Software Agency. All rights reserved.
-            </p>
-            <div className="flex space-x-4 mt-4 md:mt-0">
-              <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</a>
-              <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">Terms of Service</a>
-            </div>
+        {/* FuseLabsIO Branding */}
+        <div className="border-t border-gray-800 pt-4 md:pt-8 mb-4 md:mb-6">
+          <div className="text-center">
+            <h2 className="text-4xl md:text-6xl font-bold text-gray-700 tracking-wider">
+              FuseLabsIO
+            </h2>
+          </div>
+        </div>
+        
+        <div className="flex flex-col md:flex-row justify-between items-center text-xs md:text-sm space-y-2 md:space-y-0">
+          <p className="text-gray-400">
+            © 2024 Software Agency. All rights reserved.
+          </p>
+          <div className="flex space-x-3 md:space-x-4">
+            <a href="#" className="text-gray-400 hover:text-white transition-colors">Privacy Policy</a>
+            <a href="#" className="text-gray-400 hover:text-white transition-colors">Terms of Service</a>
           </div>
         </div>
       </div>

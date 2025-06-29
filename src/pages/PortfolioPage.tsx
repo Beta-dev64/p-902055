@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -34,7 +33,6 @@ const PortfolioPage = () => {
       image: "/lovable-uploads/5663820f-6c97-4492-9210-9eaa1a8dc415.png",
       tags: ["React Native", "Firebase", "Blockchain", "AI/ML"]
     },
-    // Additional case studies for pagination demonstration
     {
       id: 4,
       slug: "social-media-platform",
@@ -116,12 +114,12 @@ const PortfolioPage = () => {
       {/* Case Studies Grid */}
       <section className="py-16">
         <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="flex flex-col space-y-6 md:grid md:grid-cols-3 md:gap-8 md:space-y-0">
             {currentCaseStudies.map((study) => (
               <Link
                 key={study.id}
                 to={`/case-study/${study.slug}`}
-                className="group bg-white rounded-2xl overflow-hidden shadow-elegant hover:shadow-elegant-hover transition-all duration-300 hover:-translate-y-2"
+                className="group bg-white rounded-2xl overflow-hidden shadow-elegant hover:shadow-elegant-hover transition-all duration-300 hover:-translate-y-2 flex flex-col"
               >
                 <div className="aspect-video overflow-hidden">
                   <img
@@ -130,7 +128,7 @@ const PortfolioPage = () => {
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
-                <div className="p-6">
+                <div className="p-6 flex-1 flex flex-col">
                   <div className="flex flex-wrap gap-2 mb-3">
                     {study.tags.map((tag) => (
                       <span
@@ -144,7 +142,7 @@ const PortfolioPage = () => {
                   <h3 className="text-xl font-display font-semibold mb-3 group-hover:text-pulse-500 transition-colors">
                     {study.title}
                   </h3>
-                  <p className="text-gray-600 text-sm leading-relaxed">
+                  <p className="text-gray-600 text-sm leading-relaxed flex-1">
                     {study.description}
                   </p>
                   <div className="mt-4 flex items-center text-pulse-500 font-medium text-sm">
