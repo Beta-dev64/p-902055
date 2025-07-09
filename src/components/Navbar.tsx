@@ -2,11 +2,13 @@
 import React, { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -61,13 +63,9 @@ const Navbar = () => {
       )}
     >
       <div className="container flex items-center justify-between px-4 sm:px-6 lg:px-8">
-        <a 
-          href="#" 
+        <Link 
+          to="/" 
           className="flex items-center space-x-2"
-          onClick={(e) => {
-            e.preventDefault();
-            scrollToTop();
-          }}
           aria-label="Software Agency"
         >
           <img 
@@ -75,23 +73,25 @@ const Navbar = () => {
             alt="Software Agency Logo" 
             className="h-7 sm:h-8" 
           />
-        </a>
+        </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex space-x-8">
-          <a 
-            href="#" 
+          <Link 
+            to="/" 
             className="nav-link"
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToTop();
-            }}
           >
             Home
-          </a>
-          <a href="#features" className="nav-link">Services</a>
-          <a href="#portfolio" className="nav-link">Portfolio</a>
-          <a href="#details" className="nav-link">Contact</a>
+          </Link>
+          {location.pathname === "/" ? (
+            <>
+              <a href="#features" className="nav-link">Services</a>
+              <a href="#portfolio" className="nav-link">Portfolio</a>
+              <a href="#details" className="nav-link">Contact</a>
+            </>
+          ) : (
+            <Link to="/portfolio" className="nav-link">Portfolio</Link>
+          )}
         </nav>
 
         {/* Mobile menu button */}
@@ -123,38 +123,46 @@ const Navbar = () => {
         </button>
 
         <nav className="flex flex-col space-y-8 items-center">
-          <a 
-            href="#" 
+          <Link 
+            to="/" 
             className="text-xl font-medium py-3 px-6 w-full text-center rounded-lg hover:bg-gray-100/80 backdrop-blur-sm" 
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToTop();
-              closeMenu();
-            }}
+            onClick={closeMenu}
           >
             Home
-          </a>
-          <a 
-            href="#features" 
-            className="text-xl font-medium py-3 px-6 w-full text-center rounded-lg hover:bg-gray-100/80 backdrop-blur-sm" 
-            onClick={closeMenu}
-          >
-            Services
-          </a>
-          <a 
-            href="#portfolio" 
-            className="text-xl font-medium py-3 px-6 w-full text-center rounded-lg hover:bg-gray-100/80 backdrop-blur-sm" 
-            onClick={closeMenu}
-          >
-            Portfolio
-          </a>
-          <a 
-            href="#details" 
-            className="text-xl font-medium py-3 px-6 w-full text-center rounded-lg hover:bg-gray-100/80 backdrop-blur-sm" 
-            onClick={closeMenu}
-          >
-            Contact
-          </a>
+          </Link>
+          {location.pathname === "/" ? (
+            <>
+              <a 
+                href="#features" 
+                className="text-xl font-medium py-3 px-6 w-full text-center rounded-lg hover:bg-gray-100/80 backdrop-blur-sm" 
+                onClick={closeMenu}
+              >
+                Services
+              </a>
+              <a 
+                href="#portfolio" 
+                className="text-xl font-medium py-3 px-6 w-full text-center rounded-lg hover:bg-gray-100/80 backdrop-blur-sm" 
+                onClick={closeMenu}
+              >
+                Portfolio
+              </a>
+              <a 
+                href="#details" 
+                className="text-xl font-medium py-3 px-6 w-full text-center rounded-lg hover:bg-gray-100/80 backdrop-blur-sm" 
+                onClick={closeMenu}
+              >
+                Contact
+              </a>
+            </>
+          ) : (
+            <Link 
+              to="/portfolio" 
+              className="text-xl font-medium py-3 px-6 w-full text-center rounded-lg hover:bg-gray-100/80 backdrop-blur-sm" 
+              onClick={closeMenu}
+            >
+              Portfolio
+            </Link>
+          )}
         </nav>
       </div>
     </header>

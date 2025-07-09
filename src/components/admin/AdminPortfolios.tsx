@@ -38,6 +38,14 @@ const AdminPortfolios = () => {
     tags: ""
   });
 
+  const generateSlug = (title: string) => {
+    return title
+      .toLowerCase()
+      .replace(/[^\w\s-]/g, '')
+      .replace(/[\s_-]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  };
+
   const handleEdit = (portfolio: Portfolio) => {
     setEditingId(portfolio.id);
     setFormData({
@@ -106,7 +114,14 @@ const AdminPortfolios = () => {
               <Input
                 placeholder="Title"
                 value={formData.title}
-                onChange={(e) => setFormData({...formData, title: e.target.value})}
+                onChange={(e) => {
+                  const newTitle = e.target.value;
+                  setFormData({
+                    ...formData, 
+                    title: newTitle,
+                    slug: editingId === 0 ? generateSlug(newTitle) : formData.slug
+                  });
+                }}
               />
               <Input
                 placeholder="Slug (URL)"
