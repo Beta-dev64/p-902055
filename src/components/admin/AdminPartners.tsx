@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
+import { ImageUpload } from "@/components/ui/image-upload";
 import { Plus, Edit, Trash2 } from "lucide-react";
 
 interface Partner {
@@ -71,16 +72,17 @@ const AdminPartners = () => {
           <h3 className="text-lg font-medium mb-4">
             {editingId === 0 ? "Add New Partner" : "Edit Partner"}
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-4">
             <Input
               placeholder="Company Name"
               value={formData.name}
               onChange={(e) => setFormData({...formData, name: e.target.value})}
             />
-            <Input
-              placeholder="Logo URL"
+            <ImageUpload
+              label="Company Logo"
               value={formData.logo}
-              onChange={(e) => setFormData({...formData, logo: e.target.value})}
+              onChange={(url) => setFormData({...formData, logo: url})}
+              placeholder="Enter logo URL or upload a file"
             />
           </div>
           <div className="flex gap-2 mt-4">

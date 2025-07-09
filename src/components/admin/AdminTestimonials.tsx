@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
+import { ImageUpload } from "@/components/ui/image-upload";
 import { Plus, Edit, Trash2 } from "lucide-react";
 
 interface Testimonial {
@@ -92,26 +93,30 @@ const AdminTestimonials = () => {
           <h3 className="text-lg font-medium mb-4">
             {editingId === 0 ? "Add New Testimonial" : "Edit Testimonial"}
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Input
-              placeholder="Author Name"
-              value={formData.author}
-              onChange={(e) => setFormData({...formData, author: e.target.value})}
-            />
-            <Input
-              placeholder="Role/Position"
-              value={formData.role}
-              onChange={(e) => setFormData({...formData, role: e.target.value})}
-            />
-            <Input
-              placeholder="Avatar URL"
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Input
+                placeholder="Author Name"
+                value={formData.author}
+                onChange={(e) => setFormData({...formData, author: e.target.value})}
+              />
+              <Input
+                placeholder="Role/Position"
+                value={formData.role}
+                onChange={(e) => setFormData({...formData, role: e.target.value})}
+              />
+            </div>
+            <ImageUpload
+              label="Author Avatar"
               value={formData.avatar}
-              onChange={(e) => setFormData({...formData, avatar: e.target.value})}
+              onChange={(url) => setFormData({...formData, avatar: url})}
+              placeholder="Enter avatar URL or upload a file"
             />
-            <Input
-              placeholder="Background Image URL"
+            <ImageUpload
+              label="Background Image"
               value={formData.backgroundImage}
-              onChange={(e) => setFormData({...formData, backgroundImage: e.target.value})}
+              onChange={(url) => setFormData({...formData, backgroundImage: url})}
+              placeholder="Enter background image URL or upload a file"
             />
           </div>
           <Textarea

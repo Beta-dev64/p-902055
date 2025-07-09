@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { ImageUpload } from "@/components/ui/image-upload";
 import { Plus, Edit, Trash2 } from "lucide-react";
 
 interface Portfolio {
@@ -100,21 +101,24 @@ const AdminPortfolios = () => {
           <h3 className="text-lg font-medium mb-4">
             {editingId === 0 ? "Add New Portfolio" : "Edit Portfolio"}
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Input
-              placeholder="Title"
-              value={formData.title}
-              onChange={(e) => setFormData({...formData, title: e.target.value})}
-            />
-            <Input
-              placeholder="Slug (URL)"
-              value={formData.slug}
-              onChange={(e) => setFormData({...formData, slug: e.target.value})}
-            />
-            <Input
-              placeholder="Image URL"
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Input
+                placeholder="Title"
+                value={formData.title}
+                onChange={(e) => setFormData({...formData, title: e.target.value})}
+              />
+              <Input
+                placeholder="Slug (URL)"
+                value={formData.slug}
+                onChange={(e) => setFormData({...formData, slug: e.target.value})}
+              />
+            </div>
+            <ImageUpload
+              label="Portfolio Image"
               value={formData.image}
-              onChange={(e) => setFormData({...formData, image: e.target.value})}
+              onChange={(url) => setFormData({...formData, image: url})}
+              placeholder="Enter image URL or upload a file"
             />
             <Input
               placeholder="Tags (comma separated)"

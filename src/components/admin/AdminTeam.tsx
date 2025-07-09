@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { ImageUpload } from "@/components/ui/image-upload";
 import { toast } from "@/hooks/use-toast";
 import { Plus, Pencil, Trash2 } from "lucide-react";
 
@@ -180,17 +181,12 @@ const AdminTeam = () => {
                 </div>
               </div>
               
-              <div>
-                <Label htmlFor="image">Image URL *</Label>
-                <Input
-                  id="image"
-                  name="image"
-                  value={formData.image}
-                  onChange={handleInputChange}
-                  placeholder="https://example.com/image.jpg"
-                  required
-                />
-              </div>
+              <ImageUpload
+                label="Team Member Image *"
+                value={formData.image}
+                onChange={(url) => setFormData(prev => ({...prev, image: url}))}
+                placeholder="Enter image URL or upload a file"
+              />
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
