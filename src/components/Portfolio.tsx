@@ -1,34 +1,41 @@
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+
+interface CaseStudy {
+  id: string;
+  slug: string;
+  title: string;
+  description: string | null;
+  image: string | null;
+  tags: string[] | null;
+}
 
 const Portfolio = () => {
-  const caseStudies = [
-    {
-      id: 1,
-      slug: "e-commerce-platform",
-      title: "E-Commerce Platform Redesign",
-      description: "Complete overhaul of a legacy e-commerce system with modern architecture and improved user experience, resulting in 300% increase in conversion rates.",
-      image: "/lovable-uploads/c3d5522b-6886-4b75-8ffc-d020016bb9c2.png",
-      tags: ["React", "Node.js", "AWS", "Stripe"]
-    },
-    {
-      id: 2,
-      slug: "healthcare-dashboard",
-      title: "Healthcare Management Dashboard",
-      description: "Real-time analytics dashboard for healthcare providers to monitor patient data and optimize resource allocation across multiple facilities.",
-      image: "/lovable-uploads/22d31f51-c174-40a7-bd95-00e4ad00eaf3.png",
-      tags: ["Vue.js", "Python", "PostgreSQL", "Docker"]
-    },
-    {
-      id: 3,
-      slug: "fintech-mobile-app",
-      title: "FinTech Mobile Application",
-      description: "Secure mobile banking solution with advanced fraud detection and seamless user experience for next-generation financial services.",
-      image: "/lovable-uploads/5663820f-6c97-4492-9210-9eaa1a8dc415.png",
-      tags: ["React Native", "Firebase", "Blockchain", "AI/ML"]
+  const [caseStudies, setCaseStudies] = useState<CaseStudy[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchPortfolios();
+  }, []);
+
+  const fetchPortfolios = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('portfolios')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(3);
+      
+      if (error) throw error;
+      setCaseStudies(data || []);
+    } catch (error) {
+      console.error('Error fetching portfolios:', error);
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
 
   return (
     <section className="w-full py-12 sm:py-16 bg-gray-50" id="portfolio">
@@ -49,45 +56,57 @@ const Portfolio = () => {
         </div>
 
         <div className="flex flex-col space-y-6 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-8 md:space-y-0 animate-on-scroll mb-12">
-          {caseStudies.map((study, index) => (
-            <Link
-              key={study.id}
-              to={`/case-study/${study.slug}`}
-              className="group bg-white rounded-2xl overflow-hidden shadow-elegant hover:shadow-elegant-hover transition-all duration-300 hover:-translate-y-2 flex flex-col"
-            >
-              <div className="aspect-video overflow-hidden">
-                <img
-                  src={study.image}
-                  alt={study.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-              </div>
-              <div className="p-6 flex-1 flex flex-col">
-                <div className="flex flex-wrap gap-2 mb-3">
-                  {study.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-2 py-1 bg-pulse-100 text-pulse-600 text-xs font-medium rounded-full"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+          {loading ? (
+            <div className="col-span-3 text-center py-8">
+              <p className="text-gray-600">Loading portfolios...</p>
+            </div>
+          ) : caseStudies.length === 0 ? (
+            <div className="col-span-3 text-center py-8">
+              <p className="text-gray-600">No portfolios available yet.</p>
+            </div>
+          ) : (
+            caseStudies.map((study) => (
+              <Link
+                key={study.id}
+                to={`/case-study/${study.slug}`}
+                className="group bg-white rounded-2xl overflow-hidden shadow-elegant hover:shadow-elegant-hover transition-all duration-300 hover:-translate-y-2 flex flex-col"
+              >
+                <div className="aspect-video overflow-hidden">
+                  {study.image && (
+                    <img
+                      src={study.image}
+                      alt={study.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  )}
                 </div>
-                <h3 className="text-xl font-display font-semibold mb-3 group-hover:text-pulse-500 transition-colors">
-                  {study.title}
-                </h3>
-                <p className="text-gray-600 text-sm leading-relaxed flex-1">
-                  {study.description}
-                </p>
-                <div className="mt-4 flex items-center text-pulse-500 font-medium text-sm">
-                  View Case Study
-                  <svg className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
+                <div className="p-6 flex-1 flex flex-col">
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    {study.tags?.map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-2 py-1 bg-pulse-100 text-pulse-600 text-xs font-medium rounded-full"
+                      >
+                        {tag}
+                      </span>
+                    )) || []}
+                  </div>
+                  <h3 className="text-xl font-display font-semibold mb-3 group-hover:text-pulse-500 transition-colors">
+                    {study.title}
+                  </h3>
+                  <p className="text-gray-600 text-sm leading-relaxed flex-1">
+                    {study.description || "No description available"}
+                  </p>
+                  <div className="mt-4 flex items-center text-pulse-500 font-medium text-sm">
+                    View Case Study
+                    <svg className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </div>
                 </div>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            ))
+          )}
         </div>
 
         {/* See More Button */}

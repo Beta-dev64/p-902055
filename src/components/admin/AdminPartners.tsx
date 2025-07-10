@@ -1,51 +1,142 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { ImageUpload } from "@/components/ui/image-upload";
 import { Plus, Edit, Trash2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 interface Partner {
-  id: number;
+  id: string;
   name: string;
-  logo: string;
+  logo: string | null;
 }
 
 const AdminPartners = () => {
-  const [partners, setPartners] = useState<Partner[]>([
-    { id: 1, name: "Microsoft", logo: "/lovable-uploads/af412c03-21e4-4856-82ff-d1a975dc84a9.png" },
-    { id: 2, name: "Google", logo: "/lovable-uploads/dc13e94f-beeb-4671-8a22-0968498cdb4c.png" },
-    { id: 3, name: "Amazon", logo: "/lovable-uploads/c3d5522b-6886-4b75-8ffc-d020016bb9c2.png" },
-  ]);
-
-  const [editingId, setEditingId] = useState<number | null>(null);
+  const { toast } = useToast();
+  const [partners, setPartners] = useState<Partner[]>([]);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({ name: "", logo: "" });
+
+  useEffect(() => {
+    fetchPartners();
+  }, []);
+
+  const fetchPartners = async () => {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('partners')
+        .select('*')
+        .order('created_at', { ascending: false });
+      
+      if (error) throw error;
+      setPartners(data || []);
+    } catch (error) {
+      console.error('Error fetching partners:', error);
+      toast({
+        title: "Error",
+        description: "Failed to fetch partners",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleEdit = (partner: Partner) => {
     setEditingId(partner.id);
-    setFormData({ name: partner.name, logo: partner.logo });
+    setFormData({ name: partner.name, logo: partner.logo || "" });
   };
 
-  const handleSave = () => {
-    if (editingId) {
-      setPartners(partners.map(p => 
-        p.id === editingId ? { ...p, ...formData } : p
-      ));
-    } else {
-      const newPartner: Partner = {
-        id: Date.now(),
-        ...formData
-      };
-      setPartners([...partners, newPartner]);
+  const handleSave = async () => {
+    if (!formData.name) {
+      toast({
+        title: "Error",
+        description: "Partner name is required",
+        variant: "destructive"
+      });
+      return;
     }
-    
-    setEditingId(null);
-    setFormData({ name: "", logo: "" });
+
+    setLoading(true);
+    try {
+      const partnerData = {
+        name: formData.name,
+        logo: formData.logo || null
+      };
+
+      if (editingId) {
+        const { error } = await supabase
+          .from('partners')
+          .update(partnerData)
+          .eq('id', editingId);
+        
+        if (error) throw error;
+        
+        toast({
+          title: "Success",
+          description: "Partner updated successfully"
+        });
+      } else {
+        const { error } = await supabase
+          .from('partners')
+          .insert([partnerData]);
+        
+        if (error) throw error;
+        
+        toast({
+          title: "Success",
+          description: "Partner created successfully"
+        });
+      }
+
+      await fetchPartners();
+      setEditingId(null);
+      setFormData({ name: "", logo: "" });
+    } catch (error) {
+      console.error('Error saving partner:', error);
+      toast({
+        title: "Error",
+        description: "Failed to save partner",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleDelete = (id: number) => {
-    setPartners(partners.filter(p => p.id !== id));
+  const handleDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this partner?')) return;
+
+    setLoading(true);
+    try {
+      const { error } = await supabase
+        .from('partners')
+        .delete()
+        .eq('id', id);
+      
+      if (error) throw error;
+      
+      toast({
+        title: "Success",
+        description: "Partner deleted successfully"
+      });
+      
+      await fetchPartners();
+    } catch (error) {
+      console.error('Error deleting partner:', error);
+      toast({
+        title: "Error",
+        description: "Failed to delete partner",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleCancel = () => {
@@ -58,8 +149,9 @@ const AdminPartners = () => {
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-semibold">Partner Management</h2>
         <Button 
-          onClick={() => setEditingId(0)}
+          onClick={() => setEditingId("new")}
           className="bg-pulse-500 hover:bg-pulse-600"
+          disabled={loading}
         >
           <Plus className="w-4 h-4 mr-2" />
           Add Partner
@@ -70,7 +162,7 @@ const AdminPartners = () => {
       {editingId !== null && (
         <Card className="p-6 mb-6">
           <h3 className="text-lg font-medium mb-4">
-            {editingId === 0 ? "Add New Partner" : "Edit Partner"}
+            {editingId === "new" ? "Add New Partner" : "Edit Partner"}
           </h3>
           <div className="space-y-4">
             <Input
@@ -86,8 +178,8 @@ const AdminPartners = () => {
             />
           </div>
           <div className="flex gap-2 mt-4">
-            <Button onClick={handleSave} className="bg-pulse-500 hover:bg-pulse-600">
-              Save
+            <Button onClick={handleSave} className="bg-pulse-500 hover:bg-pulse-600" disabled={loading}>
+              {loading ? "Saving..." : "Save"}
             </Button>
             <Button onClick={handleCancel} variant="outline">
               Cancel
@@ -101,11 +193,13 @@ const AdminPartners = () => {
         {partners.map((partner) => (
           <Card key={partner.id} className="p-4">
             <div className="aspect-video bg-gray-100 rounded-lg mb-3 flex items-center justify-center">
-              <img
-                src={partner.logo}
-                alt={partner.name}
-                className="max-w-full max-h-full object-contain"
-              />
+              {partner.logo && (
+                <img
+                  src={partner.logo}
+                  alt={partner.name}
+                  className="max-w-full max-h-full object-contain"
+                />
+              )}
             </div>
             <h3 className="font-medium text-center mb-3">{partner.name}</h3>
             <div className="flex justify-center gap-2">

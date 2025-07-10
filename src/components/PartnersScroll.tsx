@@ -1,5 +1,6 @@
 
 import React, { useEffect, useState, useRef } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 const PartnersScroll = () => {
   const [scrollDirection, setScrollDirection] = useState('left');
@@ -21,14 +22,25 @@ const PartnersScroll = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const partners = [
-    { name: "Microsoft", logo: "/lovable-uploads/af412c03-21e4-4856-82ff-d1a975dc84a9.png" },
-    { name: "Google", logo: "/lovable-uploads/dc13e94f-beeb-4671-8a22-0968498cdb4c.png" },
-    { name: "Amazon", logo: "/lovable-uploads/c3d5522b-6886-4b75-8ffc-d020016bb9c2.png" },
-    { name: "Apple", logo: "/lovable-uploads/22d31f51-c174-40a7-bd95-00e4ad00eaf3.png" },
-    { name: "Meta", logo: "/lovable-uploads/5663820f-6c97-4492-9210-9eaa1a8dc415.png" },
-    { name: "Tesla", logo: "/lovable-uploads/af412c03-21e4-4856-82ff-d1a975dc84a9.png" },
-  ];
+  const [partners, setPartners] = useState([]);
+
+  useEffect(() => {
+    fetchPartners();
+  }, []);
+
+  const fetchPartners = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('partners')
+        .select('*')
+        .order('created_at', { ascending: false });
+      
+      if (error) throw error;
+      setPartners(data || []);
+    } catch (error) {
+      console.error('Error fetching partners:', error);
+    }
+  };
 
   // Triple the array for seamless infinite scroll
   const infinitePartners = [...partners, ...partners, ...partners];

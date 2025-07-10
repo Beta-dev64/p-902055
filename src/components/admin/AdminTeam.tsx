@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,43 +7,26 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ImageUpload } from "@/components/ui/image-upload";
-import { toast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { Plus, Pencil, Trash2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 interface TeamMember {
   id: string;
   name: string;
   role: string;
-  image: string;
-  linkedin?: string;
-  twitter?: string;
-  portfolio?: string;
+  image: string | null;
+  linkedin?: string | null;
+  twitter?: string | null;
+  portfolio?: string | null;
 }
 
 const AdminTeam = () => {
-  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([
-    {
-      id: "1",
-      name: "Sarah Johnson",
-      role: "Lead Developer",
-      image: "/lovable-uploads/22d31f51-c174-40a7-bd95-00e4ad00eaf3.png",
-      linkedin: "https://linkedin.com/in/sarah-johnson",
-      twitter: "https://twitter.com/sarah_codes",
-      portfolio: "https://sarahjohnson.dev"
-    },
-    {
-      id: "2",
-      name: "Michael Chen",
-      role: "UI/UX Designer",
-      image: "/lovable-uploads/af412c03-21e4-4856-82ff-d1a975dc84a9.png",
-      linkedin: "https://linkedin.com/in/michael-chen",
-      twitter: "https://twitter.com/mike_designs",
-      portfolio: "https://michaelchen.design"
-    }
-  ]);
-
+  const { toast } = useToast();
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const [editingMember, setEditingMember] = useState<TeamMember | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -54,51 +37,106 @@ const AdminTeam = () => {
     portfolio: ""
   });
 
+  useEffect(() => {
+    fetchTeamMembers();
+  }, []);
+
+  const fetchTeamMembers = async () => {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('team_members')
+        .select('*')
+        .order('created_at', { ascending: false });
+      
+      if (error) throw error;
+      setTeamMembers(data || []);
+    } catch (error) {
+      console.error('Error fetching team members:', error);
+      toast({
+        title: "Error",
+        description: "Failed to fetch team members",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (editingMember) {
-      // Update existing member
-      setTeamMembers(prev => 
-        prev.map(member => 
-          member.id === editingMember.id 
-            ? { ...member, ...formData }
-            : member
-        )
-      );
+    if (!formData.name || !formData.role) {
       toast({
-        title: "Team member updated",
-        description: "The team member has been successfully updated."
+        title: "Error",
+        description: "Name and role are required",
+        variant: "destructive"
       });
-    } else {
-      // Add new member
-      const newMember: TeamMember = {
-        id: Date.now().toString(),
-        ...formData
-      };
-      setTeamMembers(prev => [...prev, newMember]);
-      toast({
-        title: "Team member added",
-        description: "New team member has been successfully added."
-      });
+      return;
     }
 
-    // Reset form
-    setFormData({
-      name: "",
-      role: "",
-      image: "",
-      linkedin: "",
-      twitter: "",
-      portfolio: ""
-    });
-    setEditingMember(null);
-    setIsFormOpen(false);
+    setLoading(true);
+    try {
+      const memberData = {
+        name: formData.name,
+        role: formData.role,
+        image: formData.image || null,
+        linkedin: formData.linkedin || null,
+        twitter: formData.twitter || null,
+        portfolio: formData.portfolio || null
+      };
+
+      if (editingMember) {
+        const { error } = await supabase
+          .from('team_members')
+          .update(memberData)
+          .eq('id', editingMember.id);
+        
+        if (error) throw error;
+        
+        toast({
+          title: "Success",
+          description: "Team member updated successfully"
+        });
+      } else {
+        const { error } = await supabase
+          .from('team_members')
+          .insert([memberData]);
+        
+        if (error) throw error;
+        
+        toast({
+          title: "Success",
+          description: "Team member added successfully"
+        });
+      }
+
+      await fetchTeamMembers();
+      setFormData({
+        name: "",
+        role: "",
+        image: "",
+        linkedin: "",
+        twitter: "",
+        portfolio: ""
+      });
+      setEditingMember(null);
+      setIsFormOpen(false);
+    } catch (error) {
+      console.error('Error saving team member:', error);
+      toast({
+        title: "Error",
+        description: "Failed to save team member",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleEdit = (member: TeamMember) => {
@@ -114,12 +152,34 @@ const AdminTeam = () => {
     setIsFormOpen(true);
   };
 
-  const handleDelete = (id: string) => {
-    setTeamMembers(prev => prev.filter(member => member.id !== id));
-    toast({
-      title: "Team member deleted",
-      description: "The team member has been successfully deleted."
-    });
+  const handleDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this team member?')) return;
+
+    setLoading(true);
+    try {
+      const { error } = await supabase
+        .from('team_members')
+        .delete()
+        .eq('id', id);
+      
+      if (error) throw error;
+      
+      toast({
+        title: "Success",
+        description: "Team member deleted successfully"
+      });
+      
+      await fetchTeamMembers();
+    } catch (error) {
+      console.error('Error deleting team member:', error);
+      toast({
+        title: "Error",
+        description: "Failed to delete team member",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleCancel = () => {
@@ -142,6 +202,7 @@ const AdminTeam = () => {
         <Button 
           onClick={() => setIsFormOpen(true)}
           className="bg-pulse-500 hover:bg-pulse-600"
+          disabled={loading}
         >
           <Plus className="h-4 w-4 mr-2" />
           Add Team Member
@@ -222,8 +283,8 @@ const AdminTeam = () => {
               </div>
 
               <div className="flex gap-2">
-                <Button type="submit" className="bg-pulse-500 hover:bg-pulse-600">
-                  {editingMember ? "Update" : "Add"} Team Member
+                <Button type="submit" className="bg-pulse-500 hover:bg-pulse-600" disabled={loading}>
+                  {loading ? "Saving..." : (editingMember ? "Update" : "Add")} Team Member
                 </Button>
                 <Button type="button" variant="outline" onClick={handleCancel}>
                   Cancel
@@ -254,11 +315,13 @@ const AdminTeam = () => {
               {teamMembers.map((member) => (
                 <TableRow key={member.id}>
                   <TableCell>
-                    <img
-                      src={member.image}
-                      alt={member.name}
-                      className="w-12 h-12 rounded-full object-cover"
-                    />
+                    {member.image && (
+                      <img
+                        src={member.image}
+                        alt={member.name}
+                        className="w-12 h-12 rounded-full object-cover"
+                      />
+                    )}
                   </TableCell>
                   <TableCell className="font-medium">{member.name}</TableCell>
                   <TableCell>{member.role}</TableCell>

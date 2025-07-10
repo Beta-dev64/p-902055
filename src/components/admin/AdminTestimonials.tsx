@@ -1,34 +1,29 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { ImageUpload } from "@/components/ui/image-upload";
 import { Plus, Edit, Trash2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 interface Testimonial {
-  id: number;
+  id: string;
   content: string;
   author: string;
   role: string;
-  avatar: string;
-  backgroundImage: string;
+  avatar: string | null;
+  background_image: string | null;
 }
 
 const AdminTestimonials = () => {
-  const [testimonials, setTestimonials] = useState<Testimonial[]>([
-    {
-      id: 1,
-      content: "The team delivered our e-commerce platform ahead of schedule. The custom features they built have increased our conversion rate by 45%.",
-      author: "Sarah Chen",
-      role: "CEO, TechFlow Commerce",
-      avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face",
-      backgroundImage: "/background-section1.png"
-    }
-  ]);
-
-  const [editingId, setEditingId] = useState<number | null>(null);
+  const { toast } = useToast();
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  
   const [formData, setFormData] = useState({
     content: "",
     author: "",
@@ -37,36 +32,131 @@ const AdminTestimonials = () => {
     backgroundImage: ""
   });
 
+  useEffect(() => {
+    fetchTestimonials();
+  }, []);
+
+  const fetchTestimonials = async () => {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('testimonials')
+        .select('*')
+        .order('created_at', { ascending: false });
+      
+      if (error) throw error;
+      setTestimonials(data || []);
+    } catch (error) {
+      console.error('Error fetching testimonials:', error);
+      toast({
+        title: "Error",
+        description: "Failed to fetch testimonials",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleEdit = (testimonial: Testimonial) => {
     setEditingId(testimonial.id);
     setFormData({
       content: testimonial.content,
       author: testimonial.author,
       role: testimonial.role,
-      avatar: testimonial.avatar,
-      backgroundImage: testimonial.backgroundImage
+      avatar: testimonial.avatar || "",
+      backgroundImage: testimonial.background_image || ""
     });
   };
 
-  const handleSave = () => {
-    if (editingId) {
-      setTestimonials(testimonials.map(t => 
-        t.id === editingId ? { ...t, ...formData } : t
-      ));
-    } else {
-      const newTestimonial: Testimonial = {
-        id: Date.now(),
-        ...formData
-      };
-      setTestimonials([...testimonials, newTestimonial]);
+  const handleSave = async () => {
+    if (!formData.content || !formData.author || !formData.role) {
+      toast({
+        title: "Error",
+        description: "Content, author, and role are required",
+        variant: "destructive"
+      });
+      return;
     }
-    
-    setEditingId(null);
-    setFormData({ content: "", author: "", role: "", avatar: "", backgroundImage: "" });
+
+    setLoading(true);
+    try {
+      const testimonialData = {
+        content: formData.content,
+        author: formData.author,
+        role: formData.role,
+        avatar: formData.avatar || null,
+        background_image: formData.backgroundImage || null
+      };
+
+      if (editingId) {
+        const { error } = await supabase
+          .from('testimonials')
+          .update(testimonialData)
+          .eq('id', editingId);
+        
+        if (error) throw error;
+        
+        toast({
+          title: "Success",
+          description: "Testimonial updated successfully"
+        });
+      } else {
+        const { error } = await supabase
+          .from('testimonials')
+          .insert([testimonialData]);
+        
+        if (error) throw error;
+        
+        toast({
+          title: "Success",
+          description: "Testimonial created successfully"
+        });
+      }
+
+      await fetchTestimonials();
+      setEditingId(null);
+      setFormData({ content: "", author: "", role: "", avatar: "", backgroundImage: "" });
+    } catch (error) {
+      console.error('Error saving testimonial:', error);
+      toast({
+        title: "Error",
+        description: "Failed to save testimonial",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleDelete = (id: number) => {
-    setTestimonials(testimonials.filter(t => t.id !== id));
+  const handleDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this testimonial?')) return;
+
+    setLoading(true);
+    try {
+      const { error } = await supabase
+        .from('testimonials')
+        .delete()
+        .eq('id', id);
+      
+      if (error) throw error;
+      
+      toast({
+        title: "Success",
+        description: "Testimonial deleted successfully"
+      });
+      
+      await fetchTestimonials();
+    } catch (error) {
+      console.error('Error deleting testimonial:', error);
+      toast({
+        title: "Error",
+        description: "Failed to delete testimonial",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleCancel = () => {
@@ -79,8 +169,9 @@ const AdminTestimonials = () => {
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-semibold">Testimonial Management</h2>
         <Button 
-          onClick={() => setEditingId(0)}
+          onClick={() => setEditingId("new")}
           className="bg-pulse-500 hover:bg-pulse-600"
+          disabled={loading}
         >
           <Plus className="w-4 h-4 mr-2" />
           Add Testimonial
@@ -91,7 +182,7 @@ const AdminTestimonials = () => {
       {editingId !== null && (
         <Card className="p-6 mb-6">
           <h3 className="text-lg font-medium mb-4">
-            {editingId === 0 ? "Add New Testimonial" : "Edit Testimonial"}
+            {editingId === "new" ? "Add New Testimonial" : "Edit Testimonial"}
           </h3>
           <div className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -127,8 +218,8 @@ const AdminTestimonials = () => {
             rows={4}
           />
           <div className="flex gap-2 mt-4">
-            <Button onClick={handleSave} className="bg-pulse-500 hover:bg-pulse-600">
-              Save
+            <Button onClick={handleSave} className="bg-pulse-500 hover:bg-pulse-600" disabled={loading}>
+              {loading ? "Saving..." : "Save"}
             </Button>
             <Button onClick={handleCancel} variant="outline">
               Cancel
@@ -143,17 +234,19 @@ const AdminTestimonials = () => {
           <Card key={testimonial.id} className="overflow-hidden">
             <div 
               className="h-48 bg-cover bg-center relative"
-              style={{ backgroundImage: `url('${testimonial.backgroundImage}')` }}
+              style={{ backgroundImage: `url('${testimonial.background_image || "/background-section1.png"}')` }}
             >
               <div className="absolute inset-0 bg-black/40"></div>
               <div className="absolute bottom-4 left-4 right-4 text-white">
                 <p className="text-sm mb-2 line-clamp-2">"{testimonial.content}"</p>
                 <div className="flex items-center space-x-3">
-                  <img
-                    src={testimonial.avatar}
-                    alt={testimonial.author}
-                    className="w-10 h-10 rounded-lg object-cover"
-                  />
+                  {testimonial.avatar && (
+                    <img
+                      src={testimonial.avatar}
+                      alt={testimonial.author}
+                      className="w-10 h-10 rounded-lg object-cover"
+                    />
+                  )}
                   <div>
                     <p className="font-medium text-sm">{testimonial.author}</p>
                     <p className="text-xs opacity-80">{testimonial.role}</p>

@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -7,29 +7,23 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ImageUpload } from "@/components/ui/image-upload";
 import { Plus, Edit, Trash2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 interface Portfolio {
-  id: number;
+  id: string;
   slug: string;
   title: string;
-  description: string;
-  image: string;
-  tags: string[];
+  description: string | null;
+  image: string | null;
+  tags: string[] | null;
 }
 
 const AdminPortfolios = () => {
-  const [portfolios, setPortfolios] = useState<Portfolio[]>([
-    {
-      id: 1,
-      slug: "e-commerce-platform",
-      title: "E-Commerce Platform Redesign",
-      description: "Complete overhaul of a legacy e-commerce system with modern architecture and improved user experience, resulting in 300% increase in conversion rates.",
-      image: "/lovable-uploads/c3d5522b-6886-4b75-8ffc-d020016bb9c2.png",
-      tags: ["React", "Node.js", "AWS", "Stripe"]
-    }
-  ]);
-
-  const [editingId, setEditingId] = useState<number | null>(null);
+  const { toast } = useToast();
+  const [portfolios, setPortfolios] = useState<Portfolio[]>([]);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     slug: "",
@@ -37,6 +31,32 @@ const AdminPortfolios = () => {
     image: "",
     tags: ""
   });
+
+  useEffect(() => {
+    fetchPortfolios();
+  }, []);
+
+  const fetchPortfolios = async () => {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('portfolios')
+        .select('*')
+        .order('created_at', { ascending: false });
+      
+      if (error) throw error;
+      setPortfolios(data || []);
+    } catch (error) {
+      console.error('Error fetching portfolios:', error);
+      toast({
+        title: "Error",
+        description: "Failed to fetch portfolios",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const generateSlug = (title: string) => {
     return title
@@ -51,38 +71,100 @@ const AdminPortfolios = () => {
     setFormData({
       title: portfolio.title,
       slug: portfolio.slug,
-      description: portfolio.description,
-      image: portfolio.image,
-      tags: portfolio.tags.join(", ")
+      description: portfolio.description || "",
+      image: portfolio.image || "",
+      tags: portfolio.tags ? portfolio.tags.join(", ") : ""
     });
   };
 
-  const handleSave = () => {
-    if (editingId) {
-      setPortfolios(portfolios.map(p => 
-        p.id === editingId 
-          ? {
-              ...p,
-              ...formData,
-              tags: formData.tags.split(",").map(tag => tag.trim())
-            }
-          : p
-      ));
-    } else {
-      const newPortfolio: Portfolio = {
-        id: Date.now(),
-        ...formData,
-        tags: formData.tags.split(",").map(tag => tag.trim())
-      };
-      setPortfolios([...portfolios, newPortfolio]);
+  const handleSave = async () => {
+    if (!formData.title || !formData.slug) {
+      toast({
+        title: "Error",
+        description: "Title and slug are required",
+        variant: "destructive"
+      });
+      return;
     }
-    
-    setEditingId(null);
-    setFormData({ title: "", slug: "", description: "", image: "", tags: "" });
+
+    setLoading(true);
+    try {
+      const portfolioData = {
+        title: formData.title,
+        slug: formData.slug,
+        description: formData.description || null,
+        image: formData.image || null,
+        tags: formData.tags ? formData.tags.split(",").map(tag => tag.trim()) : null
+      };
+
+      if (editingId) {
+        const { error } = await supabase
+          .from('portfolios')
+          .update(portfolioData)
+          .eq('id', editingId);
+        
+        if (error) throw error;
+        
+        toast({
+          title: "Success",
+          description: "Portfolio updated successfully"
+        });
+      } else {
+        const { error } = await supabase
+          .from('portfolios')
+          .insert([portfolioData]);
+        
+        if (error) throw error;
+        
+        toast({
+          title: "Success",
+          description: "Portfolio created successfully"
+        });
+      }
+
+      await fetchPortfolios();
+      setEditingId(null);
+      setFormData({ title: "", slug: "", description: "", image: "", tags: "" });
+    } catch (error) {
+      console.error('Error saving portfolio:', error);
+      toast({
+        title: "Error",
+        description: "Failed to save portfolio",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleDelete = (id: number) => {
-    setPortfolios(portfolios.filter(p => p.id !== id));
+  const handleDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this portfolio?')) return;
+
+    setLoading(true);
+    try {
+      const { error } = await supabase
+        .from('portfolios')
+        .delete()
+        .eq('id', id);
+      
+      if (error) throw error;
+      
+      toast({
+        title: "Success",
+        description: "Portfolio deleted successfully"
+      });
+      
+      await fetchPortfolios();
+    } catch (error) {
+      console.error('Error deleting portfolio:', error);
+      toast({
+        title: "Error",
+        description: "Failed to delete portfolio",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleCancel = () => {
@@ -95,8 +177,9 @@ const AdminPortfolios = () => {
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-semibold">Portfolio Management</h2>
         <Button 
-          onClick={() => setEditingId(0)}
+          onClick={() => setEditingId("new")}
           className="bg-pulse-500 hover:bg-pulse-600"
+          disabled={loading}
         >
           <Plus className="w-4 h-4 mr-2" />
           Add Portfolio
@@ -107,7 +190,7 @@ const AdminPortfolios = () => {
       {editingId !== null && (
         <Card className="p-6 mb-6">
           <h3 className="text-lg font-medium mb-4">
-            {editingId === 0 ? "Add New Portfolio" : "Edit Portfolio"}
+            {editingId === "new" ? "Add New Portfolio" : "Edit Portfolio"}
           </h3>
           <div className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -119,7 +202,7 @@ const AdminPortfolios = () => {
                   setFormData({
                     ...formData, 
                     title: newTitle,
-                    slug: editingId === 0 ? generateSlug(newTitle) : formData.slug
+                    slug: editingId === "new" ? generateSlug(newTitle) : formData.slug
                   });
                 }}
               />
@@ -149,8 +232,8 @@ const AdminPortfolios = () => {
             rows={3}
           />
           <div className="flex gap-2 mt-4">
-            <Button onClick={handleSave} className="bg-pulse-500 hover:bg-pulse-600">
-              Save
+            <Button onClick={handleSave} className="bg-pulse-500 hover:bg-pulse-600" disabled={loading}>
+              {loading ? "Saving..." : "Save"}
             </Button>
             <Button onClick={handleCancel} variant="outline">
               Cancel
@@ -171,14 +254,14 @@ const AdminPortfolios = () => {
             <div className="p-4">
               <h3 className="font-semibold mb-2">{portfolio.title}</h3>
               <p className="text-sm text-gray-600 mb-3 line-clamp-2">
-                {portfolio.description}
+                {portfolio.description || "No description"}
               </p>
               <div className="flex flex-wrap gap-1 mb-3">
-                {portfolio.tags.map((tag) => (
+                {portfolio.tags?.map((tag) => (
                   <Badge key={tag} variant="secondary" className="text-xs">
                     {tag}
                   </Badge>
-                ))}
+                )) || []}
               </div>
               <div className="flex justify-end gap-2">
                 <Button
