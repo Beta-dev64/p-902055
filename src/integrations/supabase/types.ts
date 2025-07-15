@@ -40,32 +40,50 @@ export type Database = {
       }
       portfolios: {
         Row: {
+          challenge: string | null
           created_at: string
           description: string | null
           id: string
           image: string | null
+          live_url: string | null
+          project_images: string[] | null
+          results: string | null
           slug: string
+          solution: string | null
           tags: string[] | null
+          technologies: string[] | null
           title: string
           updated_at: string
         }
         Insert: {
+          challenge?: string | null
           created_at?: string
           description?: string | null
           id?: string
           image?: string | null
+          live_url?: string | null
+          project_images?: string[] | null
+          results?: string | null
           slug: string
+          solution?: string | null
           tags?: string[] | null
+          technologies?: string[] | null
           title: string
           updated_at?: string
         }
         Update: {
+          challenge?: string | null
           created_at?: string
           description?: string | null
           id?: string
           image?: string | null
+          live_url?: string | null
+          project_images?: string[] | null
+          results?: string | null
           slug?: string
+          solution?: string | null
           tags?: string[] | null
+          technologies?: string[] | null
           title?: string
           updated_at?: string
         }

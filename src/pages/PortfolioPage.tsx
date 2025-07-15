@@ -1,99 +1,61 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Link } from "react-router-dom";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
+import { supabase } from "@/integrations/supabase/client";
+
+interface CaseStudy {
+  id: string;
+  slug: string;
+  title: string;
+  description: string;
+  image: string;
+  tags: string[];
+}
 
 const PortfolioPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [caseStudies, setCaseStudies] = useState<CaseStudy[]>([]);
+  const [totalCount, setTotalCount] = useState(0);
+  const [loading, setLoading] = useState(true);
   const itemsPerPage = 9;
 
-  const allCaseStudies = [
-    {
-      id: 1,
-      slug: "e-commerce-platform",
-      title: "E-Commerce Platform Redesign",
-      description: "Complete overhaul of a legacy e-commerce system with modern architecture and improved user experience, resulting in 300% increase in conversion rates.",
-      image: "/lovable-uploads/c3d5522b-6886-4b75-8ffc-d020016bb9c2.png",
-      tags: ["React", "Node.js", "AWS", "Stripe"]
-    },
-    {
-      id: 2,
-      slug: "healthcare-dashboard",
-      title: "Healthcare Management Dashboard",
-      description: "Real-time analytics dashboard for healthcare providers to monitor patient data and optimize resource allocation across multiple facilities.",
-      image: "/lovable-uploads/22d31f51-c174-40a7-bd95-00e4ad00eaf3.png",
-      tags: ["Vue.js", "Python", "PostgreSQL", "Docker"]
-    },
-    {
-      id: 3,
-      slug: "fintech-mobile-app",
-      title: "FinTech Mobile Application",
-      description: "Secure mobile banking solution with advanced fraud detection and seamless user experience for next-generation financial services.",
-      image: "/lovable-uploads/5663820f-6c97-4492-9210-9eaa1a8dc415.png",
-      tags: ["React Native", "Firebase", "Blockchain", "AI/ML"]
-    },
-    {
-      id: 4,
-      slug: "social-media-platform",
-      title: "Social Media Platform",
-      description: "Modern social networking platform with real-time messaging, content sharing, and advanced privacy controls.",
-      image: "/lovable-uploads/af412c03-21e4-4856-82ff-d1a975dc84a9.png",
-      tags: ["React", "GraphQL", "MongoDB", "WebSocket"]
-    },
-    {
-      id: 5,
-      slug: "inventory-management",
-      title: "Inventory Management System",
-      description: "Comprehensive inventory tracking system with automated reordering, supplier management, and detailed analytics.",
-      image: "/lovable-uploads/dc13e94f-beeb-4671-8a22-0968498cdb4c.png",
-      tags: ["Angular", "Spring Boot", "MySQL", "Apache Kafka"]
-    },
-    {
-      id: 6,
-      slug: "learning-platform",
-      title: "Online Learning Platform",
-      description: "Interactive e-learning platform with video streaming, progress tracking, and collaborative features.",
-      image: "/lovable-uploads/c3d5522b-6886-4b75-8ffc-d020016bb9c2.png",
-      tags: ["React", "Node.js", "MongoDB", "WebRTC"]
-    },
-    {
-      id: 7,
-      slug: "logistics-tracker",
-      title: "Logistics Tracking System",
-      description: "Real-time package tracking and delivery management system with GPS integration and customer notifications.",
-      image: "/lovable-uploads/22d31f51-c174-40a7-bd95-00e4ad00eaf3.png",
-      tags: ["Vue.js", "Python", "PostgreSQL", "Google Maps API"]
-    },
-    {
-      id: 8,
-      slug: "restaurant-pos",
-      title: "Restaurant POS System",
-      description: "Complete point-of-sale solution for restaurants with order management, inventory tracking, and analytics.",
-      image: "/lovable-uploads/5663820f-6c97-4492-9210-9eaa1a8dc415.png",
-      tags: ["React", "Node.js", "PostgreSQL", "Stripe"]
-    },
-    {
-      id: 9,
-      slug: "crm-solution",
-      title: "Customer Relationship Management",
-      description: "Comprehensive CRM solution with lead tracking, sales pipeline management, and automated marketing campaigns.",
-      image: "/lovable-uploads/af412c03-21e4-4856-82ff-d1a975dc84a9.png",
-      tags: ["React", "Node.js", "MongoDB", "SendGrid"]
-    },
-    {
-      id: 10,
-      slug: "booking-platform",
-      title: "Appointment Booking Platform",
-      description: "Multi-service booking platform with calendar integration, payment processing, and automated reminders.",
-      image: "/lovable-uploads/dc13e94f-beeb-4671-8a22-0968498cdb4c.png",
-      tags: ["Next.js", "Prisma", "PostgreSQL", "Stripe"]
-    }
-  ];
+  useEffect(() => {
+    const fetchCaseStudies = async () => {
+      try {
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        
+        // Get total count
+        const { count } = await supabase
+          .from('portfolios')
+          .select('*', { count: 'exact', head: true });
 
-  const totalPages = Math.ceil(allCaseStudies.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentCaseStudies = allCaseStudies.slice(startIndex, startIndex + itemsPerPage);
+        // Get paginated data
+        const { data, error } = await supabase
+          .from('portfolios')
+          .select('id, slug, title, description, image, tags')
+          .range(startIndex, startIndex + itemsPerPage - 1)
+          .order('created_at', { ascending: false });
+
+        if (error) {
+          console.error('Error fetching case studies:', error);
+          return;
+        }
+
+        setCaseStudies(data || []);
+        setTotalCount(count || 0);
+      } catch (error) {
+        console.error('Error fetching case studies:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCaseStudies();
+  }, [currentPage]);
+
+  const totalPages = Math.ceil(totalCount / itemsPerPage);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -114,8 +76,14 @@ const PortfolioPage = () => {
       {/* Case Studies Grid */}
       <section className="py-16">
         <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
-          <div className="flex flex-col space-y-6 md:grid md:grid-cols-3 md:gap-8 md:space-y-0">
-            {currentCaseStudies.map((study) => (
+          {loading ? (
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-pulse-500 mx-auto mb-4"></div>
+              <p className="text-gray-600">Loading portfolio...</p>
+            </div>
+          ) : (
+            <div className="flex flex-col space-y-6 md:grid md:grid-cols-3 md:gap-8 md:space-y-0">
+              {caseStudies.map((study) => (
               <Link
                 key={study.id}
                 to={`/case-study/${study.slug}`}
@@ -130,7 +98,7 @@ const PortfolioPage = () => {
                 </div>
                 <div className="p-6 flex-1 flex flex-col">
                   <div className="flex flex-wrap gap-2 mb-3">
-                    {study.tags.map((tag) => (
+                    {study.tags?.map((tag) => (
                       <span
                         key={tag}
                         className="px-2 py-1 bg-pulse-100 text-pulse-600 text-xs font-medium rounded-full"
@@ -155,6 +123,7 @@ const PortfolioPage = () => {
               </Link>
             ))}
           </div>
+          )}
 
           {/* Pagination */}
           <div className="mt-12">
