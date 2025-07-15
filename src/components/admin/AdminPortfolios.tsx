@@ -97,7 +97,7 @@ const AdminPortfolios = () => {
         tags: formData.tags ? formData.tags.split(",").map(tag => tag.trim()) : null
       };
 
-      if (editingId) {
+      if (editingId && editingId !== "new") {
         const { error } = await supabase
           .from('portfolios')
           .update(portfolioData)
