@@ -69,7 +69,7 @@ const AdminPartners = () => {
         logo: formData.logo || null
       };
 
-      if (editingId) {
+      if (editingId && editingId !== "new") {
         const { error } = await supabase
           .from('partners')
           .update(partnerData)
