@@ -96,7 +96,7 @@ const Features = () => {
             <span>Services</span>
           </div>
           <h2 className="section-title mb-3 sm:mb-4 opacity-0 fade-in-element">
-            Full-Stack Development, <br className="hidden sm:block" />Tailored Solutions
+            Full-stack Execution, <br className="hidden sm:block" />Strategic Solutions
           </h2>
           <p className="section-subtitle mx-auto opacity-0 fade-in-element">
             From concept to deployment, we deliver comprehensive software solutions that drive your business forward.
