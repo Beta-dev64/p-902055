@@ -123,14 +123,14 @@ const Hero = () => {
               className="section-title text-3xl sm:text-4xl lg:text-5xl xl:text-6xl leading-tight opacity-0 animate-fade-in" 
               style={{ animationDelay: "0.3s" }}
             >
-              Crafting Digital<br className="hidden sm:inline" />Solutions That Scale
+              Build, Scale, and Dominate<br className="hidden sm:inline" /> with<span className="text-[#FC4D0A]"> FuseLabs.Io </span>
             </h1>
             
             <p 
               style={{ animationDelay: "0.5s" }} 
               className="section-subtitle mt-3 sm:mt-6 mb-4 sm:mb-8 leading-relaxed opacity-0 animate-fade-in text-gray-950 font-normal text-base sm:text-lg text-left"
             >
-              We build custom software solutions that transform your business vision into powerful, scalable applications.
+              We don’t just write code. We build growth engines, launch your MVP, drive your SEO, and partner with you to scale your software business—risk-free.
             </p>
             
             <div 

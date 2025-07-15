@@ -113,12 +113,12 @@ const HumanoidSection = () => {
                 animationDelay: "0.1s"
               }}>
                 <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-pulse-500 text-white mr-2">02</span>
-                <span>Humanoid</span>
+                <span>Our Edge</span>
               </div>
             </div>
             
             <h2 className="section-title text-3xl sm:text-4xl md:text-5xl font-display font-bold mb-1 md:mb-2">
-              Why Humanoid
+              Why FuseLabs.Io
             </h2>
           </div>
           
@@ -157,7 +157,7 @@ const HumanoidSection = () => {
               <div className="relative z-10 p-5 sm:p-6 md:p-8 h-full flex items-center">
                 <div className="max-w-lg">
                   <h3 className="text-2xl sm:text-3xl md:text-4xl font-display text-white font-bold leading-tight mb-4">
-                    We're giving AI a way to navigate the physical world
+                    We get you live in record time, without sloppy shortcuts.
                   </h3>
                 </div>
               </div>
@@ -192,7 +192,7 @@ const HumanoidSection = () => {
               <div className="relative z-10 p-5 sm:p-6 md:p-8 h-full flex items-center">
                 <div className="max-w-lg">
                   <h3 className="text-2xl sm:text-3xl md:text-4xl font-display text-white font-bold leading-tight mb-4">
-                    We're bringing adaptive intelligence to where humans work
+                    SEO, speed, and technical structure aligned for scaling.
                   </h3>
                 </div>
               </div>
@@ -227,7 +227,7 @@ const HumanoidSection = () => {
               <div className="relative z-10 p-5 sm:p-6 md:p-8 h-full flex items-center">
                 <div className="max-w-lg">
                   <h3 className="text-2xl sm:text-3xl md:text-4xl font-display text-white font-bold leading-tight mb-4">
-                    We're creating companions, <span className="text-[#FC4D0A]">not replacements</span>
+                    If we don’t deliver,  <span className="text-[#FC4D0A]"> you don’t pay.</span> Simple.
                   </h3>
                 </div>
               </div>

@@ -105,7 +105,7 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Navigation */}
-      <div className={cn(
+      <div style={{ minHeight: "100dvh" }} className={cn(
         "fixed inset-0 z-40 flex flex-col pt-16 px-6 md:hidden transition-all duration-300 ease-in-out",
         "bg-white/95 backdrop-blur-xl backdrop-saturate-200",
         "border border-white/20 shadow-2xl",

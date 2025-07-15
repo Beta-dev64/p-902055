@@ -2,6 +2,7 @@
 import React from "react";
 
 const Footer = () => {
+  const years = new Date();
   return (
     <footer className="bg-gray-900 text-white py-8 md:py-12 relative overflow-hidden">
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
@@ -63,7 +64,7 @@ const Footer = () => {
         
         <div className="flex flex-col md:flex-row justify-between items-center text-xs md:text-sm space-y-2 md:space-y-0 mb-4 md:mb-6">
           <p className="text-gray-400">
-            © 2024 Software Agency. All rights reserved.
+            © {years.getFullYear()} Fuselabs IO. All rights reserved.
           </p>
           <div className="flex space-x-3 md:space-x-4">
             <a href="#" className="text-gray-400 hover:text-white transition-colors">Privacy Policy</a>
@@ -74,7 +75,7 @@ const Footer = () => {
       
       {/* FuseLabsIO - Partially hidden at bottom */}
       <div className="absolute -bottom-8 md:-bottom-12 left-0 right-0 text-center overflow-hidden">
-        <h2 className="text-6xl md:text-8xl lg:text-9xl font-bold text-gray-800/30 tracking-wider select-none">
+        <h2 className="text-6xl md:text-8xl lg:text-9xl font-bold text-[#3d4b5f3d] tracking-wider select-none">
           FuseLabsIO
         </h2>
       </div>

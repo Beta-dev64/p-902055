@@ -58,7 +58,7 @@ const DetailsSection = () => {
     {
       id: "step1",
       number: "01",
-      title: "Discovery & Strategy",
+      title: "Strategy First",
       description: "We begin by understanding your vision, goals, and requirements through comprehensive consultation. Our team analyzes your business needs, target audience, and technical requirements to create a strategic roadmap for your project."
     },
     {
@@ -99,7 +99,7 @@ const DetailsSection = () => {
         <div className="max-w-5xl pl-4 sm:pl-8">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-display leading-tight mb-8 sm:mb-12">
             <span className="block bg-clip-text text-transparent bg-[url('/text-mask-image.jpg')] bg-cover bg-center">
-              We work alongside your team, not as a replacement. By automating complex processes, streamlining workflows, and building scalable solutions, we help you focus on what matters most: growing your business and serving your customers.
+              We work alongside your team. By automating complex processes, streamlining workflows, and building scalable solutions, we help you focus on what matters most: growing your business and serving your customers.
             </span>
           </h2>
         </div>
