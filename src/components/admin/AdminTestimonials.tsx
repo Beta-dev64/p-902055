@@ -89,7 +89,7 @@ const AdminTestimonials = () => {
         background_image: formData.backgroundImage || null
       };
 
-      if (editingId) {
+      if (editingId && editingId !== "new") {
         const { error } = await supabase
           .from('testimonials')
           .update(testimonialData)
