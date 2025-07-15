@@ -24,8 +24,14 @@ const MadeByHumans = () => {
               marginBottom: "-30px",
               padding: "0px 0px 100px"
             }} className="sm:text-5xl font-playfair text-white italic mt-0 mx-0 font-thin text-6xl md:text-7xl py-0 px-0 text-center lg:text-7xl">
-                Made for Visionaries
+                Made by Developers
               </h2>
+            </div>
+            
+            <div className="text-center mt-4">
+              <p className="text-black text-sm italic">
+                .......you dear to dream it, we execute it.....
+              </p>
             </div>
             
             {/* White box at the bottom with overflow */}
