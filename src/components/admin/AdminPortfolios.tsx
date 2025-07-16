@@ -6,7 +6,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ImageUpload } from "@/components/ui/image-upload";
-import { Plus, Edit, Trash2 } from "lucide-react";
+import RichTextEditor from "@/components/ui/rich-text-editor";
+import { Plus, Edit, Trash2, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -17,6 +18,12 @@ interface Portfolio {
   description: string | null;
   image: string | null;
   tags: string[] | null;
+  challenge: string | null;
+  solution: string | null;
+  results: string | null;
+  live_url: string | null;
+  project_images: string[] | null;
+  technologies: string[] | null;
 }
 
 const AdminPortfolios = () => {
@@ -29,7 +36,13 @@ const AdminPortfolios = () => {
     slug: "",
     description: "",
     image: "",
-    tags: ""
+    tags: "",
+    challenge: "",
+    solution: "",
+    results: "",
+    live_url: "",
+    project_images: [] as string[],
+    technologies: ""
   });
 
   useEffect(() => {
@@ -73,7 +86,13 @@ const AdminPortfolios = () => {
       slug: portfolio.slug,
       description: portfolio.description || "",
       image: portfolio.image || "",
-      tags: portfolio.tags ? portfolio.tags.join(", ") : ""
+      tags: portfolio.tags ? portfolio.tags.join(", ") : "",
+      challenge: portfolio.challenge || "",
+      solution: portfolio.solution || "",
+      results: portfolio.results || "",
+      live_url: portfolio.live_url || "",
+      project_images: portfolio.project_images || [],
+      technologies: portfolio.technologies ? portfolio.technologies.join(", ") : ""
     });
   };
 
@@ -94,7 +113,13 @@ const AdminPortfolios = () => {
         slug: formData.slug,
         description: formData.description || null,
         image: formData.image || null,
-        tags: formData.tags ? formData.tags.split(",").map(tag => tag.trim()) : null
+        tags: formData.tags ? formData.tags.split(",").map(tag => tag.trim()) : null,
+        challenge: formData.challenge || null,
+        solution: formData.solution || null,
+        results: formData.results || null,
+        live_url: formData.live_url || null,
+        project_images: formData.project_images.length > 0 ? formData.project_images : null,
+        technologies: formData.technologies ? formData.technologies.split(",").map(tech => tech.trim()) : null
       };
 
       if (editingId && editingId !== "new") {
@@ -124,7 +149,7 @@ const AdminPortfolios = () => {
 
       await fetchPortfolios();
       setEditingId(null);
-      setFormData({ title: "", slug: "", description: "", image: "", tags: "" });
+      setFormData({ title: "", slug: "", description: "", image: "", tags: "", challenge: "", solution: "", results: "", live_url: "", project_images: [], technologies: "" });
     } catch (error) {
       console.error('Error saving portfolio:', error);
       toast({
@@ -169,7 +194,21 @@ const AdminPortfolios = () => {
 
   const handleCancel = () => {
     setEditingId(null);
-    setFormData({ title: "", slug: "", description: "", image: "", tags: "" });
+    setFormData({ title: "", slug: "", description: "", image: "", tags: "", challenge: "", solution: "", results: "", live_url: "", project_images: [], technologies: "" });
+  };
+
+  const addProjectImage = (url: string) => {
+    setFormData({
+      ...formData,
+      project_images: [...formData.project_images, url]
+    });
+  };
+
+  const removeProjectImage = (index: number) => {
+    setFormData({
+      ...formData,
+      project_images: formData.project_images.filter((_, i) => i !== index)
+    });
   };
 
   return (
@@ -219,10 +258,22 @@ const AdminPortfolios = () => {
               placeholder="Enter image URL or upload a file"
             />
             <Input
-              placeholder="Tags (comma separated)"
-              value={formData.tags}
-              onChange={(e) => setFormData({...formData, tags: e.target.value})}
+              placeholder="Live URL"
+              value={formData.live_url}
+              onChange={(e) => setFormData({...formData, live_url: e.target.value})}
             />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Input
+                placeholder="Tags (comma separated)"
+                value={formData.tags}
+                onChange={(e) => setFormData({...formData, tags: e.target.value})}
+              />
+              <Input
+                placeholder="Technologies (comma separated)"
+                value={formData.technologies}
+                onChange={(e) => setFormData({...formData, technologies: e.target.value})}
+              />
+            </div>
           </div>
           <Textarea
             placeholder="Description"
@@ -231,6 +282,70 @@ const AdminPortfolios = () => {
             className="mt-4"
             rows={3}
           />
+          
+          {/* Project Images */}
+          <div className="mt-4">
+            <label className="text-sm font-medium mb-2 block">Project Images</label>
+            <div className="space-y-2">
+              <ImageUpload
+                label="Add Project Image"
+                value=""
+                onChange={addProjectImage}
+                placeholder="Enter image URL or upload a file"
+              />
+              {formData.project_images.length > 0 && (
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                  {formData.project_images.map((img, index) => (
+                    <div key={index} className="relative">
+                      <img src={img} alt={`Project ${index + 1}`} className="w-full h-24 object-cover rounded" />
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        size="sm"
+                        className="absolute top-1 right-1 w-6 h-6 p-0"
+                        onClick={() => removeProjectImage(index)}
+                      >
+                        <X className="w-3 h-3" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Rich Text Editors */}
+          <div className="mt-4 space-y-4">
+            <div>
+              <label className="text-sm font-medium mb-2 block">Challenge</label>
+              <RichTextEditor
+                value={formData.challenge}
+                onChange={(value) => setFormData({...formData, challenge: value})}
+                placeholder="Describe the challenge or problem..."
+                height="150px"
+              />
+            </div>
+            
+            <div>
+              <label className="text-sm font-medium mb-2 block">Solution</label>
+              <RichTextEditor
+                value={formData.solution}
+                onChange={(value) => setFormData({...formData, solution: value})}
+                placeholder="Describe the solution approach..."
+                height="150px"
+              />
+            </div>
+            
+            <div>
+              <label className="text-sm font-medium mb-2 block">Results</label>
+              <RichTextEditor
+                value={formData.results}
+                onChange={(value) => setFormData({...formData, results: value})}
+                placeholder="Describe the results and outcomes..."
+                height="150px"
+              />
+            </div>
+          </div>
           <div className="flex gap-2 mt-4">
             <Button onClick={handleSave} className="bg-pulse-500 hover:bg-pulse-600" disabled={loading}>
               {loading ? "Saving..." : "Save"}
