@@ -315,35 +315,41 @@ const AdminPortfolios = () => {
           </div>
 
           {/* Rich Text Editors */}
-          <div className="mt-4 space-y-4">
-            <div>
-              <label className="text-sm font-medium mb-2 block">Challenge</label>
-              <RichTextEditor
-                value={formData.challenge}
-                onChange={(value) => setFormData({...formData, challenge: value})}
-                placeholder="Describe the challenge or problem..."
-                height="150px"
-              />
+          <div className="mt-6 space-y-6">
+            <div className="rich-text-section">
+              <label className="text-sm font-medium mb-3 block text-foreground">Challenge</label>
+              <div className="bg-background border border-border rounded-lg overflow-hidden shadow-sm">
+                <RichTextEditor
+                  value={formData.challenge}
+                  onChange={(value) => setFormData({...formData, challenge: value})}
+                  placeholder="Describe the challenge or problem..."
+                  height="150px"
+                />
+              </div>
             </div>
             
-            <div>
-              <label className="text-sm font-medium mb-2 block">Solution</label>
-              <RichTextEditor
-                value={formData.solution}
-                onChange={(value) => setFormData({...formData, solution: value})}
-                placeholder="Describe the solution approach..."
-                height="150px"
-              />
+            <div className="rich-text-section">
+              <label className="text-sm font-medium mb-3 block text-foreground">Solution</label>
+              <div className="bg-background border border-border rounded-lg overflow-hidden shadow-sm">
+                <RichTextEditor
+                  value={formData.solution}
+                  onChange={(value) => setFormData({...formData, solution: value})}
+                  placeholder="Describe the solution approach..."
+                  height="150px"
+                />
+              </div>
             </div>
             
-            <div>
-              <label className="text-sm font-medium mb-2 block">Results</label>
-              <RichTextEditor
-                value={formData.results}
-                onChange={(value) => setFormData({...formData, results: value})}
-                placeholder="Describe the results and outcomes..."
-                height="150px"
-              />
+            <div className="rich-text-section">
+              <label className="text-sm font-medium mb-3 block text-foreground">Results</label>
+              <div className="bg-background border border-border rounded-lg overflow-hidden shadow-sm">
+                <RichTextEditor
+                  value={formData.results}
+                  onChange={(value) => setFormData({...formData, results: value})}
+                  placeholder="Describe the results and outcomes..."
+                  height="150px"
+                />
+              </div>
             </div>
           </div>
           <div className="flex gap-2 mt-4">

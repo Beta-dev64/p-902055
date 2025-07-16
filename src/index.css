@@ -297,6 +297,34 @@
   animation: card-enter 0.4s cubic-bezier(0.19, 1, 0.22, 1) forwards;
 }
 
+/* Rich text editor styling */
+.rich-text-section {
+  background: hsl(var(--card));
+  border-radius: 0.75rem;
+  padding: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.rich-text-section:focus-within {
+  box-shadow: 0 0 0 2px hsl(var(--ring));
+}
+
+.rich-text-editor .ql-snow {
+  border: none;
+}
+
+.rich-text-editor .ql-toolbar {
+  border-bottom: 1px solid hsl(var(--border));
+  background: hsl(var(--card));
+  border-radius: 0.75rem 0.75rem 0 0;
+}
+
+.rich-text-editor .ql-container {
+  border: none;
+  background: hsl(var(--card));
+  border-radius: 0 0 0.75rem 0.75rem;
+}
+
 /* Mobile optimizations */
 @media (max-width: 640px) {
   .container {

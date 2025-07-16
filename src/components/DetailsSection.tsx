@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { toast } from "sonner";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { supabase } from "@/integrations/supabase/client";
 
 const DetailsSection = () => {
   const [formData, setFormData] = useState({
@@ -14,6 +15,8 @@ const DetailsSection = () => {
     budget: "",
     projectDetails: ""
   });
+  
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -30,28 +33,44 @@ const DetailsSection = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    
     // Simple validation
     if (!formData.firstName || !formData.lastName || !formData.email) {
       toast.error("Please fill in all required fields");
       return;
     }
 
-    // Demo form submission
-    toast.success("Request submitted successfully!");
+    setIsSubmitting(true);
 
-    // Reset form
-    setFormData({
-      firstName: "",
-      lastName: "",
-      email: "",
-      companyWebsite: "",
-      services: "",
-      budget: "",
-      projectDetails: ""
-    });
+    try {
+      const { data, error } = await supabase.functions.invoke('send-contact-email', {
+        body: formData
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      toast.success("Request submitted successfully! We'll get back to you soon.");
+      
+      // Reset form
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        companyWebsite: "",
+        services: "",
+        budget: "",
+        projectDetails: ""
+      });
+    } catch (error: any) {
+      console.error('Error submitting form:', error);
+      toast.error("Failed to submit request. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const processSteps = [
@@ -259,14 +278,15 @@ const DetailsSection = () => {
                   />
                 </div>
                 
-                <div>
-                  <button 
-                    type="submit" 
-                    className="w-full px-6 py-3 bg-pulse-500 hover:bg-pulse-600 text-white font-medium rounded-full transition-colors duration-300"
-                  >
-                    Start My Project
-                  </button>
-                </div>
+                 <div>
+                   <button 
+                     type="submit" 
+                     disabled={isSubmitting}
+                     className="w-full px-6 py-3 bg-pulse-500 hover:bg-pulse-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium rounded-full transition-colors duration-300"
+                   >
+                     {isSubmitting ? "Sending..." : "Start My Project"}
+                   </button>
+                 </div>
               </form>
             </div>
           </div>
