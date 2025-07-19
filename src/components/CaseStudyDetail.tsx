@@ -90,9 +90,14 @@ const CaseStudyDetail = () => {
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Portfolio
             </Link>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-display font-bold text-white mb-4">
-              {caseStudy.title}
-            </h1>
+            <div className="flex items-center gap-4 mb-4">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-display font-bold text-white flex-1">
+                {caseStudy.title}
+              </h1>
+              <div className="text-sm text-white/70 bg-white/10 px-3 py-1 rounded-full backdrop-blur-sm">
+                Slug: {caseStudy.slug}
+              </div>
+            </div>
             <p className="text-white/90 text-lg max-w-2xl">
               {caseStudy.description}
             </p>
@@ -119,18 +124,24 @@ const CaseStudyDetail = () => {
                      dangerouslySetInnerHTML={{ __html: caseStudy.solution || '' }} />
               </div>
 
-              {/* Images */}
+              {/* Project Gallery */}
               {caseStudy.project_images && caseStudy.project_images.length > 0 && (
                 <div>
-                  <h2 className="text-2xl font-display font-bold mb-6">Project Screenshots</h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <h2 className="text-2xl font-display font-bold mb-6">Project Gallery</h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {caseStudy.project_images.map((image, index) => (
-                      <div key={index} className="rounded-lg overflow-hidden shadow-elegant">
+                      <div key={index} className="group relative rounded-lg overflow-hidden shadow-elegant hover:shadow-glow transition-all duration-300">
                         <img
                           src={image}
-                          alt={`${caseStudy.title} screenshot ${index + 1}`}
-                          className="w-full h-48 object-cover"
+                          alt={`${caseStudy.title} image ${index + 1}`}
+                          className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
                         />
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
+                        <div className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <span className="bg-white/90 text-gray-800 px-3 py-1 rounded-full text-sm font-medium">
+                            Image {index + 1}
+                          </span>
+                        </div>
                       </div>
                     ))}
                   </div>
