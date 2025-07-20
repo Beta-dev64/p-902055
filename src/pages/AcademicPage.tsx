@@ -123,22 +123,41 @@ const AcademicPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gray-900 dark:bg-gray-900">
       <Navbar />
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Background Image */}
-        <div 
-          className="absolute inset-0 z-0"
-          style={{
-            backgroundImage: `url(${academicHero})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat'
-          }}
-        >
-          <div className="absolute inset-0 bg-gradient-to-br from-background/95 via-background/85 to-background/95" />
+        {/* SVG Pattern Background - WhatsApp Style */}
+        <div className="absolute inset-0 z-0">
+          <svg className="absolute inset-0 w-full h-full opacity-5" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="heroPattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                {/* Academic symbols pattern */}
+                <circle cx="10" cy="10" r="1" fill="currentColor" className="text-emerald-400" opacity="0.3"/>
+                <polygon points="5,8 7,12 13,12 15,8" fill="currentColor" className="text-cyan-400" opacity="0.2"/>
+                <rect x="8" y="4" width="4" height="4" fill="currentColor" className="text-blue-400" opacity="0.15"/>
+                <path d="M3,15 Q10,12 17,15" stroke="currentColor" className="text-purple-400" strokeWidth="0.5" fill="none" opacity="0.2"/>
+              </pattern>
+              <pattern id="dots" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+                <circle cx="20" cy="20" r="2" fill="currentColor" className="text-green-400" opacity="0.1"/>
+                <circle cx="5" cy="5" r="1.5" fill="currentColor" className="text-yellow-400" opacity="0.08"/>
+                <circle cx="35" cy="35" r="1" fill="currentColor" className="text-pink-400" opacity="0.06"/>
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#heroPattern)"/>
+            <rect width="100%" height="100%" fill="url(#dots)"/>
+          </svg>
+          
+          {/* Animated gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-br from-gray-900/98 via-gray-800/95 to-gray-900/98">
+            <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/5 via-transparent to-cyan-500/5 animate-pulse"></div>
+          </div>
+          
+          {/* Floating Elements for High School Spirit */}
+          <div className="absolute top-1/4 left-1/4 w-20 h-20 bg-gradient-to-r from-yellow-400/10 to-orange-400/10 rounded-full blur-xl animate-float"></div>
+          <div className="absolute top-1/3 right-1/4 w-32 h-32 bg-gradient-to-r from-green-400/8 to-emerald-400/8 rounded-full blur-2xl animate-float-delay"></div>
+          <div className="absolute bottom-1/3 left-1/3 w-24 h-24 bg-gradient-to-r from-blue-400/10 to-cyan-400/10 rounded-full blur-xl animate-float-slow"></div>
         </div>
 
         {/* Content */}
@@ -150,16 +169,17 @@ const AcademicPage = () => {
             </div>
           </div>
           
-          <h1 className="text-5xl md:text-7xl font-display font-bold text-foreground mb-8 leading-tight">
-            Master the Future of
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary via-accent to-primary">
-              Technology
+          <h1 className="text-5xl md:text-7xl font-display font-bold text-white mb-8 leading-tight">
+            🚀 Launch Your
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-400 animate-pulse">
+              Tech Journey!
             </span>
           </h1>
           
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto mb-12 leading-relaxed">
-            Transform your career with our comprehensive 3-month online programs. 
-            Learn from industry experts, build real-world projects, and join the next generation of tech professionals.
+          <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto mb-12 leading-relaxed">
+            🔥 Join thousands of ambitious students transforming their lives through code! 
+            Our <span className="font-bold text-emerald-400">3-month intensive programs</span> turn beginners into job-ready developers.
+            <span className="block mt-2 text-lg text-cyan-400">💯 100% Online • 🎯 Project-Based • 🏆 Certificate Included</span>
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-16">
@@ -184,19 +204,19 @@ const AcademicPage = () => {
           {/* Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
             {[
-              { icon: Clock, label: "100% Online", desc: "Flexible Learning" },
-              { icon: Users, label: "Expert Instructors", desc: "Industry Professionals" },
-              { icon: Target, label: "3 Months", desc: "Intensive Training" },
-              { icon: Award, label: "Certification", desc: "Completion Certificate" }
+              { icon: Clock, label: "100% Online", desc: "Flexible Learning", emoji: "⚡" },
+              { icon: Users, label: "Expert Instructors", desc: "Industry Pros", emoji: "👨‍💻" },
+              { icon: Target, label: "3 Months", desc: "Intensive Training", emoji: "🎯" },
+              { icon: Award, label: "Certification", desc: "Official Certificate", emoji: "🏆" }
             ].map((stat, index) => {
               const IconComponent = stat.icon;
               return (
-                <div key={index} className="text-center">
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/10 text-primary mb-3">
-                    <IconComponent className="w-6 h-6" />
+                <div key={index} className="text-center transform hover:scale-105 transition-all duration-300">
+                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 text-emerald-400 mb-3 backdrop-blur-sm border border-emerald-500/20">
+                    <div className="text-2xl">{stat.emoji}</div>
                   </div>
-                  <div className="text-lg font-semibold text-foreground">{stat.label}</div>
-                  <div className="text-sm text-muted-foreground">{stat.desc}</div>
+                  <div className="text-lg font-semibold text-white">{stat.label}</div>
+                  <div className="text-sm text-gray-400">{stat.desc}</div>
                 </div>
               );
             })}
@@ -212,14 +232,31 @@ const AcademicPage = () => {
       </section>
 
       {/* Courses Section */}
-      <section id="courses" className="py-20 bg-muted/30">
-        <div className="container px-4 sm:px-6 lg:px-8 mx-auto max-w-7xl">
+      <section id="courses" className="py-20 bg-gray-800 relative overflow-hidden">
+        {/* More SVG Patterns */}
+        <div className="absolute inset-0 opacity-5">
+          <svg className="w-full h-full" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="coursePattern" x="0" y="0" width="50" height="50" patternUnits="userSpaceOnUse">
+                <path d="M25,5 L45,25 L25,45 L5,25 Z" fill="currentColor" className="text-emerald-400" opacity="0.1"/>
+                <circle cx="25" cy="25" r="3" fill="currentColor" className="text-cyan-400" opacity="0.15"/>
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#coursePattern)"/>
+          </svg>
+        </div>
+        
+        <div className="container px-4 sm:px-6 lg:px-8 mx-auto max-w-7xl relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-foreground mb-6">
-              Choose Your Learning Path
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 text-emerald-400 text-sm font-medium mb-6">
+              <Star className="w-4 h-4" />
+              🎯 Popular Programs
+            </div>
+            <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-6">
+              🚀 Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Superpower</span>
             </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Select from our specialized tracks designed to take you from beginner to professional in just 3 months.
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              💪 Transform from zero to hero in just 3 months! Pick your path and let's build something amazing together.
             </p>
           </div>
 
@@ -292,14 +329,31 @@ const AcademicPage = () => {
       </section>
 
       {/* Why Choose Us */}
-      <section className="py-20 bg-background">
-        <div className="container px-4 sm:px-6 lg:px-8 mx-auto max-w-7xl">
+      <section className="py-20 bg-gray-900 relative overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-3">
+          <svg className="w-full h-full" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="whyPattern" x="0" y="0" width="80" height="80" patternUnits="userSpaceOnUse">
+                <circle cx="40" cy="40" r="20" fill="none" stroke="currentColor" className="text-emerald-400" strokeWidth="1" opacity="0.1"/>
+                <polygon points="40,20 50,35 30,35" fill="currentColor" className="text-cyan-400" opacity="0.08"/>
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#whyPattern)"/>
+          </svg>
+        </div>
+        
+        <div className="container px-4 sm:px-6 lg:px-8 mx-auto max-w-7xl relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-foreground mb-6">
-              Why Choose Our Academy?
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/10 text-orange-400 text-sm font-medium mb-6">
+              <Award className="w-4 h-4" />
+              ⭐ Why We're Different
+            </div>
+            <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-6">
+              🎓 Why Our Academy <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-pink-400">Rocks!</span>
             </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Experience world-class education designed for the modern tech landscape
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              🌟 Experience world-class education that's fun, engaging, and gets you hired!
             </p>
           </div>
 
@@ -350,14 +404,31 @@ const AcademicPage = () => {
       </section>
 
       {/* Enrollment Form */}
-      <section id="contact" className="py-20 bg-muted/30">
-        <div className="container px-4 sm:px-6 lg:px-8 mx-auto max-w-4xl">
+      <section id="contact" className="py-20 bg-gray-800 relative overflow-hidden">
+        {/* Form Pattern Background */}
+        <div className="absolute inset-0 opacity-3">
+          <svg className="w-full h-full" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="formPattern" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
+                <rect x="25" y="25" width="10" height="10" fill="currentColor" className="text-emerald-400" opacity="0.1"/>
+                <circle cx="30" cy="30" r="15" fill="none" stroke="currentColor" className="text-cyan-400" strokeWidth="1" opacity="0.08"/>
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#formPattern)"/>
+          </svg>
+        </div>
+        
+        <div className="container px-4 sm:px-6 lg:px-8 mx-auto max-w-4xl relative z-10">
           <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-foreground mb-6">
-              Ready to Start Your Journey?
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 text-emerald-400 text-sm font-medium mb-6">
+              <Star className="w-4 h-4" />
+              🎉 Let's Get Started!
+            </div>
+            <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-6">
+              🚀 Ready to <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Level Up?</span>
             </h2>
-            <p className="text-xl text-muted-foreground">
-              Fill out the form below and our team will contact you within 24 hours.
+            <p className="text-xl text-gray-300">
+              🎯 Fill out the form below and we'll contact you within 24 hours to get you enrolled!
             </p>
           </div>
 
