@@ -139,7 +139,7 @@
   }
 
   .pulse-chip {
-    @apply inline-flex items-center px-3 py-1 rounded-xl text-xs font-medium bg-pulse-100 text-pulse-600 border border-pulse-200;
+    @apply inline-flex items-center px-3 py-1 rounded-xl text-xs font-medium bg-pulse-100 text-pulse-800 border border-pulse-200;
   }
   
   .section-container {
