@@ -115,7 +115,7 @@ const Hero = () => {
               className="pulse-chip mb-3 sm:mb-6 opacity-0 animate-fade-in" 
               style={{ animationDelay: "0.1s" }}
             >
-              <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-pulse-500 text-white mr-2">01</span>
+              <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-pulse-800 text-white mr-2">01</span>
               <span>Innovation</span>
             </div>
             
@@ -158,7 +158,7 @@ const Hero = () => {
             </div>
           </div>
           
-          <div className="w-full lg:w-1/2 relative mt-6 lg:mt-0">
+          <div className="w-full lg:w-1/2 relative mt-6 lg:mt-0 min-h-[300px] lg:min-h-[420px]">
             {lottieData ? (
               <div className="relative z-10 animate-fade-in" style={{ animationDelay: "0.9s" }}>
                 <LottieAnimation 
@@ -176,6 +176,10 @@ const Hero = () => {
                   ref={imageRef} 
                   src="/lovable-uploads/5663820f-6c97-4492-9210-9eaa1a8dc415.png" 
                   alt="Software Development Solutions" 
+                  width={1024}
+                  height={768}
+                  fetchPriority="high"
+                  decoding="async"
                   className="w-full h-auto object-cover transition-transform duration-500 ease-out" 
                   style={{ transformStyle: 'preserve-3d' }} 
                 />

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Seo from "@/components/Seo";
 import { Link } from "react-router-dom";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { supabase } from "@/integrations/supabase/client";
@@ -59,6 +60,11 @@ const PortfolioPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <Seo
+        title="Portfolio — Software Case Studies | FuseLabs IO"
+        description="Explore FuseLabs IO case studies: MVPs, web platforms, cloud and AI projects we built for growing software businesses."
+        path="/portfolio"
+      />
       <Navbar />
       
       {/* Hero Section */}

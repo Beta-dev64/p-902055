@@ -1,6 +1,7 @@
 
 import React, { useEffect } from "react";
 import Navbar from "@/components/Navbar";
+import Seo from "@/components/Seo";
 import Hero from "@/components/Hero";
 import HumanoidSection from "@/components/HumanoidSection";
 import DetailsSection from "@/components/DetailsSection";
@@ -63,6 +64,28 @@ const Index = () => {
 
   return (
     <div className="min-h-screen">
+      <Seo
+        title="FuseLabs IO — Software Development & Growth Agency"
+        description="FuseLabs IO builds MVPs, scalable software and growth engines. Custom development, cloud, AI and SEO services for ambitious software businesses."
+        path="/"
+        jsonLd={[
+          {
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            name: "FuseLabs IO",
+            url: "https://fuselabsio.lovable.app/",
+            logo: "https://fuselabsio.lovable.app/logo.svg",
+            description:
+              "Software agency building MVPs, scalable applications and growth engines.",
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: "FuseLabs IO",
+            url: "https://fuselabsio.lovable.app/",
+          },
+        ]}
+      />
       <Navbar />
       <main className="space-y-4 sm:space-y-8">
         <Hero />

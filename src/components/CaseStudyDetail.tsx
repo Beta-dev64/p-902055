@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import Seo from "@/components/Seo";
 
 interface CaseStudy {
   id: string;
@@ -74,6 +75,23 @@ const CaseStudyDetail = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      <Seo
+        title={`${caseStudy.title} — FuseLabs IO Case Study`}
+        description={caseStudy.description?.slice(0, 155) || `Case study: ${caseStudy.title} by FuseLabs IO.`}
+        path={`/case-study/${caseStudy.slug}`}
+        type="article"
+        image={caseStudy.image}
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "Article",
+          headline: caseStudy.title,
+          description: caseStudy.description,
+          image: caseStudy.image,
+          keywords: caseStudy.technologies?.join(", "),
+          author: { "@type": "Organization", name: "FuseLabs IO" },
+          publisher: { "@type": "Organization", name: "FuseLabs IO" },
+        }}
+      />
       {/* Hero Section */}
       <section className="relative h-96 overflow-hidden">
         <img
