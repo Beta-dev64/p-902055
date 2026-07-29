@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Seo from "@/components/Seo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -124,6 +125,23 @@ const AcademicPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-900 dark:bg-gray-900">
+      <Seo
+        title="Academy — Frontend, Backend & AI Courses | FuseLabs IO"
+        description="Hands-on FuseLabs IO training programs in frontend, backend and AI/ML development, with mentorship and real project work."
+        path="/academic"
+        jsonLd={courses.map((course) => ({
+          "@context": "https://schema.org",
+          "@type": "Course",
+          name: course.title,
+          description: `${course.title} program — ${course.duration} of hands-on training with FuseLabs IO.`,
+          timeRequired: course.duration,
+          provider: {
+            "@type": "Organization",
+            name: "FuseLabs IO",
+            sameAs: "https://fuselabsio.lovable.app/",
+          },
+        }))}
+      />
       <Navbar />
 
       {/* Hero Section */}
