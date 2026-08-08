@@ -14,6 +14,114 @@ export type Database = {
   }
   public: {
     Tables: {
+      academy_programs: {
+        Row: {
+          created_at: string
+          description: string | null
+          duration: string | null
+          id: string
+          image: string | null
+          level: string | null
+          outcomes: string[] | null
+          price: string | null
+          published: boolean
+          slug: string
+          sort_order: number
+          syllabus: string[] | null
+          tagline: string | null
+          title: string
+          tools: string[] | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          duration?: string | null
+          id?: string
+          image?: string | null
+          level?: string | null
+          outcomes?: string[] | null
+          price?: string | null
+          published?: boolean
+          slug: string
+          sort_order?: number
+          syllabus?: string[] | null
+          tagline?: string | null
+          title: string
+          tools?: string[] | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          duration?: string | null
+          id?: string
+          image?: string | null
+          level?: string | null
+          outcomes?: string[] | null
+          price?: string | null
+          published?: boolean
+          slug?: string
+          sort_order?: number
+          syllabus?: string[] | null
+          tagline?: string | null
+          title?: string
+          tools?: string[] | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      leads: {
+        Row: {
+          budget: string | null
+          company: string | null
+          created_at: string
+          email: string
+          id: string
+          message: string | null
+          name: string
+          phone: string | null
+          program_slug: string | null
+          service_slug: string | null
+          status: string
+          timeline: string | null
+          type: string
+          updated_at: string
+        }
+        Insert: {
+          budget?: string | null
+          company?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          message?: string | null
+          name: string
+          phone?: string | null
+          program_slug?: string | null
+          service_slug?: string | null
+          status?: string
+          timeline?: string | null
+          type?: string
+          updated_at?: string
+        }
+        Update: {
+          budget?: string | null
+          company?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string | null
+          name?: string
+          phone?: string | null
+          program_slug?: string | null
+          service_slug?: string | null
+          status?: string
+          timeline?: string | null
+          type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       partners: {
         Row: {
           created_at: string
@@ -84,6 +192,60 @@ export type Database = {
           solution?: string | null
           tags?: string[] | null
           technologies?: string[] | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      services: {
+        Row: {
+          created_at: string
+          deliverables: string[] | null
+          description: string | null
+          faq: Json | null
+          highlights: string[] | null
+          icon: string | null
+          id: string
+          image: string | null
+          process: string[] | null
+          published: boolean
+          slug: string
+          sort_order: number
+          tagline: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          deliverables?: string[] | null
+          description?: string | null
+          faq?: Json | null
+          highlights?: string[] | null
+          icon?: string | null
+          id?: string
+          image?: string | null
+          process?: string[] | null
+          published?: boolean
+          slug: string
+          sort_order?: number
+          tagline?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          deliverables?: string[] | null
+          description?: string | null
+          faq?: Json | null
+          highlights?: string[] | null
+          icon?: string | null
+          id?: string
+          image?: string | null
+          process?: string[] | null
+          published?: boolean
+          slug?: string
+          sort_order?: number
+          tagline?: string | null
           title?: string
           updated_at?: string
         }
