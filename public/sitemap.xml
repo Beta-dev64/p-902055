@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://fuselabsio.lovable.app/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://fuselabsio.lovable.app/portfolio</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://fuselabsio.lovable.app/academic</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
+  <url><loc>https://fuselabsio.lovable.app/</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://fuselabsio.lovable.app/services</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://fuselabsio.lovable.app/services/startup-acceleration</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://fuselabsio.lovable.app/services/product-development</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://fuselabsio.lovable.app/services/team-extension</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://fuselabsio.lovable.app/services/growth-engineering</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://fuselabsio.lovable.app/services/systems-integration</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://fuselabsio.lovable.app/services/devops-support</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://fuselabsio.lovable.app/portfolio</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://fuselabsio.lovable.app/academic</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://fuselabsio.lovable.app/academic/frontend-development</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://fuselabsio.lovable.app/academic/backend-development</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://fuselabsio.lovable.app/academic/ai-ml-development</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://fuselabsio.lovable.app/start-project</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://fuselabsio.lovable.app/enroll</loc><changefreq>monthly</changefreq></url>
 </urlset>

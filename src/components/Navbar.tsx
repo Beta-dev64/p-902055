@@ -85,13 +85,18 @@ const Navbar = () => {
           </Link>
           {location.pathname === "/" ? (
             <>
-              <a href="#features" className="nav-link">Services</a>
+              <Link to="/services" className="nav-link">Services</Link>
               <a href="#portfolio" className="nav-link">Portfolio</a>
               <a href="#details" className="nav-link">Contact</a>
             </>
           ) : (
-            <Link to="/portfolio" className="nav-link">Portfolio</Link>
+            <>
+              <Link to="/services" className="nav-link">Services</Link>
+              <Link to="/portfolio" className="nav-link">Portfolio</Link>
+              <Link to="/academic" className="nav-link">Academy</Link>
+            </>
           )}
+          <Link to="/start-project" className="nav-link">Start a project</Link>
         </nav>
 
         {/* Mobile menu button */}
@@ -132,13 +137,13 @@ const Navbar = () => {
           </Link>
           {location.pathname === "/" ? (
             <>
-              <a 
-                href="#features" 
-                className="text-xl font-medium py-3 px-6 w-full text-center rounded-lg hover:bg-gray-100/80 backdrop-blur-sm" 
+              <Link
+                to="/services"
+                className="text-xl font-medium py-3 px-6 w-full text-center rounded-lg hover:bg-gray-100/80 backdrop-blur-sm"
                 onClick={closeMenu}
               >
                 Services
-              </a>
+              </Link>
               <a 
                 href="#portfolio" 
                 className="text-xl font-medium py-3 px-6 w-full text-center rounded-lg hover:bg-gray-100/80 backdrop-blur-sm" 
@@ -155,14 +160,37 @@ const Navbar = () => {
               </a>
             </>
           ) : (
-            <Link 
-              to="/portfolio" 
-              className="text-xl font-medium py-3 px-6 w-full text-center rounded-lg hover:bg-gray-100/80 backdrop-blur-sm" 
-              onClick={closeMenu}
-            >
-              Portfolio
-            </Link>
+            <>
+              <Link
+                to="/services"
+                className="text-xl font-medium py-3 px-6 w-full text-center rounded-lg hover:bg-gray-100/80 backdrop-blur-sm"
+                onClick={closeMenu}
+              >
+                Services
+              </Link>
+              <Link
+                to="/portfolio"
+                className="text-xl font-medium py-3 px-6 w-full text-center rounded-lg hover:bg-gray-100/80 backdrop-blur-sm"
+                onClick={closeMenu}
+              >
+                Portfolio
+              </Link>
+              <Link
+                to="/academic"
+                className="text-xl font-medium py-3 px-6 w-full text-center rounded-lg hover:bg-gray-100/80 backdrop-blur-sm"
+                onClick={closeMenu}
+              >
+                Academy
+              </Link>
+            </>
           )}
+          <Link
+            to="/start-project"
+            className="text-xl font-medium py-3 px-6 w-full text-center rounded-lg bg-pulse-500 text-white"
+            onClick={closeMenu}
+          >
+            Start a project
+          </Link>
         </nav>
       </div>
     </header>
