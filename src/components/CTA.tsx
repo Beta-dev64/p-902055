@@ -1,4 +1,4 @@
-
+﻿
 import React, { useEffect, useRef } from "react";
 import { ArrowRight } from "lucide-react";
 
@@ -30,14 +30,14 @@ const CTA = () => {
   }, []);
   
   return (
-    <section className="py-12 sm:py-16 md:py-20 bg-white relative" id="get-access" ref={ctaRef}>
+    <section className="py-12 sm:py-16 md:py-20 bg-background relative" id="get-access" ref={ctaRef}>
       {/* Background gradient at the top has been removed */}
       
       <div className="section-container relative z-10 opacity-0 px-4 sm:px-6">
         <div className="max-w-4xl mx-auto glass-card p-6 sm:p-8 md:p-10 lg:p-14 text-center overflow-hidden relative">
           {/* Decorative circles */}
           <div className="absolute top-0 right-0 w-32 sm:w-40 h-32 sm:h-40 bg-pulse-100/30 rounded-full translate-x-1/2 -translate-y-1/2 blur-2xl"></div>
-          <div className="absolute bottom-0 left-0 w-24 sm:w-32 h-24 sm:h-32 bg-gray-100/50 rounded-full -translate-x-1/2 translate-y-1/2 blur-2xl"></div>
+          <div className="absolute bottom-0 left-0 w-24 sm:w-32 h-24 sm:h-32 bg-muted/50 rounded-full -translate-x-1/2 translate-y-1/2 blur-2xl"></div>
           
           <div className="pulse-chip mx-auto mb-4 sm:mb-6">
             <span>Limited Availability</span>
@@ -48,7 +48,7 @@ const CTA = () => {
             <span className="text-pulse-500">Experience Atlas</span>
           </h2>
           
-          <p className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto">
             We're accepting a limited number of early adopters. Submit your application today to secure your place in the future of robotics.
           </p>
           

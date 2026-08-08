@@ -6,10 +6,25 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
-import { Check, Clock, Users, BookOpen, Code, Brain, Star, ArrowRight, Award, Target } from "lucide-react";
+import {
+  Check,
+  Clock,
+  Users,
+  Code,
+  Brain,
+  Star,
+  ArrowRight,
+  Award,
+  Target,
+  Rocket,
+  Zap,
+  GraduationCap,
+  Sparkles,
+  Server,
+  Briefcase,
+} from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import academicHero from "@/assets/academic-hero.jpg";
 import frontendDev from "@/assets/frontend-dev.jpg";
 import backendDev from "@/assets/backend-dev.jpg";
 import aiMlDev from "@/assets/ai-ml-dev.jpg";
@@ -49,7 +64,7 @@ const AcademicPage = () => {
       title: "Backend Development",
       price: "₦300,000",
       duration: "3 Months",
-      icon: Users,
+      icon: Server,
       color: "from-green-500 to-green-600",
       bgColor: "bg-green-500/10",
       image: backendDev,
@@ -124,7 +139,7 @@ const AcademicPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 dark:bg-gray-900">
+    <div className="min-h-screen bg-background text-foreground">
       <Seo
         title="Academy — Frontend, Backend & AI Courses | FuseLabs IO"
         description="Hands-on FuseLabs IO training programs in frontend, backend and AI/ML development, with mentorship and real project work."
@@ -188,16 +203,23 @@ const AcademicPage = () => {
           </div>
           
           <h1 className="text-5xl md:text-7xl font-display font-bold text-white mb-8 leading-tight">
-            🚀 Launch Your
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-400 animate-pulse">
+            <span className="inline-flex items-center justify-center gap-3">
+              <Rocket className="h-10 w-10 shrink-0 text-primary md:h-14 md:w-14" aria-hidden />
+              Launch Your
+            </span>
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-400">
               Tech Journey!
             </span>
           </h1>
           
-          <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto mb-12 leading-relaxed">
-            🔥 Join thousands of ambitious students transforming their lives through code! 
+          <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto mb-12 leading-relaxed">
+            Join thousands of ambitious students transforming their lives through code!
             Our <span className="font-bold text-emerald-400">3-month intensive programs</span> turn beginners into job-ready developers.
-            <span className="block mt-2 text-lg text-cyan-400">💯 100% Online • 🎯 Project-Based • 🏆 Certificate Included</span>
+            <span className="mt-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-base text-cyan-400 md:text-lg">
+              <span className="inline-flex items-center gap-1.5"><Zap className="h-4 w-4" aria-hidden />100% Online</span>
+              <span className="inline-flex items-center gap-1.5"><Target className="h-4 w-4" aria-hidden />Project-Based</span>
+              <span className="inline-flex items-center gap-1.5"><Award className="h-4 w-4" aria-hidden />Certificate Included</span>
+            </span>
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-16">
@@ -222,19 +244,19 @@ const AcademicPage = () => {
           {/* Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
             {[
-              { icon: Clock, label: "100% Online", desc: "Flexible Learning", emoji: "⚡" },
-              { icon: Users, label: "Expert Instructors", desc: "Industry Pros", emoji: "👨‍💻" },
-              { icon: Target, label: "3 Months", desc: "Intensive Training", emoji: "🎯" },
-              { icon: Award, label: "Certification", desc: "Official Certificate", emoji: "🏆" }
+              { icon: Zap, label: "100% Online", desc: "Flexible Learning" },
+              { icon: Users, label: "Expert Instructors", desc: "Industry Pros" },
+              { icon: Target, label: "3 Months", desc: "Intensive Training" },
+              { icon: Award, label: "Certification", desc: "Official Certificate" },
             ].map((stat, index) => {
               const IconComponent = stat.icon;
               return (
                 <div key={index} className="text-center transform hover:scale-105 transition-all duration-300">
-                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 text-emerald-400 mb-3 backdrop-blur-sm border border-emerald-500/20">
-                    <div className="text-2xl">{stat.emoji}</div>
+                  <div className="mb-3 inline-flex h-16 w-16 items-center justify-center rounded-2xl border border-emerald-500/20 bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 text-emerald-400 backdrop-blur-sm">
+                    <IconComponent className="h-7 w-7" aria-hidden />
                   </div>
                   <div className="text-lg font-semibold text-white">{stat.label}</div>
-                  <div className="text-sm text-gray-400">{stat.desc}</div>
+                  <div className="text-sm text-muted-foreground">{stat.desc}</div>
                 </div>
               );
             })}
@@ -250,7 +272,7 @@ const AcademicPage = () => {
       </section>
 
       {/* Courses Section */}
-      <section id="courses" className="py-20 bg-gray-800 relative overflow-hidden">
+      <section id="courses" className="reveal py-20 bg-muted relative overflow-hidden">
         {/* More SVG Patterns */}
         <div className="absolute inset-0 opacity-5">
           <svg className="w-full h-full" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
@@ -266,15 +288,21 @@ const AcademicPage = () => {
         
         <div className="container px-4 sm:px-6 lg:px-8 mx-auto max-w-7xl relative z-10">
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 text-emerald-400 text-sm font-medium mb-6">
-              <Star className="w-4 h-4" />
-              🎯 Popular Programs
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-emerald-500/10 px-4 py-2 text-sm font-medium text-emerald-400">
+              <Target className="h-4 w-4" aria-hidden />
+              Popular Programs
             </div>
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-6">
-              🚀 Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Superpower</span>
+            <h2 className="mb-6 font-display text-4xl font-bold text-foreground md:text-5xl">
+              <span className="inline-flex items-center justify-center gap-2">
+                <Rocket className="h-8 w-8 text-primary" aria-hidden />
+                Choose Your
+              </span>{" "}
+              <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+                Superpower
+              </span>
             </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              💪 Transform from zero to hero in just 3 months! Pick your path and let's build something amazing together.
+            <p className="mx-auto max-w-3xl text-xl text-muted-foreground">
+              Transform from zero to hero in just 3 months. Pick your path and build something amazing together.
             </p>
           </div>
 
@@ -347,7 +375,7 @@ const AcademicPage = () => {
       </section>
 
       {/* Why Choose Us */}
-      <section className="py-20 bg-gray-900 relative overflow-hidden">
+      <section className="reveal py-20 bg-background relative overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-3">
           <svg className="w-full h-full" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
@@ -363,15 +391,21 @@ const AcademicPage = () => {
         
         <div className="container px-4 sm:px-6 lg:px-8 mx-auto max-w-7xl relative z-10">
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/10 text-orange-400 text-sm font-medium mb-6">
-              <Award className="w-4 h-4" />
-              ⭐ Why We're Different
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-orange-500/10 px-4 py-2 text-sm font-medium text-orange-400">
+              <Star className="h-4 w-4" aria-hidden />
+              Why We're Different
             </div>
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-6">
-              🎓 Why Our Academy <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-pink-400">Rocks!</span>
+            <h2 className="mb-6 font-display text-4xl font-bold text-foreground md:text-5xl">
+              <span className="inline-flex items-center justify-center gap-2">
+                <GraduationCap className="h-8 w-8 text-primary" aria-hidden />
+                Why Our Academy
+              </span>{" "}
+              <span className="bg-gradient-to-r from-orange-400 to-pink-400 bg-clip-text text-transparent">
+                Rocks
+              </span>
             </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              🌟 Experience world-class education that's fun, engaging, and gets you hired!
+            <p className="mx-auto max-w-3xl text-xl text-muted-foreground">
+              Experience practical, career-focused training designed to get you hired.
             </p>
           </div>
 
@@ -381,31 +415,31 @@ const AcademicPage = () => {
                 title: "Expert Instructors",
                 description: "Learn from industry professionals with 5+ years experience",
                 icon: Users,
-                color: "from-blue-500 to-blue-600"
+                color: "from-blue-500 to-blue-600",
               },
               {
                 title: "Hands-on Projects",
                 description: "Build real-world applications that showcase your skills",
                 icon: Code,
-                color: "from-green-500 to-green-600"
+                color: "from-green-500 to-green-600",
               },
               {
                 title: "Flexible Schedule",
                 description: "100% online classes that fit your lifestyle",
                 icon: Clock,
-                color: "from-orange-500 to-orange-600"
+                color: "from-orange-500 to-orange-600",
               },
               {
                 title: "Job Support",
                 description: "Career guidance and portfolio review included",
-                icon: BookOpen,
-                color: "from-purple-500 to-purple-600"
-              }
+                icon: Briefcase,
+                color: "from-purple-500 to-purple-600",
+              },
             ].map((benefit, index) => {
               const IconComponent = benefit.icon;
               return (
                 <Card key={index} className="text-center p-8 border-0 shadow-elegant hover:shadow-glow transition-all duration-300 group">
-                  <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-r ${benefit.color} text-white mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                  <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-r ${benefit.color} text-foreground mb-6 group-hover:scale-110 transition-transform duration-300`}>
                     <IconComponent className="w-8 h-8" />
                   </div>
                   <h3 className="text-xl font-display font-bold text-foreground mb-4">
@@ -422,7 +456,7 @@ const AcademicPage = () => {
       </section>
 
       {/* Enrollment Form */}
-      <section id="contact" className="py-20 bg-gray-800 relative overflow-hidden">
+      <section id="contact" className="reveal py-20 bg-muted relative overflow-hidden">
         {/* Form Pattern Background */}
         <div className="absolute inset-0 opacity-3">
           <svg className="w-full h-full" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
@@ -438,15 +472,21 @@ const AcademicPage = () => {
         
         <div className="container px-4 sm:px-6 lg:px-8 mx-auto max-w-4xl relative z-10">
           <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/10 text-emerald-400 text-sm font-medium mb-6">
-              <Star className="w-4 h-4" />
-              🎉 Let's Get Started!
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-emerald-500/10 px-4 py-2 text-sm font-medium text-emerald-400">
+              <Sparkles className="h-4 w-4" aria-hidden />
+              Let's Get Started
             </div>
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-6">
-              🚀 Ready to <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Level Up?</span>
+            <h2 className="mb-6 font-display text-4xl font-bold text-foreground md:text-5xl">
+              <span className="inline-flex items-center justify-center gap-2">
+                <Rocket className="h-8 w-8 text-primary" aria-hidden />
+                Ready to
+              </span>{" "}
+              <span className="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+                Level Up?
+              </span>
             </h2>
-            <p className="text-xl text-gray-300">
-              🎯 Fill out the form below and we'll contact you within 24 hours to get you enrolled!
+            <p className="text-xl text-muted-foreground">
+              Fill out the form below and we'll contact you within 24 hours to get you enrolled.
             </p>
           </div>
 

@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import Seo from "@/components/Seo";
+import { Reveal } from "@/components/Reveal";
 
 interface CaseStudy {
   id: string;
@@ -30,19 +31,19 @@ const CaseStudyDetail = () => {
 
       try {
         const { data, error } = await supabase
-          .from('portfolios')
-          .select('*')
-          .eq('slug', slug)
+          .from("portfolios")
+          .select("*")
+          .eq("slug", slug)
           .single();
 
         if (error) {
-          console.error('Error fetching case study:', error);
+          console.error("Error fetching case study:", error);
           return;
         }
 
         setCaseStudy(data);
       } catch (error) {
-        console.error('Error fetching case study:', error);
+        console.error("Error fetching case study:", error);
       } finally {
         setLoading(false);
       }
@@ -53,10 +54,10 @@ const CaseStudyDetail = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="flex min-h-screen items-center justify-center bg-background">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-pulse-500 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading case study...</p>
+          <div className="mx-auto mb-4 h-16 w-16 animate-spin rounded-full border-b-2 border-primary" />
+          <p className="text-muted-foreground">Loading case study...</p>
         </div>
       </div>
     );
@@ -64,20 +65,24 @@ const CaseStudyDetail = () => {
 
   if (!caseStudy) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="flex min-h-screen items-center justify-center bg-background">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Case Study Not Found</h1>
-          <Link to="/" className="text-pulse-500 hover:underline">Return to Homepage</Link>
+          <h1 className="mb-4 text-2xl font-bold text-foreground">Case Study Not Found</h1>
+          <Link to="/portfolio" className="text-primary transition-colors hover:text-primary/80">
+            Return to Portfolio
+          </Link>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-background text-foreground">
       <Seo
         title={`${caseStudy.title} — FuseLabs IO Case Study`}
-        description={caseStudy.description?.slice(0, 155) || `Case study: ${caseStudy.title} by FuseLabs IO.`}
+        description={
+          caseStudy.description?.slice(0, 155) || `Case study: ${caseStudy.title} by FuseLabs IO.`
+        }
         path={`/case-study/${caseStudy.slug}`}
         type="article"
         image={caseStudy.image}
@@ -92,120 +97,124 @@ const CaseStudyDetail = () => {
           publisher: { "@type": "Organization", name: "FuseLabs IO" },
         }}
       />
-      {/* Hero Section */}
-      <section className="relative h-96 overflow-hidden">
+
+      {/* Hero — top padding clears fixed header so banner content is never covered */}
+      <section className="relative min-h-[28rem] overflow-hidden md:min-h-[34rem]">
         <img
           src={caseStudy.image}
           alt={caseStudy.title}
-          className="w-full h-full object-cover"
+          className="absolute inset-0 h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-black/50 flex items-center">
-          <div className="container px-4 sm:px-6 lg:px-8 mx-auto pt-16 md:pt-0">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/55 to-black/40" />
+        <div className="relative flex min-h-[28rem] items-start md:min-h-[34rem]">
+          <div className="container mx-auto px-4 pb-14 pt-[7.5rem] sm:px-6 sm:pt-36 lg:px-8">
             <Link
               to="/portfolio"
-              className="inline-flex items-center text-white mb-6 hover:text-pulse-300 transition-colors"
+              className="group mb-6 inline-flex items-center text-sm font-medium uppercase tracking-[0.12em] text-white/90 transition-transform duration-300 hover:translate-x-2 hover:text-primary-400"
             >
-              <ArrowLeft className="mr-2 h-4 w-4" />
+              <ArrowLeft className="mr-2 h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" />
               Back to Portfolio
             </Link>
-            <div className="flex items-center gap-4 mb-4">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-display font-bold text-white flex-1">
-                {caseStudy.title}
-              </h1>
-              <div className="text-sm text-white/70 bg-white/10 px-3 py-1 rounded-full backdrop-blur-sm">
-                Slug: {caseStudy.slug}
+            <h1 className="mb-4 max-w-4xl font-display text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">
+              {caseStudy.title}
+            </h1>
+            <p className="max-w-2xl text-lg text-white/90">{caseStudy.description}</p>
+            {caseStudy.tags?.length > 0 && (
+              <div className="mt-6 flex flex-wrap gap-2">
+                {caseStudy.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs uppercase tracking-wider text-white/90 backdrop-blur-sm"
+                  >
+                    {tag}
+                  </span>
+                ))}
               </div>
-            </div>
-            <p className="text-white/90 text-lg max-w-2xl">
-              {caseStudy.description}
-            </p>
+            )}
           </div>
         </div>
       </section>
 
-      {/* Content */}
-      <section className="py-16">
-        <div className="container px-4 sm:px-6 lg:px-8 mx-auto max-w-4xl">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-            <div className="lg:col-span-2 space-y-12">
-              {/* Challenge */}
-              <div>
-                <h2 className="text-2xl font-display font-bold mb-4">The Challenge</h2>
-                <div className="text-gray-600 leading-relaxed prose max-w-none" 
-                     dangerouslySetInnerHTML={{ __html: caseStudy.challenge || '' }} />
-              </div>
+      <section className="bg-background py-16">
+        <div className="container mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-3">
+            <div className="space-y-12 lg:col-span-2">
+              <Reveal>
+                <h2 className="mb-4 font-display text-2xl font-bold text-foreground">The Challenge</h2>
+                <div
+                  className="prose max-w-none text-muted-foreground dark:prose-invert"
+                  dangerouslySetInnerHTML={{ __html: caseStudy.challenge || "" }}
+                />
+              </Reveal>
 
-              {/* Solution */}
-              <div>
-                <h2 className="text-2xl font-display font-bold mb-4">Our Solution</h2>
-                <div className="text-gray-600 leading-relaxed prose max-w-none" 
-                     dangerouslySetInnerHTML={{ __html: caseStudy.solution || '' }} />
-              </div>
+              <Reveal delay={80}>
+                <h2 className="mb-4 font-display text-2xl font-bold text-foreground">Our Solution</h2>
+                <div
+                  className="prose max-w-none text-muted-foreground dark:prose-invert"
+                  dangerouslySetInnerHTML={{ __html: caseStudy.solution || "" }}
+                />
+              </Reveal>
 
-              {/* Project Gallery */}
               {caseStudy.project_images && caseStudy.project_images.length > 0 && (
-                <div>
-                  <h2 className="text-2xl font-display font-bold mb-6">Project Gallery</h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <Reveal delay={120}>
+                  <h2 className="mb-6 font-display text-2xl font-bold text-foreground">Project Gallery</h2>
+                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                     {caseStudy.project_images.map((image, index) => (
-                      <div key={index} className="group relative rounded-lg overflow-hidden shadow-elegant hover:shadow-glow transition-all duration-300">
+                      <div
+                        key={index}
+                        className="group relative overflow-hidden rounded-lg border border-border bg-card shadow-elegant transition-all duration-300 hover:-translate-y-1 hover:shadow-elegant-hover"
+                      >
                         <img
                           src={image}
                           alt={`${caseStudy.title} image ${index + 1}`}
-                          className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                          className="h-64 w-full object-cover transition-transform duration-500 group-hover:scale-105"
                         />
-                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
-                        <div className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                          <span className="bg-white/90 text-gray-800 px-3 py-1 rounded-full text-sm font-medium">
-                            Image {index + 1}
-                          </span>
-                        </div>
                       </div>
                     ))}
                   </div>
-                </div>
+                </Reveal>
               )}
             </div>
 
-            {/* Sidebar */}
             <div className="space-y-8">
-              {/* Results */}
-              <div className="bg-gray-50 rounded-2xl p-6">
-                <h3 className="text-xl font-display font-bold mb-4">Key Results</h3>
-                <div className="text-gray-700 prose max-w-none" 
-                     dangerouslySetInnerHTML={{ __html: caseStudy.results || '' }} />
-              </div>
+              <Reveal delay={100}>
+                <div className="rounded-2xl border border-border bg-card p-6">
+                  <h3 className="mb-4 font-display text-xl font-bold text-foreground">Key Results</h3>
+                  <div
+                    className="prose max-w-none text-muted-foreground dark:prose-invert"
+                    dangerouslySetInnerHTML={{ __html: caseStudy.results || "" }}
+                  />
+                </div>
+              </Reveal>
 
-              {/* Technologies */}
               {caseStudy.technologies && caseStudy.technologies.length > 0 && (
-                <div>
-                  <h3 className="text-xl font-display font-bold mb-4">Technologies Used</h3>
+                <Reveal delay={140}>
+                  <h3 className="mb-4 font-display text-xl font-bold text-foreground">Technologies Used</h3>
                   <div className="flex flex-wrap gap-2">
                     {caseStudy.technologies.map((tech) => (
                       <span
                         key={tech}
-                        className="px-3 py-1 bg-pulse-100 text-pulse-600 text-sm font-medium rounded-full"
+                        className="rounded-full bg-primary/15 px-3 py-1 text-sm font-medium text-primary transition-transform duration-200 hover:scale-105"
                       >
                         {tech}
                       </span>
                     ))}
                   </div>
-                </div>
+                </Reveal>
               )}
 
-              {/* View Project */}
               {caseStudy.live_url && (
-                <div>
+                <Reveal delay={180}>
                   <a
                     href={caseStudy.live_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center w-full bg-pulse-500 hover:bg-pulse-600 text-white font-medium py-3 px-6 rounded-full transition-colors"
+                    className="btn-motion inline-flex w-full items-center justify-center rounded-sm bg-primary px-6 py-3 font-medium text-primary-foreground"
                   >
                     View Live Project
                     <ExternalLink className="ml-2 h-4 w-4" />
                   </a>
-                </div>
+                </Reveal>
               )}
             </div>
           </div>

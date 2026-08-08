@@ -1,5 +1,4 @@
-
-import React, { useEffect } from "react";
+﻿import React, { useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Seo from "@/components/Seo";
 import Hero from "@/components/Hero";
@@ -10,60 +9,33 @@ import Features from "@/components/Features";
 import Portfolio from "@/components/Portfolio";
 import PartnersScroll from "@/components/PartnersScroll";
 import Testimonials from "@/components/Testimonials";
+import ReviewForm from "@/components/ReviewForm";
 import Team from "@/components/Team";
-import SpecsSection from "@/components/SpecsSection";
 import Newsletter from "@/components/Newsletter";
 import MadeByHumans from "@/components/MadeByHumans";
 import Footer from "@/components/Footer";
 
 const Index = () => {
-  // Initialize intersection observer to detect when elements enter viewport
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("animate-fade-in");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-    
-    const elements = document.querySelectorAll(".animate-on-scroll");
-    elements.forEach((el) => observer.observe(el));
-    
-    return () => {
-      elements.forEach((el) => observer.unobserve(el));
-    };
-  }, []);
-
-  useEffect(() => {
-    // This helps ensure smooth scrolling for the anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        
-        const targetId = this.getAttribute('href')?.substring(1);
+    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+      anchor.addEventListener("click", function (e) {
+        const href = (this as HTMLAnchorElement).getAttribute("href");
+        const targetId = href?.substring(1);
         if (!targetId) return;
-        
         const targetElement = document.getElementById(targetId);
         if (!targetElement) return;
-        
-        // Increased offset to account for mobile nav
+        e.preventDefault();
         const offset = window.innerWidth < 768 ? 100 : 80;
-        
         window.scrollTo({
           top: targetElement.offsetTop - offset,
-          behavior: 'smooth'
+          behavior: "smooth",
         });
       });
     });
   }, []);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-background text-foreground">
       <Seo
         title="FuseLabs IO — Software Development & Growth Agency"
         description="FuseLabs IO builds MVPs, scalable software and growth engines. Custom development, cloud, AI and SEO services for ambitious software businesses."
@@ -89,16 +61,39 @@ const Index = () => {
       <Navbar />
       <main className="space-y-4 sm:space-y-8">
         <Hero />
-        <HumanoidSection />
-        <ImageShowcaseSection />
-        <Features />
-        <Portfolio />
-        <PartnersScroll />
-        <Testimonials />
-        <Team />
-        <DetailsSection />
-        <Newsletter />
-        <MadeByHumans />
+        <div className="reveal">
+          <HumanoidSection />
+        </div>
+        <div className="reveal">
+          <ImageShowcaseSection />
+        </div>
+        <div className="reveal">
+          <Features />
+        </div>
+        <div className="reveal">
+          <Portfolio />
+        </div>
+        <div className="reveal">
+          <PartnersScroll />
+        </div>
+        <div className="reveal">
+          <Testimonials />
+        </div>
+        <div className="reveal">
+          <ReviewForm />
+        </div>
+        <div className="reveal">
+          <Team />
+        </div>
+        <div className="reveal">
+          <DetailsSection />
+        </div>
+        <div className="reveal">
+          <Newsletter />
+        </div>
+        <div className="reveal">
+          <MadeByHumans />
+        </div>
       </main>
       <Footer />
     </div>

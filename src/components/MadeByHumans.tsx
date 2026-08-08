@@ -1,7 +1,7 @@
-import React from "react";
+﻿import React from "react";
 const MadeByHumans = () => {
 	return (
-		<section id="made-by-humans" className="w-full bg-white py-0">
+		<section id="made-by-humans" className="w-full bg-background py-0">
 			<div className="section-container opacity-0 animate-on-scroll pb-2">
 				{/* Removed the pulse-chip button/element that was here */}
 
@@ -28,8 +28,8 @@ const MadeByHumans = () => {
 						</div>
 
 						{/* White box at the bottom with overflow */}
-						<div className="w-[120%] bg-white h-10 rounded-t-lg absolute left-[-10%] bottom-0">
-							<p className="text-black text-sm italic text-center mt-2">
+						<div className="w-[120%] bg-background h-10 rounded-t-lg absolute left-[-10%] bottom-0">
+							<p className="text-foreground text-sm italic text-center mt-2">
 								.....you dream it, we execute it.....
 							</p>
 						</div>
