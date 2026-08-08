@@ -85,13 +85,18 @@ const Navbar = () => {
           </Link>
           {location.pathname === "/" ? (
             <>
-              <a href="#features" className="nav-link">Services</a>
+              <Link to="/services" className="nav-link">Services</Link>
               <a href="#portfolio" className="nav-link">Portfolio</a>
               <a href="#details" className="nav-link">Contact</a>
             </>
           ) : (
-            <Link to="/portfolio" className="nav-link">Portfolio</Link>
+            <>
+              <Link to="/services" className="nav-link">Services</Link>
+              <Link to="/portfolio" className="nav-link">Portfolio</Link>
+              <Link to="/academic" className="nav-link">Academy</Link>
+            </>
           )}
+          <Link to="/start-project" className="nav-link">Start a project</Link>
         </nav>
 
         {/* Mobile menu button */}

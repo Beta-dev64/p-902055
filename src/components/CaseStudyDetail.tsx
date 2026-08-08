@@ -207,6 +207,24 @@ const CaseStudyDetail = () => {
                   </a>
                 </div>
               )}
+
+              {/* Lead CTA */}
+              <div className="rounded-2xl bg-pulse-50 p-6">
+                <h3 className="text-xl font-display font-bold mb-2">
+                  Want results like this?
+                </h3>
+                <p className="text-gray-600 text-sm mb-4">
+                  Tell us about your product and we'll come back with a scope,
+                  timeline and price within one business day.
+                </p>
+                <Link
+                  to="/start-project"
+                  className="inline-flex items-center justify-center w-full bg-pulse-500 hover:bg-pulse-600 text-white font-medium py-3 px-6 rounded-full transition-colors"
+                >
+                  Start a project
+                  <ArrowLeft className="ml-2 h-4 w-4 rotate-180" />
+                </Link>
+              </div>
             </div>
           </div>
         </div>

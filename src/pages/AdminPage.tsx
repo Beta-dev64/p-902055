@@ -7,22 +7,37 @@ import AdminPortfolios from "@/components/admin/AdminPortfolios";
 import AdminPartners from "@/components/admin/AdminPartners";
 import AdminTestimonials from "@/components/admin/AdminTestimonials";
 import AdminTeam from "@/components/admin/AdminTeam";
+import AdminServices from "@/components/admin/AdminServices";
+import AdminPrograms from "@/components/admin/AdminPrograms";
+import AdminLeads from "@/components/admin/AdminLeads";
 
 const AdminPage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [adminPassword, setAdminPassword] = useState("");
   const [activeTab, setActiveTab] = useState("portfolios");
 
   const tabs = [
-    { id: "portfolios", label: "Portfolio Cases", component: AdminPortfolios },
-    { id: "partners", label: "Trusted Partners", component: AdminPartners },
-    { id: "testimonials", label: "Testimonials", component: AdminTestimonials },
-    { id: "team", label: "Team Members", component: AdminTeam },
+    { id: "portfolios", label: "Portfolio Cases", render: () => <AdminPortfolios /> },
+    { id: "services", label: "Services", render: () => <AdminServices /> },
+    { id: "programs", label: "Academy Programs", render: () => <AdminPrograms /> },
+    { id: "leads", label: "Leads", render: () => <AdminLeads adminPassword={adminPassword} /> },
+    { id: "partners", label: "Trusted Partners", render: () => <AdminPartners /> },
+    { id: "testimonials", label: "Testimonials", render: () => <AdminTestimonials /> },
+    { id: "team", label: "Team Members", render: () => <AdminTeam /> },
   ];
 
-  const ActiveComponent = tabs.find(tab => tab.id === activeTab)?.component || AdminPortfolios;
+  const activeRender =
+    tabs.find((tab) => tab.id === activeTab)?.render ?? tabs[0].render;
 
   if (!isLoggedIn) {
-    return <AdminLogin onLogin={() => setIsLoggedIn(true)} />;
+    return (
+      <AdminLogin
+        onLogin={(password) => {
+          setAdminPassword(password);
+          setIsLoggedIn(true);
+        }}
+      />
+    );
   }
 
   return (
@@ -36,19 +51,19 @@ const AdminPage = () => {
               Admin Dashboard
             </h1>
             <p className="text-gray-600">
-              Manage your portfolio cases, partner logos, client testimonials, and team members
+              Manage case studies, services, academy programs, leads, partner logos, testimonials and team members
             </p>
           </div>
 
           {/* Tab Navigation */}
           <div className="bg-white rounded-lg shadow-sm mb-8">
             <div className="border-b border-gray-200">
-              <nav className="-mb-px flex space-x-8 px-6">
+              <nav className="-mb-px flex space-x-8 px-6 overflow-x-auto">
                 {tabs.map((tab) => (
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                    className={`py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${
                       activeTab === tab.id
                         ? "border-pulse-500 text-pulse-600"
                         : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
@@ -63,7 +78,7 @@ const AdminPage = () => {
 
           {/* Tab Content */}
           <div className="bg-white rounded-lg shadow-sm">
-            <ActiveComponent />
+            {activeRender()}
           </div>
         </div>
       </main>
