@@ -9,6 +9,8 @@ import { Card } from "@/components/ui/card";
 import { Check, Clock, Users, BookOpen, Code, Brain, Star, ArrowRight, Award, Target } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { Link } from "react-router-dom";
+import { slugify } from "@/lib/cms";
 import academicHero from "@/assets/academic-hero.jpg";
 import frontendDev from "@/assets/frontend-dev.jpg";
 import backendDev from "@/assets/backend-dev.jpg";
@@ -338,6 +340,12 @@ const AcademicPage = () => {
                       Enroll Now
                       <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </Button>
+                    <Link
+                      to={`/academic/${slugify(course.title)}`}
+                      className="mt-3 inline-flex w-full items-center justify-center text-sm font-medium text-primary hover:underline"
+                    >
+                      View full syllabus &amp; details
+                    </Link>
                   </div>
                 </Card>
               );
