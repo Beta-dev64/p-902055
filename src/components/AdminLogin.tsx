@@ -1,5 +1,4 @@
-
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import { toast } from "@/components/ui/use-toast";
 
 interface AdminLoginProps {
@@ -18,35 +17,36 @@ const AdminLogin = ({ onLogin }: AdminLoginProps) => {
     if (password === "admin123") {
       toast({
         title: "Login successful",
-        description: "Welcome to the admin dashboard"
+        description: "Welcome to the admin dashboard",
       });
       onLogin();
     } else {
       toast({
         title: "Invalid password",
         description: "Please enter the correct password",
-        variant: "destructive"
+        variant: "destructive",
       });
     }
-    
+
     setIsLoading(false);
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <div className="max-w-md w-full space-y-8 p-8">
+    <div className="flex min-h-screen items-center justify-center bg-background text-foreground">
+      <div className="w-full max-w-md space-y-8 p-8">
         <div className="text-center">
-          <h2 className="text-3xl font-display font-bold text-gray-900 mb-2">
-            Admin Login
-          </h2>
-          <p className="text-gray-600">
+          <h2 className="mb-2 font-display text-3xl font-bold text-foreground">Admin Login</h2>
+          <p className="text-muted-foreground">
             Enter your password to access the admin dashboard
           </p>
         </div>
-        
+
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+            <label
+              htmlFor="password"
+              className="mb-2 block text-sm font-medium text-foreground"
+            >
               Password
             </label>
             <input
@@ -54,16 +54,16 @@ const AdminLogin = ({ onLogin }: AdminLoginProps) => {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pulse-500 focus:border-transparent"
+              className="w-full rounded-lg border border-border bg-card px-4 py-3 text-foreground focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary"
               placeholder="Enter admin password"
               required
             />
           </div>
-          
+
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-pulse-500 hover:bg-pulse-600 text-white font-medium py-3 px-4 rounded-lg transition-colors disabled:opacity-50"
+            className="btn-motion w-full rounded-lg bg-primary px-4 py-3 font-medium text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-50"
           >
             {isLoading ? "Logging in..." : "Login"}
           </button>

@@ -1,4 +1,4 @@
-
+﻿
 import React, { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
@@ -128,9 +128,9 @@ const Hero = () => {
             
             <p 
               style={{ animationDelay: "0.5s" }} 
-              className="section-subtitle mt-3 sm:mt-6 mb-4 sm:mb-8 leading-relaxed opacity-0 animate-fade-in text-gray-950 font-normal text-base sm:text-lg text-left"
+              className="section-subtitle mt-3 sm:mt-6 mb-4 sm:mb-8 leading-relaxed opacity-0 animate-fade-in text-foreground font-normal text-base sm:text-lg text-left"
             >
-              We don’t just write code. We build growth engines, launch your MVP, drive your SEO, and partner with you to scale your software business—risk-free.
+              We don't just write code. We build growth engines, launch your MVP, drive your SEO, and partner with you to scale your software business—risk-free.
             </p>
             
             <div 
@@ -139,21 +139,10 @@ const Hero = () => {
             >
               <a 
                 href="#details" 
-                className="flex items-center justify-center group w-full sm:w-auto text-center" 
-                style={{
-                  backgroundColor: '#d4784c',
-                  borderRadius: '1440px',
-                  boxSizing: 'border-box',
-                  color: '#FFFFFF',
-                  cursor: 'pointer',
-                  fontSize: '14px',
-                  lineHeight: '20px',
-                  padding: '16px 24px',
-                  border: '1px solid white',
-                }}
+                className="btn-motion flex items-center justify-center group w-full sm:w-auto text-center rounded-full bg-primary px-6 py-4 text-sm font-medium text-primary-foreground border border-primary-foreground/20"
               >
                 Start Your Project
-                <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
+                <ArrowRight className="ml-2 w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
               </a>
             </div>
           </div>

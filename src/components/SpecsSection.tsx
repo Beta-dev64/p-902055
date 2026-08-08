@@ -1,9 +1,9 @@
-
+﻿
 import React from "react";
 
 const SpecsSection = () => {
   return (
-    <section className="w-full py-6 sm:py-10 bg-white" id="specifications">
+    <section className="w-full py-6 sm:py-10 bg-background" id="specifications">
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
         {/* Header with badge and line */}
         <div className="flex items-center gap-4 mb-8 sm:mb-16">
@@ -13,7 +13,7 @@ const SpecsSection = () => {
               <span>Approach</span>
             </div>
           </div>
-          <div className="flex-1 h-[1px] bg-gray-300"></div>
+          <div className="flex-1 h-[1px] bg-border"></div>
         </div>
         
         {/* Main content with text mask image - responsive text sizing */}

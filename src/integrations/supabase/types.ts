@@ -38,6 +38,51 @@ export type Database = {
         }
         Relationships: []
       }
+      project_inquiries: {
+        Row: {
+          budget: string | null
+          company_website: string | null
+          created_at: string
+          email: string
+          first_name: string
+          id: string
+          last_name: string
+          project_details: string | null
+          services: string | null
+          source: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          budget?: string | null
+          company_website?: string | null
+          created_at?: string
+          email: string
+          first_name: string
+          id?: string
+          last_name: string
+          project_details?: string | null
+          services?: string | null
+          source?: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          budget?: string | null
+          company_website?: string | null
+          created_at?: string
+          email?: string
+          first_name?: string
+          id?: string
+          last_name?: string
+          project_details?: string | null
+          services?: string | null
+          source?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       portfolios: {
         Row: {
           challenge: string | null
@@ -132,8 +177,12 @@ export type Database = {
           background_image: string | null
           content: string
           created_at: string
+          email: string | null
           id: string
+          rating: number | null
           role: string
+          source: string
+          status: string
           updated_at: string
         }
         Insert: {
@@ -142,8 +191,12 @@ export type Database = {
           background_image?: string | null
           content: string
           created_at?: string
+          email?: string | null
           id?: string
+          rating?: number | null
           role: string
+          source?: string
+          status?: string
           updated_at?: string
         }
         Update: {
@@ -152,8 +205,12 @@ export type Database = {
           background_image?: string | null
           content?: string
           created_at?: string
+          email?: string | null
           id?: string
+          rating?: number | null
           role?: string
+          source?: string
+          status?: string
           updated_at?: string
         }
         Relationships: []

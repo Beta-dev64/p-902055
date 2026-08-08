@@ -1,4 +1,4 @@
-
+﻿
 import React, { useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { Rocket, Code, Users, TrendingUp, Settings, Server } from "lucide-react";
@@ -41,17 +41,17 @@ const FeatureCard = ({ icon, title, description, index }: FeatureCardProps) => {
     <div 
       ref={cardRef}
       className={cn(
-        "feature-card glass-card opacity-0 p-4 sm:p-6",
-        "lg:hover:bg-gradient-to-br lg:hover:from-white lg:hover:to-pulse-50",
+        "feature-card glass-card group opacity-0 p-4 sm:p-6",
+        "lg:hover:bg-gradient-to-br lg:hover:from-card lg:hover:to-muted",
         "transition-all duration-300"
       )}
       style={{ animationDelay: `${0.1 * index}s` }}
     >
-      <div className="rounded-full bg-pulse-50 w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center text-pulse-500 mb-4 sm:mb-5">
+      <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-primary/15 text-primary transition-transform duration-300 group-hover:scale-110 sm:mb-5 sm:h-12 sm:w-12">
         {icon}
       </div>
       <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3">{title}</h3>
-      <p className="text-gray-600 text-sm sm:text-base">{description}</p>
+      <p className="text-muted-foreground text-sm sm:text-base">{description}</p>
     </div>
   );
 };
@@ -89,7 +89,7 @@ const Features = () => {
   }, []);
   
   return (
-    <section className="py-12 sm:py-16 md:py-20 pb-0 relative bg-gray-50" id="features" ref={sectionRef}>
+    <section className="py-12 sm:py-16 md:py-20 pb-0 relative bg-muted" id="features" ref={sectionRef}>
       <div className="section-container">
         <div className="text-center mb-10 sm:mb-16">
           <div className="pulse-chip mx-auto mb-3 sm:mb-4 opacity-0 fade-in-element">
@@ -113,7 +113,7 @@ const Features = () => {
           <FeatureCard
             icon={<Code className="w-5 h-5 sm:w-6 sm:h-6" />}
             title="Product Development"
-            description="We craft scalable, high-performance web and mobile apps—custom-built to drive efficiency, revenue, and market differentiation."
+            description="We craft scalable, high-performance web and mobile appsâ€”custom-built to drive efficiency, revenue, and market differentiation."
             index={1}
           />
           <FeatureCard
@@ -125,13 +125,13 @@ const Features = () => {
           <FeatureCard
             icon={<TrendingUp className="w-5 h-5 sm:w-6 sm:h-6" />}
             title="Growth Engineering"
-            description="We don't just build—we grow. Our growth team aligns tech with marketing to optimize funnels, drive SEO, and boost retention."
+            description="We don't just buildâ€”we grow. Our growth team aligns tech with marketing to optimize funnels, drive SEO, and boost retention."
             index={3}
           />
           <FeatureCard
             icon={<Settings className="w-5 h-5 sm:w-6 sm:h-6" />}
             title="Systems Integration"
-            description="Connect your platform to payments, logistics, messaging, and more—building intelligent workflows that scale across your stack."
+            description="Connect your platform to payments, logistics, messaging, and moreâ€”building intelligent workflows that scale across your stack."
             index={4}
           />
           <FeatureCard

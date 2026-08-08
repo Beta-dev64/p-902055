@@ -40,18 +40,28 @@ const AdminTestimonials = () => {
     setLoading(true);
     try {
       const { data, error } = await supabase
-        .from('testimonials')
-        .select('*')
-        .order('created_at', { ascending: false });
-      
-      if (error) throw error;
+        .from("testimonials")
+        .select("*")
+        .eq("source", "admin")
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        const fallback = await supabase
+          .from("testimonials")
+          .select("*")
+          .order("created_at", { ascending: false });
+        if (fallback.error) throw fallback.error;
+        setTestimonials(fallback.data || []);
+        return;
+      }
+
       setTestimonials(data || []);
     } catch (error) {
-      console.error('Error fetching testimonials:', error);
+      console.error("Error fetching testimonials:", error);
       toast({
         title: "Error",
         description: "Failed to fetch testimonials",
-        variant: "destructive"
+        variant: "destructive",
       });
     } finally {
       setLoading(false);
@@ -86,7 +96,9 @@ const AdminTestimonials = () => {
         author: formData.author,
         role: formData.role,
         avatar: formData.avatar || null,
-        background_image: formData.backgroundImage || null
+        background_image: formData.backgroundImage || null,
+        status: "approved",
+        source: "admin",
       };
 
       if (editingId && editingId !== "new") {

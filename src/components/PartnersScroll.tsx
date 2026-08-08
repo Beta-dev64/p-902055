@@ -1,4 +1,4 @@
-
+﻿
 import React, { useEffect, useState, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -46,9 +46,9 @@ const PartnersScroll = () => {
   const infinitePartners = [...partners, ...partners, ...partners];
 
   return (
-    <section className="w-full py-8 bg-white overflow-hidden">
+    <section className="w-full py-8 bg-background overflow-hidden">
       <div className="text-center mb-8">
-        <p className="text-gray-600 font-medium">Trusted by industry leaders</p>
+        <p className="text-muted-foreground font-medium">Trusted by industry leaders</p>
       </div>
       
       <div className="relative">
