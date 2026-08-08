@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { toast } from "@/components/ui/use-toast";
 
 interface AdminLoginProps {
-  onLogin: () => void;
+  onLogin: (password: string) => void;
 }
 
 const AdminLogin = ({ onLogin }: AdminLoginProps) => {
@@ -20,7 +20,7 @@ const AdminLogin = ({ onLogin }: AdminLoginProps) => {
         title: "Login successful",
         description: "Welcome to the admin dashboard"
       });
-      onLogin();
+      onLogin(password);
     } else {
       toast({
         title: "Invalid password",
