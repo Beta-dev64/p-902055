@@ -106,6 +106,10 @@
   .portfolio-tile { position: relative; display: flex; min-height: 19rem; flex-direction: column; justify-content: flex-end; overflow: hidden; background: #2a211a; }
   .portfolio-tile-1 { grid-row: span 2; min-height: 40rem; }
   .portfolio-tile-2, .portfolio-tile-3 { min-height: 19.5rem; }
+  .partner-track { animation: partner-scroll 38s linear infinite; }
+  .partner-marquee:hover .partner-track, .partner-track:focus-within { animation-play-state: paused; }
+  .partner-logo:focus-visible { outline: 2px solid #de8321; outline-offset: 5px; }
+  @keyframes partner-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
   .field, .academy-field { width: 100%; border: 0; border-bottom: 1px solid rgba(247,241,232,0.24); background: transparent; padding: 1rem 0; color: #f7f1e8; font: inherit; transition: border-color 220ms ease; }
   .field::placeholder, .academy-field::placeholder { color: rgba(247,241,232,0.5); }
   .field:focus, .academy-field:focus { border-color: #de8321; outline: none; }
@@ -129,4 +133,5 @@
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
   .service-card:hover, .portfolio-tile:hover { transform: none; }
+  .partner-track { animation: none; }
 }

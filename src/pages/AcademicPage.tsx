@@ -4,7 +4,7 @@ import { ArrowRight, Check, Code2, Database, BrainCircuit, Play, Sparkles, Users
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import AcademyFooter from "@/components/AcademyFooter";
 import Seo from "@/components/Seo";
 import { supabase } from "@/integrations/supabase/client";
 import frontendDev from "@/assets/frontend-dev.jpg";
@@ -53,7 +53,7 @@ const AcademicPage = () => {
 
         <section id="apply" className="bg-[#1B2430] py-24 text-[#F8F4EE] sm:py-32"><div className="mx-auto grid max-w-[1440px] gap-14 px-5 sm:px-8 lg:grid-cols-[0.8fr_1.2fr] lg:px-12"><div><p className="eyebrow text-[#AFC8E3]">Join the next cohort</p><h2 className="display-title mt-5 max-w-lg">Make your next move a real one.</h2><p className="mt-7 max-w-md leading-relaxed text-[#D3DCE5]">Tell us where you’re starting from and which track you want to explore. We’ll help you choose a useful path.</p><div className="mt-8 flex items-center gap-3 text-sm text-[#D3DCE5]"><Users size={17} className="text-[#AFC8E3]" /> Small enough to be seen. Serious enough to ship.</div></div><form onSubmit={submit} className="grid gap-4 sm:grid-cols-2"><input required aria-label="Full name" placeholder="Full name *" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="academy-field" /><input required type="email" aria-label="Email address" placeholder="Email address *" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="academy-field" /><input required aria-label="Phone number" placeholder="Phone number *" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="academy-field" /><select required aria-label="Preferred track" value={form.course} onChange={(e) => setForm({ ...form, course: e.target.value })} className="academy-field"><option value="">Preferred track *</option>{tracks.map((track) => <option key={track.title}>{track.title}</option>)}</select><textarea aria-label="Your goals" placeholder="What do you want to build?" rows={5} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} className="academy-field sm:col-span-2" /><button disabled={submitting} className="group inline-flex w-fit items-center gap-3 rounded-full bg-[#F5F1EA] px-6 py-4 text-sm font-bold uppercase tracking-[0.12em] text-[#1B2430] transition hover:-translate-y-1 hover:bg-[#AFC8E3] disabled:opacity-60 sm:col-span-2">{submitting ? "Sending application…" : "Apply for a track"}<ArrowRight size={17} className="transition-transform group-hover:translate-x-1" /></button></form></div></section>
       </main>
-      <Footer />
+      <AcademyFooter />
     </div>
   );
 };

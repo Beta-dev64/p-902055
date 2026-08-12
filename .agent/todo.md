@@ -10,3 +10,7 @@
 - [ ] Refine the supplied FuseLabs symbol and wordmark into clean responsive logo lockups for light, dark, compact, favicon, and social-sharing contexts.
 - [ ] Build the agency hero with a cursor-reactive particle field that remains readable, performant, touch-safe, and fully understandable with reduced motion enabled.
 - [ ] Preserve branch `redesign/premium-agency-academy` and document all meaningful design, SEO, media, and architecture decisions.
+- [x] Add a public partner-logo marquee that reads from CMS-managed partner records, stays grayscale by default, and restores source color on hover/focus.
+- [x] Confirm the admin CMS can create, edit, delete, and preview partner logo records with safe null handling.
+- [x] Replace the academy’s inherited agency footer with a warm paper/cobalt academy footer that preserves route access and conversion intent.
+- [x] Verify the marquee and academy footer at desktop and mobile widths, including reduced-motion behavior and empty CMS states.
