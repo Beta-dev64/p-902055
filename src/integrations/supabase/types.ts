@@ -71,6 +71,27 @@ export type Database = {
         }
         Relationships: []
       }
+      form_submissions: {
+        Row: {
+          created_at: string
+          form: string
+          id: string
+          ip_hash: string
+        }
+        Insert: {
+          created_at?: string
+          form: string
+          id?: string
+          ip_hash: string
+        }
+        Update: {
+          created_at?: string
+          form?: string
+          id?: string
+          ip_hash?: string
+        }
+        Relationships: []
+      }
       leads: {
         Row: {
           budget: string | null
@@ -155,6 +176,7 @@ export type Database = {
           image: string | null
           live_url: string | null
           project_images: string[] | null
+          published: boolean
           results: string | null
           slug: string
           solution: string | null
@@ -171,6 +193,7 @@ export type Database = {
           image?: string | null
           live_url?: string | null
           project_images?: string[] | null
+          published?: boolean
           results?: string | null
           slug: string
           solution?: string | null
@@ -187,6 +210,7 @@ export type Database = {
           image?: string | null
           live_url?: string | null
           project_images?: string[] | null
+          published?: boolean
           results?: string | null
           slug?: string
           solution?: string | null
