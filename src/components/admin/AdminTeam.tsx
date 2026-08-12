@@ -144,7 +144,7 @@ const AdminTeam = () => {
     setFormData({
       name: member.name,
       role: member.role,
-      image: member.image,
+      image: member.image || "",
       linkedin: member.linkedin || "",
       twitter: member.twitter || "",
       portfolio: member.portfolio || ""

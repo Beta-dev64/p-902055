@@ -368,7 +368,7 @@ const AdminPortfolios = () => {
         {portfolios.map((portfolio) => (
           <Card key={portfolio.id} className="overflow-hidden">
             <img
-              src={portfolio.image}
+              src={portfolio.image || undefined}
               alt={portfolio.title}
               className="w-full h-48 object-cover"
             />

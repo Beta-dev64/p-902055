@@ -8,16 +8,16 @@ import { Reveal } from "@/components/Reveal";
 interface CaseStudy {
   id: string;
   title: string;
-  description: string;
+  description: string | null;
   slug: string;
-  image: string;
-  tags: string[];
-  challenge: string;
-  solution: string;
-  results: string;
-  live_url: string;
-  project_images: string[];
-  technologies: string[];
+  image: string | null;
+  tags: string[] | null;
+  challenge: string | null;
+  solution: string | null;
+  results: string | null;
+  live_url: string | null;
+  project_images: string[] | null;
+  technologies: string[] | null;
 }
 
 const CaseStudyDetail = () => {
@@ -85,7 +85,7 @@ const CaseStudyDetail = () => {
         }
         path={`/case-study/${caseStudy.slug}`}
         type="article"
-        image={caseStudy.image}
+        image={caseStudy.image || undefined}
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "Article",
@@ -101,7 +101,7 @@ const CaseStudyDetail = () => {
       {/* Hero — top padding clears fixed header so banner content is never covered */}
       <section className="relative min-h-[28rem] overflow-hidden md:min-h-[34rem]">
         <img
-          src={caseStudy.image}
+          src={caseStudy.image || undefined}
           alt={caseStudy.title}
           className="absolute inset-0 h-full w-full object-cover"
         />
@@ -119,7 +119,7 @@ const CaseStudyDetail = () => {
               {caseStudy.title}
             </h1>
             <p className="max-w-2xl text-lg text-white/90">{caseStudy.description}</p>
-            {caseStudy.tags?.length > 0 && (
+            {caseStudy.tags && caseStudy.tags.length > 0 && (
               <div className="mt-6 flex flex-wrap gap-2">
                 {caseStudy.tags.map((tag) => (
                   <span

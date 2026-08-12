@@ -2,6 +2,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
+type Partner = { name: string; logo: string | null };
+
 const PartnersScroll = () => {
   const [scrollDirection, setScrollDirection] = useState('left');
   const lastScrollY = useRef(0);
@@ -22,7 +24,7 @@ const PartnersScroll = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const [partners, setPartners] = useState([]);
+  const [partners, setPartners] = useState<Partner[]>([]);
 
   useEffect(() => {
     fetchPartners();
@@ -60,13 +62,13 @@ const PartnersScroll = () => {
             animationDuration: '60s'
           }}
         >
-          {infinitePartners.map((partner, index) => (
+          {infinitePartners.filter((partner) => partner.logo).map((partner, index) => (
             <div
               key={`${partner.name}-${index}`}
               className="flex-shrink-0 w-32 h-16 flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-300 opacity-60 hover:opacity-100 hover:scale-110"
             >
               <img
-                src={partner.logo}
+                src={partner.logo || undefined}
                 alt={partner.name}
                 className="max-w-full max-h-full object-contain"
               />

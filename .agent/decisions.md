@@ -44,6 +44,30 @@ Lightweight architecture / design decision log. Newest first.
 - **Decision:** WebGL/Three abstract “fusion” hero preferred over scroll-scrub frame sequence for v1.
 - **Consequences:** Optional Higgsfield video pipeline deferred unless needed.
 
+## DEC-006 — Brand naming and route
+
+- **Date:** 2026-08-12
+- **Status:** accepted
+- **Context:** The public brand is being simplified while preserving search/domain continuity.
+- **Decision:** Use **FuseLabs** as the human-facing lockup. Use “FuseLabs IO” only where an existing legal, SEO, or domain context benefits from it. Make `/academy` canonical and redirect `/academic` for compatibility.
+- **Consequences:** New page copy and metadata lead with FuseLabs; old academy links remain recoverable.
+
+## DEC-007 — Distinct academy visual system
+
+- **Date:** 2026-08-12
+- **Status:** accepted
+- **Context:** The academy needs to convert students without feeling like a reskinned agency page.
+- **Decision:** Use warm paper, ink, cobalt annotation, and human learning imagery for the academy. Keep dark cinematic treatment only for the hero and application close.
+- **Consequences:** Agency uses industrial charcoal/amber; academy uses editorial paper/blue while sharing typography discipline and the FuseLabs symbol.
+
+## DEC-008 — Portfolio proof filter
+
+- **Date:** 2026-08-12
+- **Status:** accepted
+- **Context:** Existing portfolio data contains at least one low-quality placeholder-like record.
+- **Decision:** Hide records with obviously filler-looking titles or insufficient descriptions from public portfolio surfaces until they are made credible in the admin CMS.
+- **Consequences:** The public site shows fewer, stronger case files rather than exposing unedited content.
+
 ## Template
 
 ```markdown

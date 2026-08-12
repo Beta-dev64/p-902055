@@ -28,6 +28,8 @@ Track graphics, video, 3D, and motion assets for the redesign.
 | A-005 | Case study media | image | planned | reuse Supabase/public | Treat with CSS |
 | A-006 | Team headshots | image | planned | TBD | |
 | A-007 | OG / social share image | image | planned | TBD | SEO |
+| A-008 | Academy hero video | video | done | `public/academy-hero-student-success.mp4` | 10 seconds; Black student; darkened overlay-safe composition |
+| A-009 | Refined FuseLabs lockup | image | done | `public/fuselabs-logo-refined.png` | Generated refinement of the supplied mark/wordmark concept |
 
 ---
 
@@ -57,3 +59,4 @@ Smooth, steady, product-film motion. No morphing materials. No text.
 - Hero media: directional vignette + restrained grade
 - Cards with text on image: brightness 0.5–0.6 + bottom gradient
 - Never drop raw untreated photos into layout
+- Academy hero video: muted, autoplay, loop, playsInline, poster fallback, dark overlay for text contrast

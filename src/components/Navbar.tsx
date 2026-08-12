@@ -1,195 +1,63 @@
-import React, { useEffect, useState } from "react";
-import { cn } from "@/lib/utils";
+// Style: Molten Systems — quiet fixed navigation, amber only for the primary action, full-screen menu for focus.
+import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { cn } from "@/lib/utils";
+import BrandLockup from "./BrandLockup";
 
-type NavItem = {
-  label: string;
-  to?: string;
-  href?: string;
-};
-
-const NAV_ITEMS: NavItem[] = [
-  { label: "Home", to: "/" },
-  { label: "Services", href: "/#features" },
+const NAV_ITEMS = [
+  { label: "Services", to: "/#services" },
   { label: "Portfolio", to: "/portfolio" },
-  { label: "Academy", to: "/academic" },
-  { label: "Our Team", href: "/#testimonials" },
-  { label: "Contact", href: "/#details" },
+  { label: "Academy", to: "/academy" },
+  { label: "Contact", to: "/#contact" },
 ];
 
 const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 12);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   useEffect(() => {
-    closeMenu();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setOpen(false);
+    document.body.style.overflow = "";
   }, [location.pathname]);
 
-  useEffect(() => {
-    if (!isMenuOpen) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") closeMenu();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [isMenuOpen]);
-
-  const openMenu = () => {
-    setIsMenuOpen(true);
-    document.body.style.overflow = "hidden";
-  };
-
-  const closeMenu = () => {
-    setIsMenuOpen(false);
-    document.body.style.overflow = "";
-  };
-
-  const handleNavClick = () => {
-    closeMenu();
+  const toggle = () => {
+    setOpen((current) => {
+      document.body.style.overflow = current ? "" : "hidden";
+      return !current;
+    });
   };
 
   return (
     <>
-      <header
-        className={cn(
-          "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-          isScrolled
-            ? "border-b border-border/60 bg-background/75 py-3 backdrop-blur-xl"
-            : "bg-transparent py-4"
-        )}
-      >
-        <div className="container flex items-center justify-between px-4 sm:px-6 lg:px-8">
-          <Link
-            to="/"
-            className="flex items-center gap-2"
-            aria-label="FuseLabs IO home"
-            onClick={closeMenu}
-          >
-            <img src="/logo.svg" alt="FuseLabs IO" className="h-7 sm:h-8" />
-            <span className="hidden font-display text-sm font-semibold tracking-[0.18em] text-foreground uppercase sm:inline">
-              FuseLabs
-            </span>
-          </Link>
-
-          <div className="flex items-center gap-2 sm:gap-3">
-            <ThemeToggle />
-            <Link
-              to="/#details"
-              className="btn-motion hidden rounded-sm bg-primary px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-primary-foreground sm:inline-flex"
-            >
-              Start a Project
-            </Link>
-            <button
-              type="button"
-              className="btn-motion inline-flex h-10 w-10 items-center justify-center rounded-sm border border-border/70 bg-background/40 text-foreground backdrop-blur-md"
-              onClick={openMenu}
-              aria-label="Open menu"
-              aria-expanded={isMenuOpen}
-              aria-controls="fullscreen-nav"
-            >
-              <Menu size={20} strokeWidth={1.75} />
+      <header className={cn("fixed inset-x-0 top-0 z-50 transition-all duration-500", scrolled ? "border-b border-white/10 bg-[#100e0c]/85 py-3 backdrop-blur-2xl" : "bg-transparent py-5")}>
+        <div className="mx-auto flex max-w-[1440px] items-center justify-between px-5 sm:px-8 lg:px-12">
+          <Link to="/" aria-label="FuseLabs home" className="focus-ring"><BrandLockup light /></Link>
+          <nav className="hidden items-center gap-8 lg:flex" aria-label="Primary navigation">
+            {NAV_ITEMS.map((item) => <Link key={item.label} to={item.to} className="nav-quiet">{item.label}</Link>)}
+          </nav>
+          <div className="flex items-center gap-3">
+            <Link to="/#contact" className="hidden rounded-full bg-[#DE8321] px-5 py-3 text-[0.68rem] font-bold uppercase tracking-[0.16em] text-[#17110b] transition-transform duration-300 hover:-translate-y-0.5 hover:bg-[#F2CDA6] sm:inline-flex">Start a Project</Link>
+            <button type="button" onClick={toggle} aria-expanded={open} aria-controls="fuselabs-menu" aria-label={open ? "Close menu" : "Open menu"} className="focus-ring inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.04] text-[#F7F1E8] transition hover:border-[#DE8321]/60 hover:text-[#DE8321] lg:hidden">
+              {open ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
         </div>
       </header>
-
-      {/* Full-screen navigation overlay */}
-      <div
-        id="fullscreen-nav"
-        role="dialog"
-        aria-modal="true"
-        aria-hidden={!isMenuOpen}
-        className={cn(
-          "fixed inset-0 z-[60] flex min-h-[100dvh] flex-col transition-[opacity,visibility] duration-300 ease-out",
-          /* Light: solid amber field (reference energy). Dark: void charcoal. */
-          "bg-primary text-white dark:bg-background-50 dark:text-text-950",
-          isMenuOpen
-            ? "pointer-events-auto visible opacity-100"
-            : "pointer-events-none invisible opacity-0"
-        )}
-      >
-        <div className="flex items-center justify-between px-4 py-4 sm:px-8">
-          <Link
-            to="/"
-            onClick={handleNavClick}
-            className="font-display text-sm font-semibold uppercase tracking-[0.2em] text-white dark:text-text-950"
-          >
-            FuseLabs
-          </Link>
-
-          <div className="flex items-center gap-3">
-            <ThemeToggle variant="menu" />
-            <button
-              type="button"
-              onClick={closeMenu}
-              aria-label="Close menu"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-sm bg-primary-50 text-accent-500 transition-transform duration-200 hover:scale-105 dark:bg-primary-500 dark:text-background-50"
-            >
-              <X size={22} strokeWidth={2} />
-            </button>
-          </div>
-        </div>
-
-        <nav className="flex flex-1 flex-col items-center justify-center gap-5 px-6 pb-16 sm:gap-7">
-          {NAV_ITEMS.map((item, index) => {
-            const className = cn(
-              "nav-fullscreen-link font-display text-[clamp(2rem,7vw,3.5rem)] font-semibold uppercase leading-none tracking-[0.04em]",
-              /* Orange (light) menu: white → black on hover. Dark void menu: cream → amber. */
-              "text-white hover:text-black dark:text-text-950 dark:hover:text-primary-500",
-              isMenuOpen && "nav-fullscreen-enter"
-            );
-            const style = { animationDelay: `${index * 60}ms` } as React.CSSProperties;
-
-            if (item.to) {
-              return (
-                <Link
-                  key={item.label}
-                  to={item.to}
-                  className={className}
-                  style={style}
-                  onClick={handleNavClick}
-                >
-                  {item.label}
-                </Link>
-              );
-            }
-
-            return (
-              <a
-                key={item.label}
-                href={item.href}
-                className={className}
-                style={style}
-                onClick={handleNavClick}
-              >
-                {item.label}
-              </a>
-            );
-          })}
-
-          <a
-            href="/#details"
-            onClick={handleNavClick}
-            className={cn(
-              "btn-motion mt-6 inline-flex items-center rounded-sm px-6 py-3 text-xs font-semibold uppercase tracking-[0.16em]",
-              "bg-background text-primary-700 dark:bg-primary-500 dark:text-background-50",
-              isMenuOpen && "nav-fullscreen-enter"
-            )}
-            style={{ animationDelay: `${NAV_ITEMS.length * 60}ms` }}
-          >
-            Start a Project
-          </a>
+      <div id="fuselabs-menu" className={cn("fixed inset-0 z-40 flex flex-col bg-[#110f0d] px-6 pb-10 pt-28 transition-[opacity,visibility] duration-300 lg:hidden", open ? "visible opacity-100" : "invisible pointer-events-none opacity-0")}>
+        <p className="eyebrow text-[#DE8321]">Navigate the system</p>
+        <nav className="mt-8 flex flex-1 flex-col gap-5" aria-label="Mobile navigation">
+          {NAV_ITEMS.map((item, index) => <Link key={item.label} to={item.to} className="font-display text-[clamp(2.6rem,13vw,5rem)] font-medium leading-none tracking-[-0.07em] text-[#F7F1E8] transition-colors hover:text-[#DE8321]" style={{ transitionDelay: `${index * 40}ms` }}>{item.label}</Link>)}
         </nav>
+        <Link to="/#contact" className="inline-flex w-full items-center justify-center rounded-full bg-[#DE8321] px-6 py-4 text-sm font-bold uppercase tracking-[0.14em] text-[#17110b]">Start a Project</Link>
       </div>
     </>
   );

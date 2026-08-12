@@ -13,7 +13,7 @@ Track each product/UI feature and its implementation status.
 | F-001 | Floating glass navigation | planned | Morph on scroll |
 | F-002 | Mobile fullscreen menu | planned | |
 | F-003 | Brand loader lockup | planned | FUSE / LABS split optional |
-| F-004 | Hero + WebGL fusion field | planned | One elaborate motion moment |
+| F-004 | Hero + cursor-reactive signal field | done | Canvas particle field; reduced-motion and touch fallback |
 | F-005 | Dual CTAs (Project / Academy) | planned | Primary amber = Project |
 | F-006 | Proof strip (60 days + guarantee) | planned | |
 | F-007 | Partner logo marquee | planned | Dual-direction preferred |
@@ -33,7 +33,7 @@ Track each product/UI feature and its implementation status.
 | F-020 | Home page redesign | planned | |
 | F-021 | Portfolio index | planned | |
 | F-022 | Case study detail | planned | Challenge/solution/gallery/results/tech/live |
-| F-023 | Academy page | planned | Frontend/Backend/AI-ML |
+| F-023 | Academy page | done | Distinct paper/ink/cobalt system; generated video hero; application CTA |
 | F-024 | Contact / project inquiry | planned | |
 | F-025 | Privacy Policy | planned | |
 | F-026 | Terms of Service | planned | |
@@ -52,18 +52,18 @@ Track each product/UI feature and its implementation status.
 
 | ID | Feature | Status | Notes |
 |---|---|---|---|
-| F-040 | Color tokens (user scale) | planned | See REQUIREMENTS.md |
+| F-040 | Color tokens (user scale) | done | Agency charcoal/amber + academy paper/cobalt application |
 | F-041 | Tailwind color bridge | planned | |
 | F-042 | Typography system | planned | Cabinet/Clash + General Sans/Outfit |
 | F-043 | Grain overlay | planned | Dark sections |
 | F-044 | Lenis + GSAP motion core | planned | |
-| F-045 | Reduced motion support | planned | |
+| F-045 | Reduced motion support | done | Canvas freezes to a low-cost field and CSS motion is suppressed |
 
 ## SEO
 
 | ID | Feature | Status | Notes |
 |---|---|---|---|
-| F-050 | Per-page meta titles/descriptions | planned | |
+| F-050 | Per-page meta titles/descriptions | done | Home, Portfolio, Academy, case-study helper retained |
 | F-051 | JSON-LD Organization | planned | |
 | F-052 | JSON-LD WebSite | planned | |
 | F-053 | JSON-LD Course | planned | Academy |

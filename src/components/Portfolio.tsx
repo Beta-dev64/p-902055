@@ -1,126 +1,30 @@
-﻿
-import React, { useState, useEffect } from "react";
+﻿// Style: Molten Systems — case studies are evidence surfaces, not a repetitive card grid.
+import { useEffect, useState } from "react";
+import { ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 
-interface CaseStudy {
-  id: string;
-  slug: string;
-  title: string;
-  description: string | null;
-  image: string | null;
-  tags: string[] | null;
-}
+type CaseStudy = { id: string; slug: string; title: string; description: string | null; image: string | null; tags: string[] | null };
 
 const Portfolio = () => {
-  const [caseStudies, setCaseStudies] = useState<CaseStudy[]>([]);
+  const [studies, setStudies] = useState<CaseStudy[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchPortfolios();
+    supabase.from("portfolios").select("*").order("created_at", { ascending: false }).limit(3).then(({ data }) => {
+      setStudies(((data as CaseStudy[]) || []).filter((study) => {
+        const haystack = `${study.title || ""} ${study.description || ""}`.toLowerCase();
+        return study.title.trim().length > 8 && (study.description || "").trim().length > 30 && !/hjjk|best design|placeholder/.test(haystack);
+      }));
+      setLoading(false);
+    });
   }, []);
 
-  const fetchPortfolios = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('portfolios')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(3);
-      
-      if (error) throw error;
-      setCaseStudies(data || []);
-    } catch (error) {
-      console.error('Error fetching portfolios:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
-    <section className="w-full py-12 sm:py-16 bg-muted" id="portfolio">
-      <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
-        <div className="text-center mb-12 sm:mb-16 animate-on-scroll">
-          <div className="flex items-center justify-center gap-4 mb-8">
-            <div className="pulse-chip">
-              <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-pulse-500 text-white mr-2"></span>
-              <span>Portfolio</span>
-            </div>
-          </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold tracking-tight text-foreground mb-4">
-            Our Success Stories
-          </h2>
-          <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto">
-            Explore how we've helped businesses transform their digital presence with cutting-edge software solutions.
-          </p>
-        </div>
-
-        <div className="flex flex-col space-y-6 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-8 md:space-y-0 animate-on-scroll mb-12">
-          {loading ? (
-            <div className="col-span-3 text-center py-8">
-              <p className="text-muted-foreground">Loading portfolios...</p>
-            </div>
-          ) : caseStudies.length === 0 ? (
-            <div className="col-span-3 text-center py-8">
-              <p className="text-muted-foreground">No portfolios available yet.</p>
-            </div>
-          ) : (
-            caseStudies.map((study) => (
-              <Link
-                key={study.id}
-                to={`/case-study/${study.slug}`}
-                className="group bg-card border border-border rounded-2xl overflow-hidden shadow-elegant hover:shadow-elegant-hover transition-all duration-300 hover:-translate-y-2 flex flex-col"
-              >
-                <div className="aspect-video overflow-hidden">
-                  {study.image && (
-                    <img
-                      src={study.image}
-                      alt={study.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  )}
-                </div>
-                <div className="p-6 flex-1 flex flex-col">
-                  <div className="flex flex-wrap gap-2 mb-3">
-                    {study.tags?.map((tag) => (
-                      <span
-                        key={tag}
-                        className="rounded-full bg-primary/15 px-2 py-1 text-xs font-medium text-primary"
-                      >
-                        {tag}
-                      </span>
-                    )) || []}
-                  </div>
-                  <h3 className="text-xl font-display font-semibold mb-3 group-hover:text-pulse-500 transition-colors">
-                    {study.title}
-                  </h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed flex-1">
-                    {study.description || "No description available"}
-                  </p>
-                  <div className="mt-4 flex items-center text-pulse-500 font-medium text-sm">
-                    View Case Study
-                    <svg className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </div>
-                </div>
-              </Link>
-            ))
-          )}
-        </div>
-
-        {/* See More Button */}
-        <div className="text-center">
-          <Link
-            to="/portfolio"
-            className="inline-flex items-center justify-center btn-motion bg-pulse-500 hover:bg-pulse-600 text-white font-medium py-3 px-8 rounded-full transition-colors duration-300 group"
-          >
-            See All Projects
-            <svg className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </Link>
-        </div>
+    <section id="portfolio" className="bg-[#F3EEE6] py-24 text-[#171311] sm:py-32">
+      <div className="mx-auto max-w-[1440px] px-5 sm:px-8 lg:px-12">
+        <div className="flex flex-col justify-between gap-8 border-b border-[#D7CFC4] pb-10 lg:flex-row lg:items-end"><div><p className="eyebrow text-[#B1691B]">Selected work</p><h2 className="display-title mt-5 max-w-2xl">Proof, not promises.</h2></div><Link to="/portfolio" className="group inline-flex items-center gap-3 text-sm font-bold uppercase tracking-[0.12em] text-[#171311]">View all work <ArrowUpRight size={17} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" /></Link></div>
+        {loading ? <div className="py-20 text-sm text-[#6D645B]">Loading selected work…</div> : studies.length === 0 ? <div className="py-20 text-sm text-[#6D645B]">Case studies will appear here as the portfolio grows.</div> : <div className="portfolio-mosaic mt-10">{studies.map((study, index) => <Link key={study.id} to={`/case-study/${study.slug}`} className={`portfolio-tile portfolio-tile-${index + 1} group`}>{study.image && <img src={study.image} alt="" className="absolute inset-0 h-full w-full object-cover grayscale transition duration-700 group-hover:scale-105 group-hover:grayscale-0" />}<div className="absolute inset-0 bg-gradient-to-t from-[#171311]/95 via-[#171311]/20 to-transparent" /><div className="relative mt-auto p-6 text-[#F7F1E8] sm:p-8"><div className="flex flex-wrap gap-2">{(study.tags || []).slice(0, 3).map((tag) => <span key={tag} className="font-mono text-[0.62rem] uppercase tracking-[0.12em] text-[#F2CDA6]">{tag}</span>)}</div><h3 className="mt-4 max-w-lg font-display text-3xl tracking-[-0.06em] sm:text-4xl">{study.title}</h3><p className="mt-3 max-w-md text-sm leading-relaxed text-[#D0C6BB]">{study.description || "A FuseLabs case study."}</p><span className="mt-6 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-[#F2CDA6]">Read case study <ArrowUpRight size={15} /></span></div></Link>)}</div>}
       </div>
     </section>
   );

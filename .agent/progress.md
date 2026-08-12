@@ -1,9 +1,9 @@
 ﻿# Progress
 
 **Project:** FuseLabs IO redesign
-**Last updated:** 2026-08-08
-**Current phase:** 2-3 — Shell polish + motion + theme surfaces
-**Overall status:** `[x]` Motion/theme pass verified
+**Last updated:** 2026-08-12
+**Current phase:** 4-7 — Agency + Academy redesign, media, SEO, and QA
+**Overall status:** `[~]` Premium redesign implemented; final branch review pending
 
 ## Phase 0 — Scaffolding
 
@@ -35,6 +35,18 @@
 - [ ] Lenis + GSAP
 - [~] SEO helpers (existing Seo component)
 
+## Phase 3 — Premium redesign
+
+- [x] Canonical `/academy` route with `/academic` redirect
+- [x] Agency Molten Systems hero with cursor-reactive particle field
+- [x] Agency asymmetric services, process, portfolio, academy teaser, and inquiry flow
+- [x] Academy Editorial Learning House visual system with distinct application CTA
+- [x] Generated 10-second Black-student academy hero video staged in `public/`
+- [x] Refined FuseLabs lockup concept and inline responsive brand mark
+- [x] SEO helper and document head updated for FuseLabs naming and canonical metadata
+- [x] Portfolio proof surface filters obvious placeholder records
+- [x] Active preview type-check and production build pass
+
 ## Session log
 
 | Date | Summary |
@@ -43,3 +55,4 @@
 | 2026-08-08 | Motion + theme pass: ScrollToTop, reveal, nav translate-x hover, btn-motion, case study header clearance, dark surfaces site-wide. |
 | 2026-08-08 | Cloned upstream, branch redesign/ose-builds. Wired FuseLabs color tokens, ThemeProvider, full-screen nav + theme toggle. |
 | 2026-08-07 | Created folder, REQUIREMENTS.md, and `.agent` tracking set. |
+| 2026-08-12 | Created branch `redesign/premium-agency-academy`; implemented the agency/academy redesign, staged generated media, improved SEO, and verified managed preview screenshots. |

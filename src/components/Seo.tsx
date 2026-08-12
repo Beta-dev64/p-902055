@@ -1,7 +1,8 @@
+// Style: SEO infrastructure is invisible but intentional — every public route gets a stable FuseLabs identity and share preview.
 import React from "react";
 import { Helmet } from "react-helmet-async";
 
-const SITE_URL = "https://fuselabsio.lovable.app";
+const SITE_URL = (import.meta.env.VITE_SITE_URL || "https://fuselabsio.lovable.app").replace(/\/$/, "");
 
 interface SeoProps {
   title: string;
@@ -25,8 +26,11 @@ const Seo = ({
     <Helmet>
       <title>{title}</title>
       <meta name="description" content={description} />
+      <meta name="robots" content="index,follow,max-image-preview:large" />
       <link rel="canonical" href={url} />
 
+      <meta property="og:site_name" content="FuseLabs" />
+      <meta property="og:locale" content="en_NG" />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:type" content={type} />
@@ -37,6 +41,7 @@ const Seo = ({
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={image} />
+      <meta name="twitter:site" content="@fuselabsio" />
 
       {jsonLd && (
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
