@@ -14,3 +14,8 @@
 - [x] Confirm the admin CMS can create, edit, delete, and preview partner logo records with safe null handling.
 - [x] Replace the academy’s inherited agency footer with a warm paper/cobalt academy footer that preserves route access and conversion intent.
 - [x] Verify the marquee and academy footer at desktop and mobile widths, including reduced-motion behavior and empty CMS states.
+- [ ] Preserve the current redesign in a new git branch before beginning the Eleos-inspired refinement.
+- [ ] Study the Eleos site’s motion, pacing, editorial footer, and full-width wordmark treatment as a reference rather than copying content.
+- [ ] Add a viewport-spanning FuseLabs wordmark treatment with roughly the lower half cropped by the footer boundary.
+- [ ] Strengthen motion choreography, scroll reveals, hover transitions, and footer composition without harming performance or reduced-motion behavior.
+- [ ] Commit and push the refinement branch, then save a new managed checkpoint after visual verification.
