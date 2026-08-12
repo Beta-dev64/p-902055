@@ -6,7 +6,6 @@ import { supabase } from "@/integrations/supabase/client";
 const emptyForm = {
   author: "",
   role: "",
-  email: "",
   content: "",
   rating: 5,
 };
@@ -36,7 +35,6 @@ const ReviewForm = () => {
           author: formData.author.trim(),
           role: formData.role.trim(),
           content: formData.content.trim(),
-          email: formData.email.trim() || null,
           rating: formData.rating,
           status: "pending",
           source: "visitor",
@@ -120,15 +118,6 @@ const ReviewForm = () => {
                   required
                 />
               </div>
-
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="Email (optional, not shown publicly)"
-                className="w-full rounded-xl border border-border bg-background px-4 py-3 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-              />
 
               <div>
                 <p className="mb-2 text-sm font-medium text-foreground">Rating</p>

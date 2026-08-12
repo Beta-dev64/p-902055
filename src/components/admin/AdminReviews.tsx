@@ -14,7 +14,6 @@ interface Review {
   content: string;
   author: string;
   role: string;
-  email: string | null;
   rating: number | null;
   status: ReviewStatus;
   source: string;
@@ -31,7 +30,6 @@ const AdminReviews = () => {
     content: "",
     author: "",
     role: "",
-    email: "",
     rating: "5",
   });
 
@@ -95,7 +93,6 @@ const AdminReviews = () => {
       content: review.content,
       author: review.author,
       role: review.role,
-      email: review.email || "",
       rating: String(review.rating ?? 5),
     });
   };
@@ -118,7 +115,6 @@ const AdminReviews = () => {
           content: formData.content,
           author: formData.author,
           role: formData.role,
-          email: formData.email || null,
           rating: Number(formData.rating) || null,
         })
         .eq("id", editingId);
@@ -207,11 +203,6 @@ const AdminReviews = () => {
               onChange={(e) => setFormData({ ...formData, role: e.target.value })}
             />
             <Input
-              placeholder="Email"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            />
-            <Input
               type="number"
               min={1}
               max={5}
@@ -257,7 +248,6 @@ const AdminReviews = () => {
                   </div>
                   <p className="text-sm text-muted-foreground">
                     {review.role}
-                    {review.email ? ` · ${review.email}` : ""}
                   </p>
                   <p className="mt-1 text-xs text-muted-foreground">
                     {new Date(review.created_at).toLocaleString()}
