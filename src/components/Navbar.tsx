@@ -16,6 +16,9 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const location = useLocation();
+  const isAcademy = location.pathname === "/academy" || location.pathname === "/academic";
+  const ctaLabel = isAcademy ? "Join the cohort" : "Start a Project";
+  const ctaTo = isAcademy ? "/academy#apply" : "/#contact";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -45,7 +48,7 @@ const Navbar = () => {
             {NAV_ITEMS.map((item) => <Link key={item.label} to={item.to} className="nav-quiet">{item.label}</Link>)}
           </nav>
           <div className="flex items-center gap-3">
-            <Link to="/#contact" className="hidden rounded-full bg-[#DE8321] px-5 py-3 text-[0.68rem] font-bold uppercase tracking-[0.16em] text-[#17110b] transition-transform duration-300 hover:-translate-y-0.5 hover:bg-[#F2CDA6] sm:inline-flex">Start a Project</Link>
+            <Link to={ctaTo} className={cn("hidden rounded-full px-5 py-3 text-[0.68rem] font-bold uppercase tracking-[0.16em] transition-transform duration-300 hover:-translate-y-0.5 sm:inline-flex", isAcademy ? "bg-[#F5F1EA] text-[#1B2430] hover:bg-[#AFC8E3]" : "bg-[#DE8321] text-[#17110b] hover:bg-[#F2CDA6]")}>{ctaLabel}</Link>
             <button type="button" onClick={toggle} aria-expanded={open} aria-controls="fuselabs-menu" aria-label={open ? "Close menu" : "Open menu"} className="focus-ring inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-white/[0.04] text-[#F7F1E8] transition hover:border-[#DE8321]/60 hover:text-[#DE8321] lg:hidden">
               {open ? <X size={20} /> : <Menu size={20} />}
             </button>
@@ -57,7 +60,7 @@ const Navbar = () => {
         <nav className="mt-8 flex flex-1 flex-col gap-5" aria-label="Mobile navigation">
           {NAV_ITEMS.map((item, index) => <Link key={item.label} to={item.to} className="font-display text-[clamp(2.6rem,13vw,5rem)] font-medium leading-none tracking-[-0.07em] text-[#F7F1E8] transition-colors hover:text-[#DE8321]" style={{ transitionDelay: `${index * 40}ms` }}>{item.label}</Link>)}
         </nav>
-        <Link to="/#contact" className="inline-flex w-full items-center justify-center rounded-full bg-[#DE8321] px-6 py-4 text-sm font-bold uppercase tracking-[0.14em] text-[#17110b]">Start a Project</Link>
+        <Link to={ctaTo} className={cn("inline-flex w-full items-center justify-center rounded-full px-6 py-4 text-sm font-bold uppercase tracking-[0.14em]", isAcademy ? "bg-[#F5F1EA] text-[#1B2430]" : "bg-[#DE8321] text-[#17110b]")}>{ctaLabel}</Link>
       </div>
     </>
   );
