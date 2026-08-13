@@ -45,7 +45,7 @@ const Navbar = () => {
         <div className="mx-auto flex max-w-[1440px] items-center justify-between px-5 sm:px-8 lg:px-12">
           <Link to="/" aria-label="FuseLabs home" className="focus-ring"><BrandLockup light /></Link>
           <nav className="hidden items-center gap-8 lg:flex" aria-label="Primary navigation">
-            {NAV_ITEMS.map((item) => <Link key={item.label} to={item.to} className="nav-quiet">{item.label}</Link>)}
+            {NAV_ITEMS.map((item, index) => <Link key={item.label} to={item.to} className="nav-quiet"><span className="nav-index">0{index + 1}</span>{item.label}</Link>)}
           </nav>
           <div className="flex items-center gap-3">
             <Link to={ctaTo} className={cn("hidden rounded-full px-5 py-3 text-[0.68rem] font-bold uppercase tracking-[0.16em] transition-transform duration-300 hover:-translate-y-0.5 sm:inline-flex", isAcademy ? "bg-[#F5F1EA] text-[#1B2430] hover:bg-[#AFC8E3]" : "bg-[#DE8321] text-[#17110b] hover:bg-[#F2CDA6]")}>{ctaLabel}</Link>

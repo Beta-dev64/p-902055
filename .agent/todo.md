@@ -19,3 +19,8 @@
 - [x] Add a viewport-spanning FuseLabs wordmark treatment with roughly the lower half cropped by the footer boundary.
 - [x] Strengthen motion choreography, scroll reveals, hover transitions, and footer composition without harming performance or reduced-motion behavior.
 - [ ] Commit and push the refinement branch, then save a new managed checkpoint after visual verification.
+- [x] Evaluate Antigravity, Lamalama, and The Web Addicts through direct browser inspection and preserve reference notes/screenshots.
+- [x] Make Space Grotesk the primary brand typeface across agency, academy, CMS, and shared utility surfaces.
+- [x] Rework the full system: navigation, hero, section rhythm, proof surfaces, project presentation, academy journey, footer, and motion language.
+- [x] Preserve Supabase, admin CMS, partner marquee, SEO, forms, routes, and reduced-motion/accessibility behavior during the redesign.
+- [x] Verify the redesigned system on desktop and mobile, then commit, push, and save a managed checkpoint.

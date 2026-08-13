@@ -1,5 +1,5 @@
 /* Style: Molten Systems agency + Editorial Learning House academy — warm charcoal, restrained amber, paper/ink learning surfaces, and motion that communicates progression. */
-@import url("https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@500,700,800&f[]=general-sans@400,500,600,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap");
 
 @font-face {
   font-family: "Brockmann";
@@ -85,12 +85,12 @@
 }
 
 @layer components {
-  .font-display { font-family: "Cabinet Grotesk", "Brockmann", sans-serif; }
-  .font-sans { font-family: "General Sans", "Brockmann", sans-serif; }
+  .font-display { font-family: "Space Grotesk", sans-serif; }
+  .font-sans { font-family: "Space Grotesk", sans-serif; }
   .focus-ring { outline: none; }
   .focus-ring:focus-visible { outline: 2px solid #de8321; outline-offset: 5px; }
   .eyebrow { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.16em; line-height: 1.2; text-transform: uppercase; }
-  .display-title { font-family: "Cabinet Grotesk", "Brockmann", sans-serif; font-size: clamp(3.3rem, 6.4vw, 7.2rem); font-weight: 500; letter-spacing: -0.085em; line-height: 0.88; }
+  .display-title { font-family: "Space Grotesk", sans-serif; font-size: clamp(3.3rem, 6.4vw, 7.2rem); font-weight: 500; letter-spacing: -0.085em; line-height: 0.88; }
   .agency-page, .academy-page { animation: page-enter 900ms cubic-bezier(0.23, 1, 0.32, 1) both; }
   .hero-stagger { opacity: 0; transform: translateY(22px); animation: hero-rise 900ms cubic-bezier(0.23, 1, 0.32, 1) forwards; }
   .hero-stagger-1 { animation-delay: 120ms; }
@@ -100,11 +100,12 @@
   .hero-stagger-5 { animation-delay: 450ms; }
   .hero-stagger-6 { animation-delay: 560ms; }
   .footer-poster { min-height: 38rem; }
-  .footer-wordmark { position: absolute; left: 50%; bottom: -0.2em; z-index: 0; width: 110vw; transform: translateX(-50%); white-space: nowrap; font-family: "Cabinet Grotesk", "Brockmann", sans-serif; font-size: clamp(8rem, 23vw, 24rem); font-weight: 500; letter-spacing: -0.11em; line-height: 0.68; text-align: center; color: rgba(247, 241, 232, 0.045); pointer-events: none; user-select: none; }
+  .footer-wordmark { position: absolute; left: 50%; bottom: -0.2em; z-index: 0; width: 110vw; transform: translateX(-50%); white-space: nowrap; font-family: "Space Grotesk", sans-serif; font-size: clamp(8rem, 23vw, 24rem); font-weight: 500; letter-spacing: -0.11em; line-height: 0.68; text-align: center; color: rgba(247, 241, 232, 0.045); pointer-events: none; user-select: none; }
   .academy-footer-wordmark { color: rgba(27, 36, 48, 0.075); }
   @keyframes page-enter { from { opacity: 0; } to { opacity: 1; } }
   @keyframes hero-rise { to { opacity: 1; transform: translateY(0); } }
-  .nav-quiet { color: rgba(247,241,232,0.7); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; transition: color 240ms ease; }
+  .nav-quiet { display: inline-flex; align-items: center; gap: 0.45rem; color: rgba(247,241,232,0.7); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; transition: color 240ms ease; }
+  .nav-index { color: #de8321; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.58rem; letter-spacing: 0.04em; opacity: 0.9; }
   .nav-quiet:hover { color: #f2cda6; }
   .hero-grid { background-image: linear-gradient(rgba(247,241,232,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(247,241,232,0.05) 1px, transparent 1px); background-position: center; background-size: 80px 80px; mask-image: linear-gradient(to bottom, transparent, black 15%, black 78%, transparent); }
   .service-mosaic { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: #d7cfc4; }
@@ -119,10 +120,23 @@
   .portfolio-tile { position: relative; display: flex; min-height: 19rem; flex-direction: column; justify-content: flex-end; overflow: hidden; background: #2a211a; }
   .portfolio-tile-1 { grid-row: span 2; min-height: 40rem; }
   .portfolio-tile-2, .portfolio-tile-3 { min-height: 19.5rem; }
+  .project-list { border-top: 1px solid #d7cfc4; }
+  .project-row { position: relative; display: grid; grid-template-columns: 4rem minmax(0, 1fr) 16rem 6.5rem; gap: 1.5rem; align-items: center; min-height: 15rem; padding: 2rem 0; border-bottom: 1px solid #d7cfc4; overflow: hidden; transition: background 360ms ease, color 360ms ease, padding 360ms ease; }
+  .project-row:hover, .project-row:focus-visible { padding-left: 1.5rem; padding-right: 1.5rem; background: #171311; color: #f7f1e8; outline: none; }
+  .project-row:hover .project-meta p, .project-row:focus-visible .project-meta p { color: #b9ada0; }
+  .project-row:hover .project-meta span, .project-row:focus-visible .project-meta span, .project-row:hover .project-number, .project-row:focus-visible .project-number { color: #f2cda6; }
+  .project-art { position: relative; height: 9.5rem; overflow: hidden; background: #d7cfc4; }
+  .project-art img { opacity: 0.72; }
+  .project-arrow { position: absolute; right: 0.75rem; top: 0.75rem; display: grid; height: 2.5rem; width: 2.5rem; place-items: center; border-radius: 999px; background: #f7f1e8; color: #171311; opacity: 0; transform: translateY(0.5rem); transition: opacity 260ms ease, transform 260ms ease; }
+  .project-row:hover .project-arrow, .project-row:focus-visible .project-arrow { opacity: 1; transform: translateY(0); }
+  .project-open { display: inline-flex; align-items: center; gap: 0.4rem; justify-self: end; }
   .partner-track { animation: partner-scroll 38s linear infinite; }
   .partner-marquee:hover .partner-track, .partner-track:focus-within { animation-play-state: paused; }
   .partner-logo:focus-visible { outline: 2px solid #de8321; outline-offset: 5px; }
   @keyframes partner-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .signal-ticker-track { animation: signal-ticker 26s linear infinite; }
+  .signal-ticker:hover .signal-ticker-track { animation-play-state: paused; }
+  @keyframes signal-ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
   .field, .academy-field { width: 100%; border: 0; border-bottom: 1px solid rgba(247,241,232,0.24); background: transparent; padding: 1rem 0; color: #f7f1e8; font: inherit; transition: border-color 220ms ease; }
   .field::placeholder, .academy-field::placeholder { color: rgba(247,241,232,0.5); }
   .field:focus, .academy-field:focus { border-color: #de8321; outline: none; }
@@ -132,7 +146,7 @@
   .reveal, .animate-on-scroll { opacity: 1; transform: none; }
   .glass-card { border: 1px solid hsl(var(--border)); background: hsl(var(--card) / 0.8); }
   .section-container { width: 100%; max-width: 1280px; margin: 0 auto; padding: 4rem 1.25rem; }
-  .section-title { font-family: "Cabinet Grotesk", "Brockmann", sans-serif; font-size: clamp(2.75rem, 5vw, 5rem); letter-spacing: -0.07em; line-height: 0.9; }
+  .section-title { font-family: "Space Grotesk", sans-serif; font-size: clamp(2.75rem, 5vw, 5rem); letter-spacing: -0.07em; line-height: 0.9; }
   .section-subtitle { max-width: 42rem; color: hsl(var(--muted-foreground)); font-size: 1.1rem; line-height: 1.6; }
 }
 
@@ -141,11 +155,16 @@
   .service-wide, .portfolio-tile-1 { grid-column: auto; grid-row: auto; }
   .service-card, .service-tall, .service-wide, .service-compact, .portfolio-tile, .portfolio-tile-1 { min-height: 17rem; }
   .process-step, .process-step:not(:first-child) { border-right: 0; padding-left: 0; }
+  .project-row { grid-template-columns: 2rem minmax(0, 1fr) 2.5rem; gap: 0.75rem; min-height: 0; padding: 1.5rem 0; }
+  .project-row:hover, .project-row:focus-visible { padding-left: 0.75rem; padding-right: 0.75rem; }
+  .project-art { grid-column: 2 / -1; grid-row: 2; height: 10rem; }
+  .project-open { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
   .service-card:hover, .portfolio-tile:hover { transform: none; }
   .partner-track { animation: none; }
+  .signal-ticker-track { animation: none; }
   .agency-page, .academy-page, .hero-stagger { animation: none; opacity: 1; transform: none; }
 }
