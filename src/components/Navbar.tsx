@@ -87,11 +87,11 @@ const Navbar = () => {
             onClick={closeMenu}
           >
             <img
-              src="/logosd.svg"
+              src={overDarkHero ? "/Grouplognlog.svg" : "/logo.svg"}
               alt="FuseLabs IO"
               className={cn(
-                "h-6 w-auto sm:h-7",
-                overDarkHero ? "brightness-0 invert" : "dark:brightness-0 dark:invert"
+                "h-6 w-auto max-w-[10rem] sm:h-7 sm:max-w-[11.5rem]",
+                !overDarkHero && "dark:brightness-0 dark:invert"
               )}
             />
           </Link>
