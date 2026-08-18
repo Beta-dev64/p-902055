@@ -33,8 +33,8 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    closeMenu();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setIsMenuOpen(false);
+    document.body.style.overflow = "";
   }, [location.pathname]);
 
   useEffect(() => {

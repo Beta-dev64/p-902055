@@ -98,7 +98,7 @@ export function FusionField({ className }: FusionFieldProps) {
       for (const p of particles) {
         const theta = p.theta + rotY * p.speed;
         const phi = p.phi + Math.sin(t * 0.15 + p.theta) * 0.04;
-        let x = p.radius * Math.sin(phi) * Math.cos(theta);
+        const x = p.radius * Math.sin(phi) * Math.cos(theta);
         let y = p.radius * Math.cos(phi);
         let z = p.radius * Math.sin(phi) * Math.sin(theta);
 
