@@ -4,6 +4,7 @@
 - Full-viewport cinematic hero: molten fusion canvas, oversized Cabinet Grotesk, dual pill CTAs
 - Desktop floating glass pill nav; mobile keeps fullscreen overlay
 - Hero stays dark regardless of theme; amber reserved for CTA, “grows”, and 60-day badge
+- New fusion-ring mark + FuseLabs IO wordmark; Space Grotesk body, Syne (extra-wide at heavy weights) for display/logo
 
 ## 2026-08-08
 

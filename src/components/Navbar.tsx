@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { FuseLabsLogo } from "@/components/FuseLabsLogo";
 
 type NavItem = {
   label: string;
@@ -82,18 +83,14 @@ const Navbar = () => {
         <div className="container flex items-center justify-between px-4 sm:px-6 lg:px-8">
           <Link
             to="/"
-            className="flex items-center gap-2"
+            className={cn(
+              "flex items-center",
+              overDarkHero ? "text-white" : "text-foreground"
+            )}
             aria-label="FuseLabs IO home"
             onClick={closeMenu}
           >
-            <img
-              src={overDarkHero ? "/Grouplognlog.svg" : "/logo.svg"}
-              alt="FuseLabs IO"
-              className={cn(
-                "h-6 w-auto max-w-[10rem] sm:h-7 sm:max-w-[11.5rem]",
-                !overDarkHero && "dark:brightness-0 dark:invert"
-              )}
-            />
+            <FuseLabsLogo />
           </Link>
 
           <nav
@@ -175,9 +172,10 @@ const Navbar = () => {
           <Link
             to="/"
             onClick={handleNavClick}
-            className="font-display text-sm font-semibold uppercase tracking-[0.2em] text-white dark:text-text-950"
+            className="text-white dark:text-text-950"
+            aria-label="FuseLabs IO home"
           >
-            FuseLabs
+            <FuseLabsLogo variant="onAccent" />
           </Link>
 
           <div className="flex items-center gap-3">

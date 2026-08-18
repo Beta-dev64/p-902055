@@ -200,8 +200,8 @@ export default {
 				'pulse-gradient': 'linear-gradient(180deg, rgba(212,120,76,0.8) 0%, rgba(212,120,76,0) 100%)',
 			},
 			fontFamily: {
-				sans: ['Outfit', 'system-ui', 'sans-serif'],
-				display: ['"Cabinet Grotesk"', 'Outfit', 'system-ui', 'sans-serif'],
+				sans: ['"Space Grotesk"', 'system-ui', 'sans-serif'],
+				display: ['Syne', '"Space Grotesk"', 'system-ui', 'sans-serif'],
 				brockmann: ['Brockmann', 'serif'],
 			},
 			boxShadow: {

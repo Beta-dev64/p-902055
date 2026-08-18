@@ -52,6 +52,14 @@ Lightweight architecture / design decision log. Newest first.
 - **Decision:** Ship a 2D canvas particle nebula as the elaborate motion moment. No new Three.js dependency.
 - **Consequences:** Lighter bundle, easier reduced-motion handling; can swap to Three later if needed.
 
+## DEC-007 — Logo mark + Syne / Space Grotesk
+
+- **Date:** 2026-08-18
+- **Status:** accepted
+- **Context:** User asked for a new logo symbol while keeping FuseLabs IO, plus Space Grotesk and Syne (extra-wide at heavy weights).
+- **Decision:** Fusion-ring SVG mark with molten amber core; wordmark in Syne 800. Display type = Syne; body/UI = Space Grotesk. Hero layout unchanged.
+- **Consequences:** Cabinet Grotesk and Outfit retired. Old Pulse Robot compact SVG unused in chrome.
+
 ## Template
 
 ```markdown

@@ -1,6 +1,7 @@
 ﻿import React from "react";
 import { Link } from "react-router-dom";
 import { Github, Linkedin, Twitter } from "lucide-react";
+import { FuseLabsLogo } from "@/components/FuseLabsLogo";
 
 const Footer = () => {
   const years = new Date();
@@ -9,11 +10,8 @@ const Footer = () => {
       <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-4 grid grid-cols-1 gap-4 md:mb-6 md:grid-cols-4 md:gap-8">
           <div className="col-span-1 md:col-span-2">
-            <div className="mb-3 flex items-center space-x-2 md:mb-4">
-              <img src="/logo.svg" alt="FuseLabs IO" className="h-8 dark:brightness-0 dark:invert" />
-              <span className="font-display text-sm font-semibold uppercase tracking-[0.16em]">
-                FuseLabs
-              </span>
+            <div className="mb-3 md:mb-4">
+              <FuseLabsLogo className="text-foreground" />
             </div>
             <p className="mb-3 max-w-md text-sm text-muted-foreground md:mb-4 md:text-base">
               We craft digital solutions that transform your business vision into powerful, scalable
