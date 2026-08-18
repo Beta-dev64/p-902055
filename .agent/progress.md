@@ -1,9 +1,9 @@
 ﻿# Progress
 
 **Project:** FuseLabs IO redesign
-**Last updated:** 2026-08-08
-**Current phase:** 2-3 — Shell polish + motion + theme surfaces
-**Overall status:** `[x]` Motion/theme pass verified
+**Last updated:** 2026-08-18
+**Current phase:** 3 — Home spine (cinematic hero)
+**Overall status:** `[~]` Dark cinematic hero + glass nav landed
 
 ## Phase 0 — Scaffolding
 
@@ -39,6 +39,7 @@
 
 | Date | Summary |
 |---|---|
+| 2026-08-18 | Cinematic dark hero: fusion canvas, dual pill CTAs, desktop glass nav. |
 | 2026-08-08 | Verified + finished motion/theme pass. Fixed blank pages caused by `@apply prose-invert` (CSS build failure). Registered `@tailwindcss/typography`. Confirmed portfolio/case-study/dark surfaces in browser. |
 | 2026-08-08 | Motion + theme pass: ScrollToTop, reveal, nav translate-x hover, btn-motion, case study header clearance, dark surfaces site-wide. |
 | 2026-08-08 | Cloned upstream, branch redesign/ose-builds. Wired FuseLabs color tokens, ThemeProvider, full-screen nav + theme toggle. |

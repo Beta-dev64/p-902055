@@ -350,6 +350,18 @@
     @apply transition-transform duration-300 ease-out hover:scale-[1.03] active:scale-[0.98];
   }
 
+  .hero-cta-primary {
+    @apply btn-motion inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-semibold tracking-[0.04em] text-primary-foreground sm:w-auto;
+  }
+
+  .hero-cta-secondary {
+    @apply btn-motion inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full border border-white/20 bg-white/[0.03] px-7 py-3.5 text-sm font-medium tracking-[0.04em] text-white backdrop-blur-sm transition-colors hover:border-white/40 hover:bg-white/[0.08] sm:w-auto;
+  }
+
+  .nav-pill {
+    @apply inline-flex items-center gap-1 rounded-full border px-1.5 py-1 backdrop-blur-xl;
+  }
+
   a.btn-motion,
   button.btn-motion {
     @apply will-change-transform;
@@ -387,6 +399,7 @@
   @media (prefers-reduced-motion: reduce) {
     .reveal,
     .animate-on-scroll,
+    .animate-fade-in,
     .btn-motion,
     .nav-fullscreen-link,
     .nav-fullscreen-enter {

@@ -1,4 +1,11 @@
-﻿## 2026-08-08
+﻿## 2026-08-18
+
+- Rebuilt landing hero after dark-premium references (ANKAR / Resend / Lugano / Obsidian language)
+- Full-viewport cinematic hero: molten fusion canvas, oversized Cabinet Grotesk, dual pill CTAs
+- Desktop floating glass pill nav; mobile keeps fullscreen overlay
+- Hero stays dark regardless of theme; amber reserved for CTA, “grows”, and 60-day badge
+
+## 2026-08-08
 
 - Fixed blank-page CSS build failure: removed `@apply prose-invert`; theme prose via CSS vars; registered `@tailwindcss/typography`
 - Themed scrollbar + footer/showcase/features/testimonials surfaces to semantic tokens
