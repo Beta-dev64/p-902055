@@ -1,4 +1,11 @@
-﻿## 2026-08-18
+﻿## 2026-08-21
+
+- Removed the `space-y-4 sm:space-y-8` gap wrapper on the home page; sections now sit flush and alternate `bg-background`/`bg-muted` tone section-to-section (no more visible seam/bar between bands)
+- Darkened `.dark` tokens (`--background`, `--card`, `--popover`, `--muted`, `--border`, `--input`, raw `--background-50..400`) to sit closer to the Hero's near-black tone
+- Rebuilt `PartnersScroll` on a new seamless `Marquee` primitive (`src/components/ui/marquee.tsx`, Magic UI/shadcn registry pattern, duplicated groups in lockstep — no visible start/end); logos sit on white chips for guaranteed contrast; section background is brand orange (`dark:bg-primary`) in dark mode only
+- Restored the Academy hero background video (`public/academy-hero-student-success.mp4`, recovered from an unmerged branch's git history) behind the existing hero content, using `src/assets/academic-hero.jpg` as poster
+
+## 2026-08-18
 
 - Rebuilt landing hero after dark-premium references (ANKAR / Resend / Lugano / Obsidian language)
 - Full-viewport cinematic hero: molten fusion canvas, oversized Cabinet Grotesk, dual pill CTAs

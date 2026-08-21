@@ -60,6 +60,33 @@ Lightweight architecture / design decision log. Newest first.
 - **Decision:** Fusion-ring SVG mark with molten amber core; wordmark in Syne 800. Display type = Syne; body/UI = Space Grotesk. Hero layout unchanged.
 - **Consequences:** Cabinet Grotesk and Outfit retired. Old Pulse Robot compact SVG unused in chrome.
 
+## DEC-008 — Section rhythm: no inter-section gaps, alternating tone
+
+- **Date:** 2026-08-21
+- **Status:** accepted
+- **Context:** Home sections were wrapped in a `space-y-4 sm:space-y-8` container. In dark mode that gap always rendered as `bg-background` (near-black) between every section regardless of the two adjacent sections' tones, showing as a visible bar/seam. Sections also didn't strictly alternate tone.
+- **Decision:** Remove the wrapping gap; sections sit flush against each other, each supplying its own `py-*`. Re-assigned `bg-background`/`bg-muted` on each home section so the sequence alternates tone section-to-section (Humanoid D → Showcase L → Features D → Portfolio L → [marquee accent] → Testimonials D → Reviews L → Team D → Details L → Newsletter D → MadeByHumans L → Footer L).
+- **Consequences:** No more visible seams between bands. Footer and the last content section can share a tone since the footer has its own `border-t` divider.
+
+## DEC-009 — Darker dark-mode scale, orange marquee, seamless Marquee component
+
+- **Date:** 2026-08-21
+- **Status:** accepted
+- **Context:** Dark mode `--background`/`--card`/`--muted`/`--border` were lighter than the Hero's near-black `#070605`, and the old partner strip re-triples the array and flips scroll direction with page scroll (visible start/end seam, jittery).
+- **Decision:**
+  - Darken `.dark` semantic tokens (`--background` 5%→3% L, `--card`/`--popover` 9%→7%, `--muted` 14%→11%, `--border`/`--input` 18%→15%) to sit closer to the Hero tone while preserving enough gap for alternation.
+  - Add a Magic UI–style `Marquee` primitive (`src/components/ui/marquee.tsx`, standard shadcn registry pattern) driven by `--duration`/`--gap` CSS vars and Tailwind `animate-marquee` keyframes; content is duplicated into `repeat` identical groups that all run the same animation in lockstep, so the loop has no perceivable start/end.
+  - `PartnersScroll` now uses `Marquee`, gives every logo a white chip (`bg-white`) for guaranteed contrast against any background, and the section background becomes `dark:bg-primary` (brand orange) in dark mode only.
+- **Consequences:** One direction, constant speed, no scroll-driven reversal. Removed the old triple-array + scroll-direction logic. Old unused `animate-scroll-left/right` keyframes left in `index.css` (harmless, no longer referenced).
+
+## DEC-010 — Restore Academy hero background video
+
+- **Date:** 2026-08-21
+- **Status:** accepted
+- **Context:** An earlier unmerged branch (`redesign/reference-engineering-system`) had a video background (`academy-hero-student-success.mp4`) on the Academy hero; the version that landed on `main` replaced it with SVG patterns only and the asset was never carried over into `public/`.
+- **Decision:** Recovered the original video blob from git history and restored it to `public/academy-hero-student-success.mp4`. Added it as an absolutely-positioned `<video autoPlay muted loop playsInline>` behind the existing SVG pattern + gradient overlay on the current Academy hero (kept all current copy/stats/CTAs), using the previously-unused `src/assets/academic-hero.jpg` as the poster. Lightened the gradient overlay opacity so the footage is visible while text stays legible.
+- **Consequences:** No content/layout regression to the current Academy hero; +2.7MB video asset in `public/`.
+
 ## Template
 
 ```markdown

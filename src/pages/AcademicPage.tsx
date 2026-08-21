@@ -28,6 +28,9 @@ import { useToast } from "@/hooks/use-toast";
 import frontendDev from "@/assets/frontend-dev.jpg";
 import backendDev from "@/assets/backend-dev.jpg";
 import aiMlDev from "@/assets/ai-ml-dev.jpg";
+import academicHeroPoster from "@/assets/academic-hero.jpg";
+
+const academyVideoSrc = "/academy-hero-student-success.mp4";
 
 const AcademicPage = () => {
   const { toast } = useToast();
@@ -160,9 +163,22 @@ const AcademicPage = () => {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* SVG Pattern Background - WhatsApp Style */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#070605]">
+        {/* Background video */}
         <div className="absolute inset-0 z-0">
+          <video
+            className="absolute inset-0 h-full w-full object-cover opacity-45"
+            autoPlay
+            muted
+            loop
+            playsInline
+            poster={academicHeroPoster}
+            aria-hidden="true"
+          >
+            <source src={academyVideoSrc} type="video/mp4" />
+          </video>
+
+          {/* SVG Pattern Background - WhatsApp Style */}
           <svg className="absolute inset-0 w-full h-full opacity-5" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <pattern id="heroPattern" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
@@ -182,8 +198,8 @@ const AcademicPage = () => {
             <rect width="100%" height="100%" fill="url(#dots)"/>
           </svg>
           
-          {/* Animated gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-br from-gray-900/98 via-gray-800/95 to-gray-900/98">
+          {/* Gradient overlay for legibility over the video */}
+          <div className="absolute inset-0 bg-gradient-to-br from-[#070605]/92 via-[#0d0c0b]/80 to-[#070605]/92">
             <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/5 via-transparent to-cyan-500/5 animate-pulse"></div>
           </div>
           
