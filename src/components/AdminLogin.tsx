@@ -1,5 +1,6 @@
-﻿import React, { useState } from "react";
+import React, { useState } from "react";
 import { toast } from "@/components/ui/use-toast";
+import { callAdminFunction, setAdminPassword } from "@/lib/admin-session";
 
 interface AdminLoginProps {
   onLogin: () => void;
@@ -9,26 +10,29 @@ const AdminLogin = ({ onLogin }: AdminLoginProps) => {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simple password check (in production, use proper authentication)
-    if (password === "admin123") {
+    try {
+      // The password is verified server-side by the admin edge function
+      await callAdminFunction("admin-leads", { action: "ping" }, password);
+      setAdminPassword(password);
       toast({
         title: "Login successful",
         description: "Welcome to the admin dashboard",
       });
       onLogin();
-    } else {
+    } catch (error) {
+      console.error("Admin login failed", error);
       toast({
         title: "Invalid password",
-        description: "Please enter the correct password",
+        description: "Please enter the correct admin password",
         variant: "destructive",
       });
+    } finally {
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
   };
 
   return (

@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { ImageUpload } from "@/components/ui/image-upload";
 import RichTextEditor from "@/components/ui/rich-text-editor";
 import { Plus, Edit, Trash2, X } from "lucide-react";
+import { PreviewButton, PublishSwitch, StatusBadge } from "./DraftControls";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -24,6 +25,7 @@ interface Portfolio {
   live_url: string | null;
   project_images: string[] | null;
   technologies: string[] | null;
+  published: boolean;
 }
 
 const AdminPortfolios = () => {
@@ -42,7 +44,8 @@ const AdminPortfolios = () => {
     results: "",
     live_url: "",
     project_images: [] as string[],
-    technologies: ""
+    technologies: "",
+    published: true
   });
 
   useEffect(() => {
@@ -92,7 +95,8 @@ const AdminPortfolios = () => {
       results: portfolio.results || "",
       live_url: portfolio.live_url || "",
       project_images: portfolio.project_images || [],
-      technologies: portfolio.technologies ? portfolio.technologies.join(", ") : ""
+      technologies: portfolio.technologies ? portfolio.technologies.join(", ") : "",
+      published: portfolio.published
     });
   };
 
@@ -119,7 +123,8 @@ const AdminPortfolios = () => {
         results: formData.results || null,
         live_url: formData.live_url || null,
         project_images: formData.project_images.length > 0 ? formData.project_images : null,
-        technologies: formData.technologies ? formData.technologies.split(",").map(tech => tech.trim()) : null
+        technologies: formData.technologies ? formData.technologies.split(",").map(tech => tech.trim()) : null,
+        published: formData.published
       };
 
       if (editingId && editingId !== "new") {
@@ -149,7 +154,7 @@ const AdminPortfolios = () => {
 
       await fetchPortfolios();
       setEditingId(null);
-      setFormData({ title: "", slug: "", description: "", image: "", tags: "", challenge: "", solution: "", results: "", live_url: "", project_images: [], technologies: "" });
+      setFormData({ title: "", slug: "", description: "", image: "", tags: "", challenge: "", solution: "", results: "", live_url: "", project_images: [], technologies: "", published: true });
     } catch (error) {
       console.error('Error saving portfolio:', error);
       toast({
@@ -194,7 +199,7 @@ const AdminPortfolios = () => {
 
   const handleCancel = () => {
     setEditingId(null);
-    setFormData({ title: "", slug: "", description: "", image: "", tags: "", challenge: "", solution: "", results: "", live_url: "", project_images: [], technologies: "" });
+    setFormData({ title: "", slug: "", description: "", image: "", tags: "", challenge: "", solution: "", results: "", live_url: "", project_images: [], technologies: "", published: true });
   };
 
   const addProjectImage = (url: string) => {
@@ -352,7 +357,14 @@ const AdminPortfolios = () => {
               </div>
             </div>
           </div>
-          <div className="flex gap-2 mt-4">
+          <div className="mt-6">
+            <PublishSwitch
+              published={formData.published}
+              onChange={(published) => setFormData({ ...formData, published })}
+            />
+          </div>
+          <div className="flex flex-wrap gap-2 mt-4">
+            {formData.slug && <PreviewButton type="case-study" slug={formData.slug} />}
             <Button onClick={handleSave} className="bg-pulse-500 hover:bg-pulse-600" disabled={loading}>
               {loading ? "Saving..." : "Save"}
             </Button>
@@ -373,7 +385,10 @@ const AdminPortfolios = () => {
               className="w-full h-48 object-cover"
             />
             <div className="p-4">
-              <h3 className="font-semibold mb-2">{portfolio.title}</h3>
+              <div className="mb-2 flex flex-wrap items-center gap-2">
+                <h3 className="font-semibold">{portfolio.title}</h3>
+                <StatusBadge published={portfolio.published} />
+              </div>
               <p className="text-sm text-gray-600 mb-3 line-clamp-2">
                 {portfolio.description || "No description"}
               </p>
@@ -384,7 +399,8 @@ const AdminPortfolios = () => {
                   </Badge>
                 )) || []}
               </div>
-              <div className="flex justify-end gap-2">
+              <div className="flex flex-wrap justify-end gap-2">
+                <PreviewButton type="case-study" slug={portfolio.slug} />
                 <Button
                   size="sm"
                   variant="outline"
