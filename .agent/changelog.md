@@ -1,4 +1,14 @@
-﻿## 2026-08-18
+﻿## 2026-08-21 (Academy editorial redesign)
+
+- Full redesign of `/academic`: warm cream, serif (Fraunces) editorial identity — deliberately distinct from the dark, cinematic agency pages — inspired by a boutique-school reference site
+- New `.academy-scope` CSS token override (index.css) so semantic `bg-background`/`text-foreground`/`bg-muted` utilities and any nested shadcn form primitives (via the shared `LeadForm`) render in the cream palette without per-component overrides; `--primary` amber left untouched
+- New sections: `AcademyHero` (full-bleed photo + in-page anchor nav), `AcademyMission`, `AcademyTracks` (tabbed program switcher wired to the live `academy_programs` Supabase table), `AcademyQuote` (live testimonial), `AcademyStory` (video), `AcademyMemories` (**photo grid of generated academy-life photography** — cohort collaboration, mentor session, demo day, group photo), `AcademyInsights` (curriculum outcomes per track), `AcademyEnroll` (shared `LeadForm`, pre-filled from the selected track), `AcademyClosing` (dark closing band bridging into the site footer)
+- Generated 7 new warm/candid documentary-style photos for the hero and memories grid (`src/assets/academy/`), resized/compressed to ~80–185 KB each
+- `Navbar` generalized with an `overLightHero` case (mirrors `overDarkHero`) so the floating nav uses dark ink text over the new light Academy hero instead of the theme's light-on-dark default
+- Added `academy_programs`-backed `useAcademyPrograms` hook; Academy page now reads real CMS program data (price, duration, syllabus, outcomes) instead of a hardcoded array
+- Added Fraunces serif font (scoped to `font-academy`) for Academy display type only
+
+## 2026-08-18
 
 - Rebuilt landing hero after dark-premium references (ANKAR / Resend / Lugano / Obsidian language)
 - Full-viewport cinematic hero: molten fusion canvas, oversized Cabinet Grotesk, dual pill CTAs

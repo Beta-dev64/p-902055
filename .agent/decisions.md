@@ -60,6 +60,14 @@ Lightweight architecture / design decision log. Newest first.
 - **Decision:** Fusion-ring SVG mark with molten amber core; wordmark in Syne 800. Display type = Syne; body/UI = Space Grotesk. Hero layout unchanged.
 - **Consequences:** Cabinet Grotesk and Outfit retired. Old Pulse Robot compact SVG unused in chrome.
 
+## DEC-008 — Academy micro-brand: warm editorial palette via scoped CSS tokens
+
+- **Date:** 2026-08-21
+- **Status:** accepted
+- **Context:** User asked for the Academy page to feel distinct from the dark, cinematic agency pages, and to showcase "academy memories" photography, using an educational-site reference (warm cream, serif display type, photo-led editorial layout) as inspiration.
+- **Decision:** Give `/academic` its own light, cream, serif (Fraunces) editorial identity, independent of the site-wide dark/light toggle — analogous to how the home Hero always forces a dark look regardless of theme. Implemented by wrapping the page's `<main>` in an `.academy-scope` class that re-points the shadcn semantic tokens (`--background`, `--foreground`, `--card`, `--muted`, `--border`, `--input`) to a warm cream/ink palette; ordinary `bg-background` / `text-foreground` / `bg-muted` utilities (and any nested shadcn primitive, e.g. the shared `LeadForm`'s `Input`/`Textarea`/`Button`) automatically pick up the right colors with zero per-component overrides. `--primary` (brand amber) is left untouched so CTAs still read as FuseLabs. `Navbar` gained an `overLightHero` case (mirroring the existing `overDarkHero` case for the home hero) so the floating nav renders dark ink text while unscrolled over the Academy hero photo, instead of the theme's light-on-dark default.
+- **Consequences:** Toggling dark/light mode has no visible effect on the Academy page content (by design — it's a fixed micro-brand). Any future page wanting a similar treatment can reuse the `.academy-scope` pattern. New photography (`src/assets/academy/*`) generated and compressed (~140–185 KB each) to represent cohort life since no real photos were available; call out if/when real academy photos should replace them.
+
 ## Template
 
 ```markdown

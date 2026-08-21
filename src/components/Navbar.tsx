@@ -25,7 +25,9 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const isHome = location.pathname === "/";
+  const isAcademy = location.pathname === "/academic";
   const overDarkHero = isHome && !isScrolled;
+  const overLightHero = isAcademy && !isScrolled;
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 12);
@@ -64,10 +66,19 @@ const Navbar = () => {
   const desktopLinkClass = (active?: boolean) =>
     cn(
       "rounded-full px-3.5 py-1.5 text-[11px] font-medium uppercase tracking-[0.16em] transition-colors",
-      overDarkHero
-        ? "text-white/70 hover:bg-white/10 hover:text-white"
-        : "text-foreground/70 hover:bg-foreground/5 hover:text-foreground",
-      active && (overDarkHero ? "bg-white/10 text-white" : "bg-foreground/5 text-foreground")
+      overDarkHero &&
+        "text-white/70 hover:bg-white/10 hover:text-white",
+      overLightHero &&
+        "text-[#1e1b16]/65 hover:bg-[#1e1b16]/10 hover:text-[#1e1b16]",
+      !overDarkHero &&
+        !overLightHero &&
+        "text-foreground/70 hover:bg-foreground/5 hover:text-foreground",
+      active &&
+        (overDarkHero
+          ? "bg-white/10 text-white"
+          : overLightHero
+            ? "bg-[#1e1b16]/10 text-[#1e1b16]"
+            : "bg-foreground/5 text-foreground")
     );
 
   return (
@@ -85,7 +96,11 @@ const Navbar = () => {
             to="/"
             className={cn(
               "flex items-center",
-              overDarkHero ? "text-white" : "text-foreground"
+              overDarkHero
+                ? "text-white"
+                : overLightHero
+                  ? "text-[#1e1b16]"
+                  : "text-foreground"
             )}
             aria-label="FuseLabs IO home"
             onClick={closeMenu}
@@ -96,9 +111,9 @@ const Navbar = () => {
           <nav
             className={cn(
               "nav-pill hidden lg:flex",
-              overDarkHero
-                ? "border-white/10 bg-white/[0.04]"
-                : "border-border/70 bg-background/50"
+              overDarkHero && "border-white/10 bg-white/[0.04]",
+              overLightHero && "border-[#1e1b16]/10 bg-[#1e1b16]/[0.03]",
+              !overDarkHero && !overLightHero && "border-border/70 bg-background/50"
             )}
             aria-label="Primary"
           >
@@ -124,15 +139,15 @@ const Navbar = () => {
           </nav>
 
           <div className="flex items-center gap-2 sm:gap-3">
-            <ThemeToggle className={overDarkHero ? "border-white/20 bg-white/10 text-white" : undefined} />
+            <ThemeToggle
+              className={cn(
+                overDarkHero && "border-white/20 bg-white/10 text-white",
+                overLightHero && "border-[#1e1b16]/15 bg-[#1e1b16]/5 text-[#1e1b16]"
+              )}
+            />
             <a
               href="/#details"
-              className={cn(
-                "btn-motion hidden items-center rounded-full px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] sm:inline-flex",
-                overDarkHero
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-primary text-primary-foreground"
-              )}
+              className="btn-motion hidden items-center rounded-full bg-primary px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-primary-foreground sm:inline-flex"
             >
               Start a Project
             </a>
@@ -140,9 +155,9 @@ const Navbar = () => {
               type="button"
               className={cn(
                 "btn-motion inline-flex h-10 w-10 items-center justify-center rounded-full border backdrop-blur-md lg:hidden",
-                overDarkHero
-                  ? "border-white/20 bg-white/10 text-white"
-                  : "border-border/70 bg-background/40 text-foreground"
+                overDarkHero && "border-white/20 bg-white/10 text-white",
+                overLightHero && "border-[#1e1b16]/15 bg-[#1e1b16]/5 text-[#1e1b16]",
+                !overDarkHero && !overLightHero && "border-border/70 bg-background/40 text-foreground"
               )}
               onClick={openMenu}
               aria-label="Open menu"
