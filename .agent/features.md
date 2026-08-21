@@ -10,12 +10,12 @@ Track each product/UI feature and its implementation status.
 
 | ID | Feature | Status | Notes |
 |---|---|---|---|
-| F-001 | Floating glass navigation | planned | Morph on scroll |
-| F-002 | Mobile fullscreen menu | planned | |
+| F-001 | Floating glass navigation | done | Desktop pill nav; morph on scroll |
+| F-002 | Mobile fullscreen menu | done | Hidden on lg+ |
 | F-003 | Brand loader lockup | planned | FUSE / LABS split optional |
-| F-004 | Hero + WebGL fusion field | planned | One elaborate motion moment |
-| F-005 | Dual CTAs (Project / Academy) | planned | Primary amber = Project |
-| F-006 | Proof strip (60 days + guarantee) | planned | |
+| F-004 | Hero + WebGL fusion field | done | Canvas 2D fusion nebula (no Three.js) |
+| F-005 | Dual CTAs (Project / Academy) | done | Pill primary amber / outline academy |
+| F-006 | Proof strip (60 days + guarantee) | done | Hero proof line |
 | F-007 | Partner logo marquee | planned | Dual-direction preferred |
 | F-008 | Services unequal mosaic (6) | planned | No equal card grid |
 | F-009 | Process 4-step section | planned | Strategy → Launch |
@@ -30,7 +30,7 @@ Track each product/UI feature and its implementation status.
 
 | ID | Feature | Status | Notes |
 |---|---|---|---|
-| F-020 | Home page redesign | planned | |
+| F-020 | Home page redesign | in_progress | Cinematic dark hero shipped; remaining spine still Lovable |
 | F-021 | Portfolio index | planned | |
 | F-022 | Case study detail | planned | Challenge/solution/gallery/results/tech/live |
 | F-023 | Academy page | planned | Frontend/Backend/AI-ML |

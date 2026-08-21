@@ -20,7 +20,7 @@ export function ThemeToggle({ className, variant = "bar" }: ThemeToggleProps) {
         type="button"
         aria-label="Toggle theme"
         className={cn(
-          "inline-flex h-10 w-10 items-center justify-center rounded-sm border border-border/60",
+          "inline-flex h-10 w-10 items-center justify-center rounded-full border border-border/60",
           className
         )}
       />
@@ -37,9 +37,9 @@ export function ThemeToggle({ className, variant = "bar" }: ThemeToggleProps) {
       className={cn(
         "inline-flex h-10 w-10 items-center justify-center transition-transform duration-200 hover:scale-105",
         variant === "bar" &&
-          "rounded-sm border border-border/70 bg-background/40 text-foreground backdrop-blur-md",
+          "rounded-full border border-border/70 bg-background/40 text-foreground backdrop-blur-md",
         variant === "menu" &&
-          "rounded-sm border border-white/30 bg-white/10 text-white backdrop-blur-md dark:border-primary-500/40 dark:bg-primary-500/15 dark:text-primary-400",
+          "rounded-full border border-white/30 bg-white/10 text-white backdrop-blur-md dark:border-primary-500/40 dark:bg-primary-500/15 dark:text-primary-400",
         className
       )}
     >

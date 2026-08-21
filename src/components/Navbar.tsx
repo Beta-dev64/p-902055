@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { FuseLabsLogo } from "@/components/FuseLabsLogo";
 
 type NavItem = {
   label: string;
@@ -23,6 +24,8 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const isHome = location.pathname === "/";
+  const overDarkHero = isHome && !isScrolled;
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 12);
@@ -31,8 +34,8 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    closeMenu();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setIsMenuOpen(false);
+    document.body.style.overflow = "";
   }, [location.pathname]);
 
   useEffect(() => {
@@ -58,6 +61,15 @@ const Navbar = () => {
     closeMenu();
   };
 
+  const desktopLinkClass = (active?: boolean) =>
+    cn(
+      "rounded-full px-3.5 py-1.5 text-[11px] font-medium uppercase tracking-[0.16em] transition-colors",
+      overDarkHero
+        ? "text-white/70 hover:bg-white/10 hover:text-white"
+        : "text-foreground/70 hover:bg-foreground/5 hover:text-foreground",
+      active && (overDarkHero ? "bg-white/10 text-white" : "bg-foreground/5 text-foreground")
+    );
+
   return (
     <>
       <header
@@ -71,27 +83,67 @@ const Navbar = () => {
         <div className="container flex items-center justify-between px-4 sm:px-6 lg:px-8">
           <Link
             to="/"
-            className="flex items-center gap-2"
+            className={cn(
+              "flex items-center",
+              overDarkHero ? "text-white" : "text-foreground"
+            )}
             aria-label="FuseLabs IO home"
             onClick={closeMenu}
           >
-            <img src="/logo.svg" alt="FuseLabs IO" className="h-7 sm:h-8" />
-            <span className="hidden font-display text-sm font-semibold tracking-[0.18em] text-foreground uppercase sm:inline">
-              FuseLabs
-            </span>
+            <FuseLabsLogo />
           </Link>
 
+          <nav
+            className={cn(
+              "nav-pill hidden lg:flex",
+              overDarkHero
+                ? "border-white/10 bg-white/[0.04]"
+                : "border-border/70 bg-background/50"
+            )}
+            aria-label="Primary"
+          >
+            {NAV_ITEMS.filter((item) => item.label !== "Home").map((item) => {
+              const active = item.to ? location.pathname === item.to : false;
+              if (item.to) {
+                return (
+                  <Link
+                    key={item.label}
+                    to={item.to}
+                    className={desktopLinkClass(active)}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              }
+              return (
+                <a key={item.label} href={item.href} className={desktopLinkClass()}>
+                  {item.label}
+                </a>
+              );
+            })}
+          </nav>
+
           <div className="flex items-center gap-2 sm:gap-3">
-            <ThemeToggle />
-            <Link
-              to="/#details"
-              className="btn-motion hidden rounded-sm bg-primary px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-primary-foreground sm:inline-flex"
+            <ThemeToggle className={overDarkHero ? "border-white/20 bg-white/10 text-white" : undefined} />
+            <a
+              href="/#details"
+              className={cn(
+                "btn-motion hidden items-center rounded-full px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] sm:inline-flex",
+                overDarkHero
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-primary text-primary-foreground"
+              )}
             >
               Start a Project
-            </Link>
+            </a>
             <button
               type="button"
-              className="btn-motion inline-flex h-10 w-10 items-center justify-center rounded-sm border border-border/70 bg-background/40 text-foreground backdrop-blur-md"
+              className={cn(
+                "btn-motion inline-flex h-10 w-10 items-center justify-center rounded-full border backdrop-blur-md lg:hidden",
+                overDarkHero
+                  ? "border-white/20 bg-white/10 text-white"
+                  : "border-border/70 bg-background/40 text-foreground"
+              )}
               onClick={openMenu}
               aria-label="Open menu"
               aria-expanded={isMenuOpen}
@@ -103,15 +155,13 @@ const Navbar = () => {
         </div>
       </header>
 
-      {/* Full-screen navigation overlay */}
       <div
         id="fullscreen-nav"
         role="dialog"
         aria-modal="true"
         aria-hidden={!isMenuOpen}
         className={cn(
-          "fixed inset-0 z-[60] flex min-h-[100dvh] flex-col transition-[opacity,visibility] duration-300 ease-out",
-          /* Light: solid amber field (reference energy). Dark: void charcoal. */
+          "fixed inset-0 z-[60] flex min-h-[100dvh] flex-col transition-[opacity,visibility] duration-300 ease-out lg:hidden",
           "bg-primary text-white dark:bg-background-50 dark:text-text-950",
           isMenuOpen
             ? "pointer-events-auto visible opacity-100"
@@ -122,9 +172,10 @@ const Navbar = () => {
           <Link
             to="/"
             onClick={handleNavClick}
-            className="font-display text-sm font-semibold uppercase tracking-[0.2em] text-white dark:text-text-950"
+            className="text-white dark:text-text-950"
+            aria-label="FuseLabs IO home"
           >
-            FuseLabs
+            <FuseLabsLogo variant="onAccent" />
           </Link>
 
           <div className="flex items-center gap-3">
@@ -133,7 +184,7 @@ const Navbar = () => {
               type="button"
               onClick={closeMenu}
               aria-label="Close menu"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-sm bg-primary-50 text-accent-500 transition-transform duration-200 hover:scale-105 dark:bg-primary-500 dark:text-background-50"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary-50 text-accent-500 transition-transform duration-200 hover:scale-105 dark:bg-primary-500 dark:text-background-50"
             >
               <X size={22} strokeWidth={2} />
             </button>
@@ -144,7 +195,6 @@ const Navbar = () => {
           {NAV_ITEMS.map((item, index) => {
             const className = cn(
               "nav-fullscreen-link font-display text-[clamp(2rem,7vw,3.5rem)] font-semibold uppercase leading-none tracking-[0.04em]",
-              /* Orange (light) menu: white → black on hover. Dark void menu: cream → amber. */
               "text-white hover:text-black dark:text-text-950 dark:hover:text-primary-500",
               isMenuOpen && "nav-fullscreen-enter"
             );
@@ -181,7 +231,7 @@ const Navbar = () => {
             href="/#details"
             onClick={handleNavClick}
             className={cn(
-              "btn-motion mt-6 inline-flex items-center rounded-sm px-6 py-3 text-xs font-semibold uppercase tracking-[0.16em]",
+              "btn-motion mt-6 inline-flex items-center rounded-full px-6 py-3 text-xs font-semibold uppercase tracking-[0.16em]",
               "bg-background text-primary-700 dark:bg-primary-500 dark:text-background-50",
               isMenuOpen && "nav-fullscreen-enter"
             )}
