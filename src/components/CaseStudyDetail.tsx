@@ -33,6 +33,7 @@ const CaseStudyDetail = () => {
         const { data, error } = await supabase
           .from("portfolios")
           .select("*")
+          .eq('published', true)
           .eq("slug", slug)
           .single();
 

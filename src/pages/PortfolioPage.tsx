@@ -37,11 +37,13 @@ const PortfolioPage = () => {
 
         const { count } = await supabase
           .from("portfolios")
-          .select("*", { count: "exact", head: true });
+          .select("*", { count: "exact", head: true })
+          .eq('published', true);
 
         const { data, error } = await supabase
           .from("portfolios")
           .select("id, slug, title, description, image, tags")
+          .eq('published', true)
           .range(startIndex, startIndex + itemsPerPage - 1)
           .order("created_at", { ascending: false });
 

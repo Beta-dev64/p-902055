@@ -25,6 +25,7 @@ const Portfolio = () => {
       const { data, error } = await supabase
         .from('portfolios')
         .select('*')
+          .eq('published', true)
         .order('created_at', { ascending: false })
         .limit(3);
       
