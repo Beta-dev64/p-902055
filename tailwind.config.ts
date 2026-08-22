@@ -203,6 +203,7 @@ export default {
 				sans: ['"Space Grotesk"', 'system-ui', 'sans-serif'],
 				display: ['Syne', '"Space Grotesk"', 'system-ui', 'sans-serif'],
 				brockmann: ['Brockmann', 'serif'],
+				academy: ['Fraunces', 'ui-serif', 'Georgia', 'serif'],
 			},
 			boxShadow: {
 				'elegant': '0 4px 20px rgba(0, 0, 0, 0.08)',
