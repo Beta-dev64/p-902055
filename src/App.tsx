@@ -17,6 +17,9 @@ import StartProjectPage from "./pages/StartProjectPage";
 import EnrollPage from "./pages/EnrollPage";
 import ThankYouPage from "./pages/ThankYouPage";
 import PreviewPage from "./pages/PreviewPage";
+import ServicesPage from "./pages/ServicesPage";
+import ServiceDetailPage from "./pages/ServiceDetailPage";
+import ProgramDetailPage from "./pages/ProgramDetailPage";
 
 const queryClient = new QueryClient();
 
