@@ -1,4 +1,10 @@
-﻿## 2026-08-21 (Academy editorial redesign)
+﻿## 2026-08-22 (Galactic hero particle field)
+
+- Evolved the home hero's `FusionField` canvas from a single rotating particle sphere into a layered galactic space scene: a full-viewport twinkling starfield with depth-based parallax and drift, three slowly drifting soft nebula gradient wisps (amber/heat + a subtle violet accent for cool contrast), and rare shooting-star comets (desktop only)
+- Kept the original rotating amber/cream/heat particle sphere as the scene's "energy core," now twinkling slightly too
+- Verified steady 60fps, no new console errors, and correct behavior under `prefers-reduced-motion` and on mobile (comets + starfield density scaled down)
+
+## 2026-08-21 (Academy editorial redesign)
 
 - Full redesign of `/academic`: warm cream, serif (Fraunces) editorial identity — deliberately distinct from the dark, cinematic agency pages — inspired by a boutique-school reference site
 - New `.academy-scope` CSS token override (index.css) so semantic `bg-background`/`text-foreground`/`bg-muted` utilities and any nested shadcn form primitives (via the shared `LeadForm`) render in the cream palette without per-component overrides; `--primary` amber left untouched
