@@ -68,6 +68,14 @@ Lightweight architecture / design decision log. Newest first.
 - **Decision:** Give `/academic` its own light, cream, serif (Fraunces) editorial identity, independent of the site-wide dark/light toggle — analogous to how the home Hero always forces a dark look regardless of theme. Implemented by wrapping the page's `<main>` in an `.academy-scope` class that re-points the shadcn semantic tokens (`--background`, `--foreground`, `--card`, `--muted`, `--border`, `--input`) to a warm cream/ink palette; ordinary `bg-background` / `text-foreground` / `bg-muted` utilities (and any nested shadcn primitive, e.g. the shared `LeadForm`'s `Input`/`Textarea`/`Button`) automatically pick up the right colors with zero per-component overrides. `--primary` (brand amber) is left untouched so CTAs still read as FuseLabs. `Navbar` gained an `overLightHero` case (mirroring the existing `overDarkHero` case for the home hero) so the floating nav renders dark ink text while unscrolled over the Academy hero photo, instead of the theme's light-on-dark default.
 - **Consequences:** Toggling dark/light mode has no visible effect on the Academy page content (by design — it's a fixed micro-brand). Any future page wanting a similar treatment can reuse the `.academy-scope` pattern. New photography (`src/assets/academy/*`) generated and compressed (~140–185 KB each) to represent cohort life since no real photos were available; call out if/when real academy photos should replace them.
 
+## DEC-009 — Hero particle field evolved into a layered galactic space scene
+
+- **Date:** 2026-08-22
+- **Status:** accepted
+- **Context:** User liked the existing hero particle motion (the rotating amber/cream/heat sphere from DEC-006) but wanted it to feel more like "galactic space particle stuff" — richer, more cinematic, more like looking into deep space.
+- **Decision:** Kept the rotating 3D particle sphere (now framed as the hero's "energy core") and layered it on top of three new canvas passes in `FusionField`: (1) a full-viewport twinkling starfield (~220 desktop / 90 mobile points, varied depth/size/color — mostly warm cream/amber with a few cool blue-white "distant stars" — with slow autonomous drift plus mouse parallax scaled by depth), (2) 3 large, slowly drifting soft nebula gradient wisps (amber + heat + one subtle violet for cool contrast) rendered behind the starfield, and (3) rare, randomly-spawned shooting-star comets (desktop only, capped at 2 concurrent) with a fading trail. Reduced-motion and mobile-perf behavior preserved: comets and heavy motion are skipped under `prefers-reduced-motion` / on small screens, and a single static frame is still drawn in that case.
+- **Consequences:** Slightly more canvas work per frame (measured steady 60fps in testing); no new dependencies. The brand's warm amber/heat palette stays dominant — the violet wisp and blue-white stars are a light accent, not a palette change.
+
 ## Template
 
 ```markdown
