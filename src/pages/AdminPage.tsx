@@ -8,6 +8,9 @@ import AdminTestimonials from "@/components/admin/AdminTestimonials";
 import AdminReviews from "@/components/admin/AdminReviews";
 import AdminProjectInquiries from "@/components/admin/AdminProjectInquiries";
 import AdminTeam from "@/components/admin/AdminTeam";
+import AdminServices from "@/components/admin/AdminServices";
+import AdminPrograms from "@/components/admin/AdminPrograms";
+import AdminLeads from "@/components/admin/AdminLeads";
 
 const AdminPage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -15,6 +18,9 @@ const AdminPage = () => {
 
   const tabs = [
     { id: "inquiries", label: "Project Requests", component: AdminProjectInquiries },
+    { id: "leads", label: "Leads", component: AdminLeads },
+    { id: "services", label: "Services", component: AdminServices },
+    { id: "programs", label: "Academy Programs", component: AdminPrograms },
     { id: "reviews", label: "Reviews", component: AdminReviews },
     { id: "testimonials", label: "Testimonials", component: AdminTestimonials },
     { id: "portfolios", label: "Portfolio Cases", component: AdminPortfolios },
