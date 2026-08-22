@@ -1,9 +1,9 @@
 ﻿# Progress
 
 **Project:** FuseLabs IO redesign
-**Last updated:** 2026-08-18
-**Current phase:** 3 — Home spine (cinematic hero)
-**Overall status:** `[~]` Dark cinematic hero + glass nav landed
+**Last updated:** 2026-08-21
+**Current phase:** 4 — Academy page editorial redesign
+**Overall status:** `[~]` Dark cinematic home hero landed; Academy page rebuilt as a distinct warm/editorial micro-brand
 
 ## Phase 0 — Scaffolding
 
@@ -39,6 +39,7 @@
 
 | Date | Summary |
 |---|---|
+| 2026-08-21 | Academy page rebuilt as a warm, cream, serif editorial micro-brand (distinct from the dark agency pages), with a new photo memories grid, CMS-backed tracks, and a light-hero-aware navbar. |
 | 2026-08-18 | Cinematic dark hero: fusion canvas, dual pill CTAs, desktop glass nav. |
 | 2026-08-08 | Verified + finished motion/theme pass. Fixed blank pages caused by `@apply prose-invert` (CSS build failure). Registered `@tailwindcss/typography`. Confirmed portfolio/case-study/dark surfaces in browser. |
 | 2026-08-08 | Motion + theme pass: ScrollToTop, reveal, nav translate-x hover, btn-motion, case study header clearance, dark surfaces site-wide. |

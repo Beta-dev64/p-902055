@@ -33,7 +33,7 @@ Track each product/UI feature and its implementation status.
 | F-020 | Home page redesign | in_progress | Cinematic dark hero shipped; remaining spine still Lovable |
 | F-021 | Portfolio index | planned | |
 | F-022 | Case study detail | planned | Challenge/solution/gallery/results/tech/live |
-| F-023 | Academy page | planned | Frontend/Backend/AI-ML |
+| F-023 | Academy page | done | Editorial cream/serif redesign, distinct from agency pages; photo memories grid; CMS-backed tracks |
 | F-024 | Contact / project inquiry | planned | |
 | F-025 | Privacy Policy | planned | |
 | F-026 | Terms of Service | planned | |
@@ -44,7 +44,7 @@ Track each product/UI feature and its implementation status.
 | ID | Feature | Status | Notes |
 |---|---|---|---|
 | F-030 | Project inquiry form | planned | fname, lname, email, website, services, budget, details |
-| F-031 | Academy enrollment form | planned | name, email, phone, course, message |
+| F-031 | Academy enrollment form | done | Reuses shared `LeadForm` (type="enrollment"), pre-filled from selected track |
 | F-032 | Newsletter subscription | planned | |
 | F-033 | Supabase persistence | planned | Reuse existing integration |
 

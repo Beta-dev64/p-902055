@@ -1,9 +1,25 @@
-﻿## 2026-08-21
+## 2026-08-22 (Galactic hero particle field)
+
+- Evolved the home hero's `FusionField` canvas from a single rotating particle sphere into a layered galactic space scene: a full-viewport twinkling starfield with depth-based parallax and drift, three slowly drifting soft nebula gradient wisps (amber/heat + a subtle violet accent for cool contrast), and rare shooting-star comets (desktop only)
+- Kept the original rotating amber/cream/heat particle sphere as the scene's "energy core," now twinkling slightly too
+- Verified steady 60fps, no new console errors, and correct behavior under `prefers-reduced-motion` and on mobile (comets + starfield density scaled down)
+
+## 2026-08-21 (Academy editorial redesign)
+
+- Full redesign of `/academic`: warm cream, serif (Fraunces) editorial identity — deliberately distinct from the dark, cinematic agency pages — inspired by a boutique-school reference site
+- New `.academy-scope` CSS token override (index.css) so semantic `bg-background`/`text-foreground`/`bg-muted` utilities and any nested shadcn form primitives (via the shared `LeadForm`) render in the cream palette without per-component overrides; `--primary` amber left untouched
+- New sections: `AcademyHero` (full-bleed photo + in-page anchor nav), `AcademyMission`, `AcademyTracks` (tabbed program switcher wired to the live `academy_programs` Supabase table), `AcademyQuote` (live testimonial), `AcademyStory` (video), `AcademyMemories` (**photo grid of generated academy-life photography** — cohort collaboration, mentor session, demo day, group photo), `AcademyInsights` (curriculum outcomes per track), `AcademyEnroll` (shared `LeadForm`, pre-filled from the selected track), `AcademyClosing` (dark closing band bridging into the site footer)
+- Generated 7 new warm/candid documentary-style photos for the hero and memories grid (`src/assets/academy/`), resized/compressed to ~80–185 KB each
+- `Navbar` generalized with an `overLightHero` case (mirrors `overDarkHero`) so the floating nav uses dark ink text over the new light Academy hero instead of the theme's light-on-dark default
+- Added `academy_programs`-backed `useAcademyPrograms` hook; Academy page now reads real CMS program data (price, duration, syllabus, outcomes) instead of a hardcoded array
+- Added Fraunces serif font (scoped to `font-academy`) for Academy display type only
+
+## 2026-08-21 (Home section rhythm + marquee + academy video)
 
 - Removed the `space-y-4 sm:space-y-8` gap wrapper on the home page; sections now sit flush and alternate `bg-background`/`bg-muted` tone section-to-section (no more visible seam/bar between bands)
 - Darkened `.dark` tokens (`--background`, `--card`, `--popover`, `--muted`, `--border`, `--input`, raw `--background-50..400`) to sit closer to the Hero's near-black tone
 - Rebuilt `PartnersScroll` on a new seamless `Marquee` primitive (`src/components/ui/marquee.tsx`, Magic UI/shadcn registry pattern, duplicated groups in lockstep — no visible start/end); logos sit on white chips for guaranteed contrast; section background is brand orange (`dark:bg-primary`) in dark mode only
-- Restored the Academy hero background video (`public/academy-hero-student-success.mp4`, recovered from an unmerged branch's git history) behind the existing hero content, using `src/assets/academic-hero.jpg` as poster
+- Restored the Academy hero background video (`public/academy-hero-student-success.mp4`, recovered from an unmerged branch's git history) — note: this file's target (the original video-hero `AcademicPage.tsx`) was superseded by the 2026-08-21 Academy editorial redesign before this branch merged; see merge notes for how the conflict was resolved. The video asset itself is still restored and is now used by the new `AcademyStory` section instead.
 
 ## 2026-08-18
 
