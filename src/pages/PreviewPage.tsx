@@ -117,20 +117,70 @@ const PreviewPage = () => {
 
       <main className="pb-20 pt-24">
         <div className="container mx-auto max-w-3xl px-4 sm:px-6">
-          <div className="mb-8 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-amber-500/40 bg-amber-500/10 px-4 py-3">
-            <div className="flex items-center gap-2 text-sm">
-              <EyeOff className="h-4 w-4 text-amber-600 dark:text-amber-400" />
-              <span className="font-medium">
-                Draft preview — {label}
-                {item && !item.published ? " (not published yet)" : item ? " (live)" : ""}
-              </span>
+          <div
+            className={`mb-8 rounded-xl border px-4 py-4 ${
+              item && item.published
+                ? "border-emerald-500/40 bg-emerald-500/10"
+                : "border-amber-500/40 bg-amber-500/10"
+            }`}
+          >
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2 text-sm font-semibold">
+                  {item && item.published ? (
+                    <Eye className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                  ) : (
+                    <EyeOff className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                  )}
+                  <span>Preview mode — {label}</span>
+                  {item && (
+                    <span
+                      className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                        item.published
+                          ? "bg-emerald-500/20 text-emerald-700 dark:text-emerald-300"
+                          : "bg-amber-500/20 text-amber-700 dark:text-amber-300"
+                      }`}
+                    >
+                      {item.published ? "Published" : "Draft"}
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  {item
+                    ? item.published
+                      ? "This content is live on the public site. Changes you save appear immediately."
+                      : "Only admins can see this. Flip the publish switch in the editor to make it live."
+                    : "Loading draft state…"}
+                </p>
+              </div>
+
+              <div className="flex flex-wrap gap-2">
+                <Button size="sm" variant="outline" asChild>
+                  <Link to={`/admin?tab=${ADMIN_TAB[(type as PreviewType) || "service"]}`}>
+                    <Pencil className="mr-1 h-3 w-3" />
+                    Edit in admin
+                  </Link>
+                </Button>
+                {item?.published && (
+                  <Button size="sm" variant="outline" asChild>
+                    <Link
+                      to={LIVE_PATH[(type as PreviewType) || "service"](item.slug)}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <ExternalLink className="mr-1 h-3 w-3" />
+                      View live page
+                    </Link>
+                  </Button>
+                )}
+                <Button size="sm" variant="ghost" asChild>
+                  <Link to="/admin">
+                    <ArrowLeft className="mr-1 h-3 w-3" />
+                    Dashboard
+                  </Link>
+                </Button>
+              </div>
             </div>
-            <Button size="sm" variant="outline" asChild>
-              <Link to="/admin">
-                <ArrowLeft className="mr-1 h-3 w-3" />
-                Back to admin
-              </Link>
-            </Button>
           </div>
 
           {loading ? (
