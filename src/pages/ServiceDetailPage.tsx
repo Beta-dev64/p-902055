@@ -8,6 +8,7 @@ import LeadForm from "@/components/LeadForm";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import type { ServiceRow } from "./ServicesPage";
+import { trackCtaClick } from "@/lib/analytics";
 
 const ListBlock = ({ title, items }: { title: string; items?: string[] | null }) => {
   if (!items || items.length === 0) return null;
@@ -118,6 +119,16 @@ const ServiceDetailPage = () => {
                 {service.description}
               </p>
             )}
+            <div className="pt-2">
+              <Button asChild size="lg">
+                <a
+                  href="#start"
+                  onClick={() => trackCtaClick("service", service.slug, "hero")}
+                >
+                  Start a project
+                </a>
+              </Button>
+            </div>
           </header>
 
           {service.image && (
