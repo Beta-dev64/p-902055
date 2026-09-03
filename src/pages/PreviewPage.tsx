@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { ArrowLeft, EyeOff, Loader2 } from "lucide-react";
+import { ArrowLeft, ExternalLink, Eye, EyeOff, Loader2, Pencil } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -37,6 +37,12 @@ const LABELS: Record<PreviewType, string> = {
   service: "Service",
   program: "Academy program",
   "case-study": "Case study",
+};
+
+const ADMIN_TAB: Record<PreviewType, string> = {
+  service: "services",
+  program: "programs",
+  "case-study": "portfolios",
 };
 
 const LIVE_PATH: Record<PreviewType, (slug: string) => string> = {

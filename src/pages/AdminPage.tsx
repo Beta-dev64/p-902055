@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AdminLogin from "@/components/AdminLogin";
@@ -12,9 +13,25 @@ import AdminServices from "@/components/admin/AdminServices";
 import AdminPrograms from "@/components/admin/AdminPrograms";
 import AdminLeads from "@/components/admin/AdminLeads";
 
+const VALID_TABS = [
+  "inquiries",
+  "leads",
+  "services",
+  "programs",
+  "reviews",
+  "testimonials",
+  "portfolios",
+  "partners",
+  "team",
+];
+
 const AdminPage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [activeTab, setActiveTab] = useState("inquiries");
+  const [params] = useSearchParams();
+  const requestedTab = params.get("tab");
+  const [activeTab, setActiveTab] = useState(
+    requestedTab && VALID_TABS.includes(requestedTab) ? requestedTab : "inquiries",
+  );
 
   const tabs = [
     { id: "inquiries", label: "Project Requests", component: AdminProjectInquiries },
