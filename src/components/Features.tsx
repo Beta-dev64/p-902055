@@ -113,7 +113,7 @@ const Features = () => {
           <FeatureCard
             icon={<Code className="w-5 h-5 sm:w-6 sm:h-6" />}
             title="Product Development"
-            description="We craft scalable, high-performance web and mobile appsâ€”custom-built to drive efficiency, revenue, and market differentiation."
+            description="We craft scalable, high-performance web and mobile apps—custom-built to drive efficiency, revenue, and market differentiation."
             index={1}
           />
           <FeatureCard
@@ -125,13 +125,13 @@ const Features = () => {
           <FeatureCard
             icon={<TrendingUp className="w-5 h-5 sm:w-6 sm:h-6" />}
             title="Growth Engineering"
-            description="We don't just buildâ€”we grow. Our growth team aligns tech with marketing to optimize funnels, drive SEO, and boost retention."
+            description="We don't just build—we grow. Our growth team aligns tech with marketing to optimize funnels, drive SEO, and boost retention."
             index={3}
           />
           <FeatureCard
             icon={<Settings className="w-5 h-5 sm:w-6 sm:h-6" />}
             title="Systems Integration"
-            description="Connect your platform to payments, logistics, messaging, and moreâ€”building intelligent workflows that scale across your stack."
+            description="Connect your platform to payments, logistics, messaging, and more—building intelligent workflows that scale across your stack."
             index={4}
           />
           <FeatureCard

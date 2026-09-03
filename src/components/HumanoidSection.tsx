@@ -227,7 +227,7 @@ const HumanoidSection = () => {
               <div className="relative z-10 p-5 sm:p-6 md:p-8 h-full flex items-center">
                 <div className="max-w-lg">
                   <h3 className="text-2xl sm:text-3xl md:text-4xl font-display text-white font-bold leading-tight mb-4">
-                    If we donâ€™t deliver,  <span className="text-[#FC4D0A]"> you donâ€™t pay.</span> Simple.
+                    If we don’t deliver,  <span className="text-[#FC4D0A]"> you don’t pay.</span> Simple.
                   </h3>
                 </div>
               </div>
