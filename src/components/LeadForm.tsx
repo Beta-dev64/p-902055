@@ -68,6 +68,7 @@ const LeadForm = ({ type, serviceSlug, programSlug, submitLabel }: LeadFormProps
         throw error ?? new Error("Submission rejected");
       }
 
+      trackLeadSubmit(type, programSlug ?? serviceSlug);
       navigate(type === "enrollment" ? "/thank-you?type=enrollment" : "/thank-you?type=project");
     } catch (err) {
       console.error("Lead submission failed", err);
