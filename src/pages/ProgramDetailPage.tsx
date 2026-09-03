@@ -8,6 +8,7 @@ import LeadForm from "@/components/LeadForm";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import type { AcademyProgram } from "@/hooks/use-academy-programs";
+import { trackCtaClick } from "@/lib/analytics";
 
 const ListBlock = ({ title, items }: { title: string; items?: string[] | null }) => {
   if (!items || items.length === 0) return null;
@@ -165,7 +166,12 @@ const ProgramDetailPage = () => {
                   {program.level && <li>Level: {program.level}</li>}
                 </ul>
                 <Button asChild className="w-full">
-                  <a href="#enroll">Enroll now</a>
+                  <a
+                    href="#enroll"
+                    onClick={() => trackCtaClick("program", program.slug, "pricing_card")}
+                  >
+                    Enroll now
+                  </a>
                 </Button>
               </div>
             </aside>

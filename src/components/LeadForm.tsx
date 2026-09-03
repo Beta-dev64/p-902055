@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
+import { trackLeadSubmit } from "@/lib/analytics";
 
 const SITE_KEY =
   import.meta.env.VITE_HCAPTCHA_SITE_KEY || "10000000-ffff-ffff-ffff-000000000001";
@@ -67,6 +68,7 @@ const LeadForm = ({ type, serviceSlug, programSlug, submitLabel }: LeadFormProps
         throw error ?? new Error("Submission rejected");
       }
 
+      trackLeadSubmit(type, programSlug ?? serviceSlug);
       navigate(type === "enrollment" ? "/thank-you?type=enrollment" : "/thank-you?type=project");
     } catch (err) {
       console.error("Lead submission failed", err);

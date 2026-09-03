@@ -1,5 +1,9 @@
 User-agent: *
 Allow: /
+Allow: /services
+Allow: /academic
 Disallow: /admin
+Disallow: /preview/
+Disallow: /thank-you
 
 Sitemap: https://fuselabsio.lovable.app/sitemap.xml
