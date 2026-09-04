@@ -121,11 +121,11 @@
     --text-900: #e6e6e6;
     --text-950: #f2f2f2;
 
-    --background-50: #0e0c0c;
-    --background-100: #1b1818;
-    --background-200: #363030;
-    --background-300: #514848;
-    --background-400: #6c6060;
+    --background-50: #080707;
+    --background-100: #161313;
+    --background-200: #302a2a;
+    --background-300: #4a4141;
+    --background-400: #655a5a;
     --background-500: #877878;
     --background-600: #9f9393;
     --background-700: #b7aeae;
@@ -169,24 +169,24 @@
     --accent-900: #f3ded8;
     --accent-950: #f9efeb;
 
-    --background: 0 8% 5%;
+    --background: 0 8% 3%;
     --foreground: 0 0% 95%;
-    --card: 20 8% 9%;
+    --card: 20 8% 7%;
     --card-foreground: 0 0% 95%;
-    --popover: 20 8% 9%;
+    --popover: 20 8% 7%;
     --popover-foreground: 0 0% 95%;
     --primary: 30 74% 50%;
     --primary-foreground: 30 79% 5%;
     --secondary: 30 52% 50%;
     --secondary-foreground: 0 0% 98%;
-    --muted: 20 8% 14%;
+    --muted: 20 8% 11%;
     --muted-foreground: 0 0% 65%;
     --accent: 14 53% 50%;
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-    --border: 20 10% 18%;
-    --input: 20 10% 18%;
+    --border: 20 10% 15%;
+    --input: 20 10% 15%;
     --ring: 30 74% 50%;
 
     --sidebar-background: 0 8% 5%;

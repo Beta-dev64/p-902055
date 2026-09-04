@@ -39,7 +39,7 @@ const Team = () => {
   };
 
   return (
-    <section className="w-full py-12 md:py-16 bg-muted" id="team">
+    <section className="w-full py-12 md:py-16 bg-background" id="team">
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
         {/* Header */}
         <div className="text-center mb-12">

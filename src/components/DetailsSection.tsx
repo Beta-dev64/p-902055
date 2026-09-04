@@ -110,7 +110,7 @@ const DetailsSection = () => {
   ];
 
   return (
-    <section id="details" className="w-full bg-background py-0">
+    <section id="details" className="w-full bg-muted py-12 md:py-16">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8 flex items-center gap-4 sm:mb-16">
           <div className="pulse-chip">

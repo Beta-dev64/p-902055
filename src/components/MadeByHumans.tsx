@@ -3,7 +3,7 @@ import { FuseLabsLogo } from "@/components/FuseLabsLogo";
 
 const MadeByHumans = () => {
 	return (
-		<section id="made-by-humans" className="w-full bg-background py-0">
+		<section id="made-by-humans" className="w-full bg-muted py-0">
 			<div className="section-container opacity-0 animate-on-scroll pb-2">
 				<div className="w-full rounded-2xl sm:rounded-3xl overflow-hidden relative mt-6 sm:mt-8">
 					<div
