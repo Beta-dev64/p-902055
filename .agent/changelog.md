@@ -1,4 +1,4 @@
-﻿## 2026-08-22 (Galactic hero particle field)
+## 2026-08-22 (Galactic hero particle field)
 
 - Evolved the home hero's `FusionField` canvas from a single rotating particle sphere into a layered galactic space scene: a full-viewport twinkling starfield with depth-based parallax and drift, three slowly drifting soft nebula gradient wisps (amber/heat + a subtle violet accent for cool contrast), and rare shooting-star comets (desktop only)
 - Kept the original rotating amber/cream/heat particle sphere as the scene's "energy core," now twinkling slightly too
@@ -13,6 +13,13 @@
 - `Navbar` generalized with an `overLightHero` case (mirrors `overDarkHero`) so the floating nav uses dark ink text over the new light Academy hero instead of the theme's light-on-dark default
 - Added `academy_programs`-backed `useAcademyPrograms` hook; Academy page now reads real CMS program data (price, duration, syllabus, outcomes) instead of a hardcoded array
 - Added Fraunces serif font (scoped to `font-academy`) for Academy display type only
+
+## 2026-08-21 (Home section rhythm + marquee + academy video)
+
+- Removed the `space-y-4 sm:space-y-8` gap wrapper on the home page; sections now sit flush and alternate `bg-background`/`bg-muted` tone section-to-section (no more visible seam/bar between bands)
+- Darkened `.dark` tokens (`--background`, `--card`, `--popover`, `--muted`, `--border`, `--input`, raw `--background-50..400`) to sit closer to the Hero's near-black tone
+- Rebuilt `PartnersScroll` on a new seamless `Marquee` primitive (`src/components/ui/marquee.tsx`, Magic UI/shadcn registry pattern, duplicated groups in lockstep — no visible start/end); logos sit on white chips for guaranteed contrast; section background is brand orange (`dark:bg-primary`) in dark mode only
+- Restored the Academy hero background video (`public/academy-hero-student-success.mp4`, recovered from an unmerged branch's git history) — note: this file's target (the original video-hero `AcademicPage.tsx`) was superseded by the 2026-08-21 Academy editorial redesign before this branch merged; see merge notes for how the conflict was resolved. The video asset itself is still restored and is now used by the new `AcademyStory` section instead.
 
 ## 2026-08-18
 

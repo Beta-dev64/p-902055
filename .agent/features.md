@@ -16,7 +16,7 @@ Track each product/UI feature and its implementation status.
 | F-004 | Hero + WebGL fusion field | done | Canvas 2D fusion nebula (no Three.js) |
 | F-005 | Dual CTAs (Project / Academy) | done | Pill primary amber / outline academy |
 | F-006 | Proof strip (60 days + guarantee) | done | Hero proof line |
-| F-007 | Partner logo marquee | planned | Dual-direction preferred |
+| F-007 | Partner logo marquee | done | shadcn/Magic UI-style `Marquee`; seamless chain, orange bg in dark mode |
 | F-008 | Services unequal mosaic (6) | planned | No equal card grid |
 | F-009 | Process 4-step section | planned | Strategy → Launch |
 | F-010 | Portfolio preview on home | planned | Asymmetric tiles |

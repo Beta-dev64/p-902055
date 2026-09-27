@@ -1,28 +1,15 @@
-﻿
-import React, { useEffect, useState, useRef } from "react";
+﻿import React, { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { Marquee } from "@/components/ui/marquee";
+
+interface Partner {
+  id?: string;
+  name: string;
+  logo: string;
+}
 
 const PartnersScroll = () => {
-  const [scrollDirection, setScrollDirection] = useState('left');
-  const lastScrollY = useRef(0);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      if (currentScrollY > lastScrollY.current) {
-        setScrollDirection('left');
-      } else {
-        setScrollDirection('right');
-      }
-      lastScrollY.current = currentScrollY;
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const [partners, setPartners] = useState([]);
+  const [partners, setPartners] = useState<Partner[]>([]);
 
   useEffect(() => {
     fetchPartners();
@@ -31,49 +18,42 @@ const PartnersScroll = () => {
   const fetchPartners = async () => {
     try {
       const { data, error } = await supabase
-        .from('partners')
-        .select('*')
-        .order('created_at', { ascending: false });
-      
+        .from("partners")
+        .select("*")
+        .order("created_at", { ascending: false });
+
       if (error) throw error;
       setPartners(data || []);
     } catch (error) {
-      console.error('Error fetching partners:', error);
+      console.error("Error fetching partners:", error);
     }
   };
 
-  // Triple the array for seamless infinite scroll
-  const infinitePartners = [...partners, ...partners, ...partners];
+  if (partners.length === 0) return null;
 
   return (
-    <section className="w-full py-8 bg-background overflow-hidden">
-      <div className="text-center mb-8">
-        <p className="text-muted-foreground font-medium">Trusted by industry leaders</p>
-      </div>
-      
-      <div className="relative">
-        <div 
-          ref={scrollContainerRef}
-          className={`flex space-x-16 ${scrollDirection === 'left' ? 'animate-scroll-left' : 'animate-scroll-right'}`}
-          style={{
-            width: 'calc(300% + 8rem)',
-            animationDuration: '60s'
-          }}
-        >
-          {infinitePartners.map((partner, index) => (
-            <div
-              key={`${partner.name}-${index}`}
-              className="flex-shrink-0 w-32 h-16 flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-300 opacity-60 hover:opacity-100 hover:scale-110"
-            >
-              <img
-                src={partner.logo}
-                alt={partner.name}
-                className="max-w-full max-h-full object-contain"
-              />
-            </div>
-          ))}
-        </div>
-      </div>
+    <section className="w-full overflow-hidden bg-muted py-10 dark:bg-primary sm:py-12">
+      <p className="mb-8 text-center text-sm font-medium uppercase tracking-[0.14em] text-muted-foreground dark:text-primary-foreground/80">
+        Trusted by industry leaders
+      </p>
+
+      <Marquee
+        pauseOnHover
+        className="[--duration:36s] [--gap:2.5rem] sm:[--gap:3.5rem]"
+      >
+        {partners.map((partner, index) => (
+          <div
+            key={partner.id ?? `${partner.name}-${index}`}
+            className="flex h-16 w-32 shrink-0 items-center justify-center rounded-xl bg-white px-4 shadow-sm"
+          >
+            <img
+              src={partner.logo}
+              alt={partner.name}
+              className="max-h-10 max-w-full object-contain opacity-80 grayscale transition-all duration-300 hover:opacity-100 hover:grayscale-0"
+            />
+          </div>
+        ))}
+      </Marquee>
     </section>
   );
 };

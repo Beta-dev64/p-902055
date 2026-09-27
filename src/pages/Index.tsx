@@ -59,42 +59,40 @@ const Index = () => {
         ]}
       />
       <Navbar />
-      <main>
+      <main className="bg-background">
         <Hero />
-        <div className="space-y-4 bg-background sm:space-y-8">
-          <div className="reveal">
-            <HumanoidSection />
-          </div>
-          <div className="reveal">
-            <ImageShowcaseSection />
-          </div>
-          <div className="reveal">
-            <Features />
-          </div>
-          <div className="reveal">
-            <Portfolio />
-          </div>
-          <div className="reveal">
-            <PartnersScroll />
-          </div>
-          <div className="reveal">
-            <Testimonials />
-          </div>
-          <div className="reveal">
-            <ReviewForm />
-          </div>
-          <div className="reveal">
-            <Team />
-          </div>
-          <div className="reveal">
-            <DetailsSection />
-          </div>
-          <div className="reveal">
-            <Newsletter />
-          </div>
-          <div className="reveal">
-            <MadeByHumans />
-          </div>
+        <div className="reveal">
+          <HumanoidSection />
+        </div>
+        <div className="reveal">
+          <ImageShowcaseSection />
+        </div>
+        <div className="reveal">
+          <Features />
+        </div>
+        <div className="reveal">
+          <Portfolio />
+        </div>
+        <div className="reveal">
+          <PartnersScroll />
+        </div>
+        <div className="reveal">
+          <Testimonials />
+        </div>
+        <div className="reveal">
+          <ReviewForm />
+        </div>
+        <div className="reveal">
+          <Team />
+        </div>
+        <div className="reveal">
+          <DetailsSection />
+        </div>
+        <div className="reveal">
+          <Newsletter />
+        </div>
+        <div className="reveal">
+          <MadeByHumans />
         </div>
       </main>
       <Footer />

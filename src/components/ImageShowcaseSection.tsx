@@ -21,7 +21,7 @@ const ImageShowcaseSection = () => {
   ];
 
   return (
-    <section className="w-full pt-0 pb-8 sm:pb-12 bg-background" id="showcase">
+    <section className="w-full pt-8 pb-8 sm:pt-12 sm:pb-12 bg-muted" id="showcase">
       <div className="container px-4 sm:px-6 lg:px-8 mx-auto">
         <div className="max-w-3xl mx-auto text-center mb-8 sm:mb-12 animate-on-scroll">
           <h2 className="text-3xl sm:text-4xl font-display font-bold tracking-tight text-foreground mb-3 sm:mb-4">
