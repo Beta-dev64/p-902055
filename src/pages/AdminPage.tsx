@@ -12,10 +12,12 @@ import AdminTeam from "@/components/admin/AdminTeam";
 import AdminServices from "@/components/admin/AdminServices";
 import AdminPrograms from "@/components/admin/AdminPrograms";
 import AdminLeads from "@/components/admin/AdminLeads";
+import AdminBlog from "@/components/admin/AdminBlog";
 
 const VALID_TABS = [
   "inquiries",
   "leads",
+  "blog",
   "services",
   "programs",
   "reviews",
@@ -36,6 +38,7 @@ const AdminPage = () => {
   const tabs = [
     { id: "inquiries", label: "Project Requests", component: AdminProjectInquiries },
     { id: "leads", label: "Leads", component: AdminLeads },
+    { id: "blog", label: "Blog", component: AdminBlog },
     { id: "services", label: "Services", component: AdminServices },
     { id: "programs", label: "Academy Programs", component: AdminPrograms },
     { id: "reviews", label: "Reviews", component: AdminReviews },
