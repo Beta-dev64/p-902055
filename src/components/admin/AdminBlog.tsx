@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Edit, Eye, Plus, Trash2 } from "lucide-react";
+import { Edit, Eye, Loader2, Plus, Sparkles, Trash2 } from "lucide-react";
+import { callAdminFunction } from "@/lib/admin-session";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -20,6 +21,7 @@ const emptyForm = {
   content: "",
   cover_image: "",
   author: "",
+  category: "",
   tags: "",
   published: false,
 };
@@ -34,6 +36,38 @@ const AdminBlog = () => {
   const [loading, setLoading] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [formData, setFormData] = useState(emptyForm);
+  const [ai, setAi] = useState({ topic: "", keyPoints: "", audience: "", tone: "" });
+  const [drafting, setDrafting] = useState(false);
+
+  const generateDraft = async () => {
+    if (ai.topic.trim().length < 3) {
+      toast({ title: "Add a topic", description: "Describe what the article is about.", variant: "destructive" });
+      return;
+    }
+    setDrafting(true);
+    try {
+      const d = await callAdminFunction<{ title: string; excerpt: string; category: string; tags: string[]; content: string }>(
+        "blog-ai-draft",
+        { topic: ai.topic, keyPoints: ai.keyPoints, audience: ai.audience, tone: ai.tone || undefined },
+      );
+      setFormData((prev) => ({
+        ...prev,
+        title: d.title,
+        slug: editingId === "new" || !prev.slug ? slugify(d.title) : prev.slug,
+        excerpt: d.excerpt,
+        category: d.category || prev.category,
+        tags: d.tags.join(", "),
+        content: d.content,
+        published: false,
+      }));
+      setShowPreview(true);
+      toast({ title: "Draft ready", description: "Review and edit it before publishing." });
+    } catch (e) {
+      toast({ title: "Couldn't draft article", description: e instanceof Error ? e.message : "Try again.", variant: "destructive" });
+    } finally {
+      setDrafting(false);
+    }
+  };
 
   const fetchPosts = async () => {
     setLoading(true);
@@ -63,6 +97,7 @@ const AdminBlog = () => {
       content: post.content || "",
       cover_image: post.cover_image || "",
       author: post.author || "",
+      category: post.category || "",
       tags: (post.tags || []).join(", "),
       published: post.published,
     });
@@ -82,6 +117,7 @@ const AdminBlog = () => {
       content: formData.content,
       cover_image: formData.cover_image || null,
       author: formData.author.trim() || null,
+      category: formData.category.trim() || null,
       tags: formData.tags.split(",").map((t) => t.trim()).filter(Boolean),
       published: formData.published,
       published_at: formData.published ? existing?.published_at || new Date().toISOString() : existing?.published_at || null,
@@ -128,6 +164,7 @@ const AdminBlog = () => {
     content: formData.content,
     cover_image: formData.cover_image || null,
     author: formData.author || null,
+    category: formData.category || null,
     tags: formData.tags.split(",").map((t) => t.trim()).filter(Boolean),
     published: formData.published,
     published_at: null,
@@ -149,6 +186,19 @@ const AdminBlog = () => {
       {editingId !== null && (
         <Card className="mb-6 space-y-4 p-6">
           <h3 className="text-lg font-medium">{editingId === "new" ? "New article" : "Edit article"}</h3>
+          <div className="space-y-3 rounded-xl border border-primary/30 bg-primary/5 p-4">
+            <p className="flex items-center gap-2 text-sm font-medium"><Sparkles className="h-4 w-4 text-primary" /> Write with AI</p>
+            <Input placeholder="Topic, e.g. How to validate a startup idea in 2 weeks" value={ai.topic} onChange={(e) => setAi({ ...ai, topic: e.target.value })} />
+            <Textarea rows={4} placeholder="Key points to cover (one per line)" value={ai.keyPoints} onChange={(e) => setAi({ ...ai, keyPoints: e.target.value })} />
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+              <Input placeholder="Audience (optional)" value={ai.audience} onChange={(e) => setAi({ ...ai, audience: e.target.value })} />
+              <Input placeholder="Tone (optional), e.g. friendly, expert" value={ai.tone} onChange={(e) => setAi({ ...ai, tone: e.target.value })} />
+            </div>
+            <Button variant="secondary" onClick={generateDraft} disabled={drafting}>
+              {drafting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Drafting… (up to a minute)</> : <><Sparkles className="mr-2 h-4 w-4" /> Generate draft</>}
+            </Button>
+            <p className="text-xs text-muted-foreground">This fills in the fields below. Your current text will be replaced.</p>
+          </div>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <Input
               placeholder="Title"
@@ -160,6 +210,7 @@ const AdminBlog = () => {
             />
             <Input placeholder="Slug (URL)" value={formData.slug} onChange={(e) => setFormData({ ...formData, slug: e.target.value })} />
             <Input placeholder="Author" value={formData.author} onChange={(e) => setFormData({ ...formData, author: e.target.value })} />
+            <Input placeholder="Category, e.g. Engineering" value={formData.category} onChange={(e) => setFormData({ ...formData, category: e.target.value })} />
             <Input placeholder="Tags (comma separated)" value={formData.tags} onChange={(e) => setFormData({ ...formData, tags: e.target.value })} />
           </div>
           <Textarea rows={2} placeholder="Short summary (shown on the blog list and in Google)" value={formData.excerpt} onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })} />
@@ -195,7 +246,7 @@ const AdminBlog = () => {
                 <h3 className="font-medium text-foreground">{post.title}</h3>
                 <StatusBadge published={post.published} />
               </div>
-              <p className="text-sm text-muted-foreground">/blog/{post.slug}</p>
+              <p className="text-sm text-muted-foreground">/blog/{post.slug}{post.category ? ` · ${post.category}` : ""}</p>
             </div>
             <div className="flex flex-wrap gap-2">
               {post.published && (
