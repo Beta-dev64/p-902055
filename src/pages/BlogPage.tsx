@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { ArrowRight, Loader2 } from "lucide-react";
+import React, { useEffect, useMemo, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
+import { ArrowRight, Loader2, Search, X } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Seo from "@/components/Seo";
@@ -14,6 +15,7 @@ export interface BlogPostRow {
   content: string | null;
   cover_image: string | null;
   author: string | null;
+  category: string | null;
   tags: string[] | null;
   published: boolean;
   published_at: string | null;
@@ -30,6 +32,34 @@ export const formatPostDate = (post: BlogPostRow) =>
 const BlogPage = () => {
   const [posts, setPosts] = useState<BlogPostRow[]>([]);
   const [loading, setLoading] = useState(true);
+  const [params, setParams] = useSearchParams();
+  const query = params.get("q") || "";
+  const category = params.get("category") || "";
+  const tag = params.get("tag") || "";
+
+  const setParam = (key: string, value: string) => {
+    const next = new URLSearchParams(params);
+    if (value) next.set(key, value);
+    else next.delete(key);
+    setParams(next, { replace: true });
+  };
+
+  const categories = useMemo(
+    () => Array.from(new Set(posts.map((p) => p.category).filter(Boolean) as string[])).sort(),
+    [posts],
+  );
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return posts.filter((p) => {
+      if (category && p.category !== category) return false;
+      if (tag && !(p.tags || []).includes(tag)) return false;
+      if (!q) return true;
+      return [p.title, p.excerpt, p.content, p.category, ...(p.tags || [])]
+        .filter(Boolean)
+        .some((f) => (f as string).toLowerCase().includes(q));
+    });
+  }, [posts, query, category, tag]);
 
   useEffect(() => {
     let active = true;
@@ -75,8 +105,46 @@ const BlogPage = () => {
           ) : posts.length === 0 ? (
             <p className="text-muted-foreground">No articles yet. Check back soon.</p>
           ) : (
+            <>
+            <div className="mb-8 space-y-4">
+              <div className="relative max-w-md">
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  aria-label="Search articles"
+                  placeholder="Search articles…"
+                  className="pl-9"
+                  value={query}
+                  onChange={(e) => setParam("q", e.target.value)}
+                />
+              </div>
+              {categories.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {["", ...categories].map((c) => (
+                    <button
+                      key={c || "all"}
+                      onClick={() => setParam("category", c)}
+                      className={`rounded-full border px-4 py-1.5 text-sm transition-colors ${
+                        category === c
+                          ? "border-primary bg-primary text-primary-foreground"
+                          : "border-border text-muted-foreground hover:text-foreground"
+                      }`}
+                    >
+                      {c || "All"}
+                    </button>
+                  ))}
+                </div>
+              )}
+              {tag && (
+                <button onClick={() => setParam("tag", "")} className="inline-flex items-center gap-1 rounded-full bg-muted px-3 py-1 text-sm">
+                  Tag: {tag} <X className="h-3 w-3" />
+                </button>
+              )}
+            </div>
+            {filtered.length === 0 ? (
+              <p className="text-muted-foreground">No articles match your search.</p>
+            ) : (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {posts.map((post) => (
+              {filtered.map((post) => (
                 <Link
                   key={post.id}
                   to={`/blog/${post.slug}`}
@@ -86,6 +154,9 @@ const BlogPage = () => {
                     <img src={post.cover_image} alt={post.title} loading="lazy" className="h-48 w-full object-cover" />
                   )}
                   <div className="flex flex-1 flex-col p-6">
+                    {post.category && (
+                      <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-primary">{post.category}</p>
+                    )}
                     <p className="mb-2 text-xs text-muted-foreground">
                       {formatPostDate(post)}
                       {post.author ? ` · ${post.author}` : ""}
@@ -102,6 +173,8 @@ const BlogPage = () => {
                 </Link>
               ))}
             </div>
+            )}
+            </>
           )}
         </div>
       </main>

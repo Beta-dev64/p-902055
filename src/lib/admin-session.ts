@@ -11,7 +11,7 @@ const FUNCTIONS_URL = `https://${import.meta.env.VITE_SUPABASE_PROJECT_ID}.supab
 
 /** Calls an admin-only edge function with the session password header. */
 export async function callAdminFunction<T>(
-  name: "admin-leads" | "cms-preview",
+  name: "admin-leads" | "cms-preview" | "blog-ai-draft",
   body: Record<string, unknown>,
   password = getAdminPassword(),
 ): Promise<T> {

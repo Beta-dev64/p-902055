@@ -10,11 +10,16 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { BlogPostRow, formatPostDate } from "./BlogPage";
 
-export const BlogArticle = ({ post }: { post: BlogPostRow }) => (
+export const BlogArticle = ({ post, related = [] }: { post: BlogPostRow; related?: BlogPostRow[] }) => (
   <article className="container mx-auto max-w-3xl px-4 sm:px-6">
     <Link to="/blog" className="mb-6 inline-flex items-center text-sm text-muted-foreground hover:text-foreground">
       <ArrowLeft className="mr-1 h-4 w-4" /> All articles
     </Link>
+    {post.category && (
+      <Link to={`/blog?category=${encodeURIComponent(post.category)}`} className="mb-3 inline-block text-xs font-semibold uppercase tracking-widest text-primary">
+        {post.category}
+      </Link>
+    )}
     <p className="mb-3 text-sm text-muted-foreground">
       {formatPostDate(post)}
       {post.author ? ` · ${post.author}` : ""}
@@ -30,11 +35,24 @@ export const BlogArticle = ({ post }: { post: BlogPostRow }) => (
     {post.tags && post.tags.length > 0 && (
       <div className="mt-10 flex flex-wrap gap-2">
         {post.tags.map((tag) => (
-          <span key={tag} className="rounded-full border border-border px-3 py-1 text-xs text-muted-foreground">
-            {tag}
-          </span>
+          <Link key={tag} to={`/blog?tag=${encodeURIComponent(tag)}`} className="rounded-full border border-border px-3 py-1 text-xs text-muted-foreground hover:text-foreground">
+            #{tag}
+          </Link>
         ))}
       </div>
+    )}
+    {related.length > 0 && (
+      <section className="mt-16">
+        <h2 className="mb-6 font-display text-2xl font-semibold">Related articles</h2>
+        <div className="grid gap-4 sm:grid-cols-3">
+          {related.map((r) => (
+            <Link key={r.id} to={`/blog/${r.slug}`} className="rounded-xl border border-border bg-card p-4 hover:border-primary/50">
+              {r.category && <p className="mb-1 text-xs text-primary">{r.category}</p>}
+              <p className="font-medium">{r.title}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
     )}
     <div className="mt-16 rounded-2xl border border-border bg-muted/40 p-8 text-center">
       <h2 className="mb-3 font-display text-2xl font-semibold">Have a project in mind?</h2>
@@ -50,6 +68,7 @@ const BlogPostPage = () => {
   const { slug } = useParams();
   const [post, setPost] = useState<BlogPostRow | null>(null);
   const [loading, setLoading] = useState(true);
+  const [related, setRelated] = useState<BlogPostRow[]>([]);
 
   useEffect(() => {
     let active = true;
@@ -61,8 +80,30 @@ const BlogPostPage = () => {
         .eq("published", true)
         .maybeSingle();
       if (error) console.error(error);
+      const current = data as BlogPostRow | null;
+      if (current) {
+        const { data: others } = await (supabase as any)
+          .from("blog_posts")
+          .select("id,slug,title,category,tags,published_at,created_at")
+          .eq("published", true)
+          .neq("id", current.id)
+          .order("published_at", { ascending: false })
+          .limit(30);
+        const scored = ((others as BlogPostRow[]) || [])
+          .map((o) => ({
+            o,
+            score:
+              (o.category && o.category === current.category ? 2 : 0) +
+              (o.tags || []).filter((t) => (current.tags || []).includes(t)).length,
+          }))
+          .filter((x) => x.score > 0)
+          .sort((a, b) => b.score - a.score)
+          .slice(0, 3)
+          .map((x) => x.o);
+        if (active) setRelated(scored);
+      }
       if (active) {
-        setPost(data as BlogPostRow | null);
+        setPost(current);
         setLoading(false);
       }
     })();
@@ -96,7 +137,7 @@ const BlogPostPage = () => {
             <Loader2 className="mr-2 h-5 w-5 animate-spin" /> Loading…
           </div>
         ) : post ? (
-          <BlogArticle post={post} />
+          <BlogArticle post={post} related={related} />
         ) : (
           <div className="container mx-auto max-w-3xl px-4 text-center">
             <h1 className="mb-4 font-display text-3xl font-bold">Article not found</h1>
