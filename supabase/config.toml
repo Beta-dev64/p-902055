@@ -11,3 +11,5 @@ verify_jwt = false
 
 [functions.cms-preview]
 verify_jwt = false
+[functions.blog-ai-draft]
+verify_jwt = false
