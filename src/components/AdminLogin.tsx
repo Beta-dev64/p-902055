@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { toast } from "@/components/ui/use-toast";
-import { callAdminFunction, setAdminPassword } from "@/lib/admin-session";
+import { signInAdmin } from "@/lib/admin-session";
 
 interface AdminLoginProps {
   onLogin: () => void;
@@ -16,8 +16,7 @@ const AdminLogin = ({ onLogin }: AdminLoginProps) => {
 
     try {
       // The password is verified server-side by the admin edge function
-      await callAdminFunction("admin-leads", { action: "ping" }, password);
-      setAdminPassword(password);
+      await signInAdmin(password);
       toast({
         title: "Login successful",
         description: "Welcome to the admin dashboard",
