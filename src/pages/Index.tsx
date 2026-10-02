@@ -14,6 +14,7 @@ import Team from "@/components/Team";
 import Newsletter from "@/components/Newsletter";
 import MadeByHumans from "@/components/MadeByHumans";
 import Footer from "@/components/Footer";
+import logoAsset from "@/assets/fuselabs-logo-black.png.asset.json";
 
 const Index = () => {
   useEffect(() => {
@@ -46,7 +47,7 @@ const Index = () => {
             "@type": "Organization",
             name: "FuseLabs IO",
             url: "https://fuselabsio.lovable.app/",
-            logo: "https://fuselabsio.lovable.app/logo.svg",
+            logo: `https://fuselabsio.lovable.app${logoAsset.url}`,
             description:
               "Software agency building MVPs, scalable applications and growth engines.",
           },
