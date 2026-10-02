@@ -1,5 +1,6 @@
 ﻿
 import React, { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Rocket, Code, Users, TrendingUp, Settings, Server } from "lucide-react";
 
@@ -8,9 +9,10 @@ interface FeatureCardProps {
   title: string;
   description: string;
   index: number;
+  href?: string;
 }
 
-const FeatureCard = ({ icon, title, description, index }: FeatureCardProps) => {
+const FeatureCard = ({ icon, title, description, index, href }: FeatureCardProps) => {
   const cardRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
