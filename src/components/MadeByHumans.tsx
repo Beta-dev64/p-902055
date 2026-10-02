@@ -13,7 +13,7 @@ const MadeByHumans = () => {
 						}}
 					>
 						<div className="flex items-center text-white">
-							<FuseLabsLogo markClassName="h-6 w-6 sm:h-7 sm:w-7" />
+							<FuseLabsLogo variant="onAccent" markClassName="h-10 w-10 sm:h-12 sm:w-12" />
 						</div>
 
 						<div className="flex-1 flex items-center justify-center py-8 sm:py-12">

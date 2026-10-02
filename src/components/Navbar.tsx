@@ -106,7 +106,10 @@ const Navbar = () => {
             aria-label="FuseLabs IO home"
             onClick={closeMenu}
           >
-            <FuseLabsLogo />
+            <FuseLabsLogo
+              variant={overDarkHero ? "onAccent" : "default"}
+              markClassName="h-12 w-12"
+            />
           </Link>
 
           <nav
@@ -191,7 +194,7 @@ const Navbar = () => {
             className="text-white dark:text-text-950"
             aria-label="FuseLabs IO home"
           >
-            <FuseLabsLogo variant="onAccent" />
+            <FuseLabsLogo variant="onAccent" markClassName="h-12 w-12" />
           </Link>
 
           <div className="flex items-center gap-3">
