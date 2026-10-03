@@ -9,6 +9,7 @@ import Seo from "@/components/Seo";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { BlogPostRow, formatPostDate } from "./BlogPage";
+import { ShareButtons } from "@/components/ShareButtons";
 
 export const BlogArticle = ({ post, related = [] }: { post: BlogPostRow; related?: BlogPostRow[] }) => (
   <article className="container mx-auto max-w-3xl px-4 sm:px-6">
@@ -31,6 +32,9 @@ export const BlogArticle = ({ post, related = [] }: { post: BlogPostRow; related
     )}
     <div className="prose prose-neutral max-w-none dark:prose-invert prose-headings:font-display prose-a:text-primary prose-img:rounded-xl">
       <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.content || ""}</ReactMarkdown>
+    </div>
+    <div className="mt-10 border-t border-border pt-6">
+      <ShareButtons path={`/blog/${post.slug}`} title={post.title} />
     </div>
     {post.tags && post.tags.length > 0 && (
       <div className="mt-10 flex flex-wrap gap-2">
