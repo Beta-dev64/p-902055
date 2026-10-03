@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ImageUpload } from "@/components/ui/image-upload";
+import { RichTextEditor } from "./RichTextEditor";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { PublishSwitch, StatusBadge } from "./DraftControls";
@@ -214,12 +215,9 @@ const AdminBlog = () => {
             <Input placeholder="Tags (comma separated)" value={formData.tags} onChange={(e) => setFormData({ ...formData, tags: e.target.value })} />
           </div>
           <Textarea rows={2} placeholder="Short summary (shown on the blog list and in Google)" value={formData.excerpt} onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })} />
-          <Textarea
-            rows={16}
-            className="font-mono text-sm"
-            placeholder={"Article body. Formatting: # Heading, **bold**, *italic*, - list item, [link](https://...), ![image](https://...)"}
+          <RichTextEditor
             value={formData.content}
-            onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+            onChange={(content) => setFormData((f) => ({ ...f, content }))}
           />
           <ImageUpload label="Cover image" value={formData.cover_image} onChange={(url) => setFormData({ ...formData, cover_image: url })} placeholder="Enter image URL or upload a file" />
           <PublishSwitch published={formData.published} onChange={(published) => setFormData({ ...formData, published })} />
