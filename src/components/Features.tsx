@@ -39,11 +39,11 @@ const FeatureCard = ({ icon, title, description, index, href }: FeatureCardProps
     };
   }, []);
   
-  return (
+  const card = (
     <div 
       ref={cardRef}
       className={cn(
-        "feature-card glass-card group opacity-0 p-4 sm:p-6",
+        "feature-card glass-card group opacity-0 p-4 sm:p-6 h-full",
         "lg:hover:bg-gradient-to-br lg:hover:from-card lg:hover:to-muted",
         "transition-all duration-300"
       )}
@@ -56,6 +56,15 @@ const FeatureCard = ({ icon, title, description, index, href }: FeatureCardProps
       <p className="text-muted-foreground text-sm sm:text-base">{description}</p>
     </div>
   );
+
+  if (href) {
+    return (
+      <Link to={href} className="block h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-[inherit]">
+        {card}
+      </Link>
+    );
+  }
+  return card;
 };
 
 const Features = () => {
@@ -110,36 +119,42 @@ const Features = () => {
             icon={<Rocket className="w-5 h-5 sm:w-6 sm:h-6" />}
             title="Startup Acceleration"
             description="From idea to MVP in 60 days. We help startups validate fast, build lean, and launch investor-ready with strategy, design, and growth loops baked in."
+            href="/services/startup-acceleration"
             index={0}
           />
           <FeatureCard
             icon={<Code className="w-5 h-5 sm:w-6 sm:h-6" />}
             title="Product Development"
             description="We craft scalable, high-performance web and mobile apps—custom-built to drive efficiency, revenue, and market differentiation."
+            href="/services/product-development"
             index={1}
           />
           <FeatureCard
             icon={<Users className="w-5 h-5 sm:w-6 sm:h-6" />}
             title="Team Extension"
             description="Access an elite, cross-functional tech squad on-demand. We integrate seamlessly with your team or operate independently to deliver results fast."
+            href="/services/team-extension"
             index={2}
           />
           <FeatureCard
             icon={<TrendingUp className="w-5 h-5 sm:w-6 sm:h-6" />}
             title="Growth Engineering"
             description="We don't just build—we grow. Our growth team aligns tech with marketing to optimize funnels, drive SEO, and boost retention."
+            href="/services/growth-engineering"
             index={3}
           />
           <FeatureCard
             icon={<Settings className="w-5 h-5 sm:w-6 sm:h-6" />}
             title="Systems Integration"
             description="Connect your platform to payments, logistics, messaging, and more—building intelligent workflows that scale across your stack."
+            href="/services/systems-integration"
             index={4}
           />
           <FeatureCard
             icon={<Server className="w-5 h-5 sm:w-6 sm:h-6" />}
             title="DevOps Support"
             description="Speed, uptime, and security you can trust. We manage deployments, monitor performance, and ensure your product is stable, secure, and scalable."
+            href="/services/devops-support"
             index={5}
           />
         </div>
