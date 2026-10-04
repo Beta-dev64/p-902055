@@ -19,6 +19,7 @@ import ThankYouPage from "./pages/ThankYouPage";
 import PreviewPage from "./pages/PreviewPage";
 import BlogPage from "./pages/BlogPage";
 import BlogPostPage from "./pages/BlogPostPage";
+import ShareRedirect from "./pages/ShareRedirect";
 import ServicesPage from "./pages/ServicesPage";
 import ServiceDetailPage from "./pages/ServiceDetailPage";
 import ProgramDetailPage from "./pages/ProgramDetailPage";
