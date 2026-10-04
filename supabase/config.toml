@@ -15,3 +15,5 @@ verify_jwt = false
 verify_jwt = false
 [functions.admin-session]
 verify_jwt = false
+[functions.blog-share]
+verify_jwt = false
