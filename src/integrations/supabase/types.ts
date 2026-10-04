@@ -368,6 +368,39 @@ export type Database = {
         }
         Relationships: []
       }
+      site_settings: {
+        Row: {
+          created_at: string
+          facebook_url: string | null
+          github_url: string | null
+          id: number
+          instagram_url: string | null
+          linkedin_url: string | null
+          twitter_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          facebook_url?: string | null
+          github_url?: string | null
+          id?: number
+          instagram_url?: string | null
+          linkedin_url?: string | null
+          twitter_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          facebook_url?: string | null
+          github_url?: string | null
+          id?: number
+          instagram_url?: string | null
+          linkedin_url?: string | null
+          twitter_url?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       team_members: {
         Row: {
           created_at: string

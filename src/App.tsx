@@ -19,6 +19,7 @@ import ThankYouPage from "./pages/ThankYouPage";
 import PreviewPage from "./pages/PreviewPage";
 import BlogPage from "./pages/BlogPage";
 import BlogPostPage from "./pages/BlogPostPage";
+import ShareRedirect from "./pages/ShareRedirect";
 import ServicesPage from "./pages/ServicesPage";
 import ServiceDetailPage from "./pages/ServiceDetailPage";
 import ProgramDetailPage from "./pages/ProgramDetailPage";
@@ -45,6 +46,7 @@ const App = () => (
               <Route path="/services/:slug" element={<ServiceDetailPage />} />
               <Route path="/blog" element={<BlogPage />} />
               <Route path="/blog/:slug" element={<BlogPostPage />} />
+              <Route path="/share/:file" element={<ShareRedirect />} />
               <Route path="/start-project" element={<StartProjectPage />} />
               <Route path="/enroll" element={<EnrollPage />} />
               <Route path="/thank-you" element={<ThankYouPage />} />

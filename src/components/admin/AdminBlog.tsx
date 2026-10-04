@@ -7,6 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ImageUpload } from "@/components/ui/image-upload";
 import { RichTextEditor } from "./RichTextEditor";
+import { SocialPostDialog } from "./SocialPostDialog";
+import { SocialLinksSettings } from "./SocialLinksSettings";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { PublishSwitch, StatusBadge } from "./DraftControls";
@@ -236,6 +238,8 @@ const AdminBlog = () => {
         </Card>
       )}
 
+      <SocialLinksSettings />
+
       <div className="space-y-3">
         {posts.map((post) => (
           <Card key={post.id} className="flex flex-wrap items-center justify-between gap-3 p-4">
@@ -247,6 +251,7 @@ const AdminBlog = () => {
               <p className="text-sm text-muted-foreground">/blog/{post.slug}{post.category ? ` · ${post.category}` : ""}</p>
             </div>
             <div className="flex flex-wrap gap-2">
+              {post.published && <SocialPostDialog post={post} />}
               {post.published && (
                 <Button size="sm" variant="outline" asChild>
                   <a href={`/blog/${post.slug}`} target="_blank" rel="noreferrer">View</a>
