@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { BlogPostRow, formatPostDate } from "./BlogPage";
 import { ShareButtons } from "@/components/ShareButtons";
+import { FollowUs } from "@/components/FollowUs";
 
 export const BlogArticle = ({ post, related = [] }: { post: BlogPostRow; related?: BlogPostRow[] }) => (
   <article className="container mx-auto max-w-3xl px-4 sm:px-6">
@@ -34,7 +35,8 @@ export const BlogArticle = ({ post, related = [] }: { post: BlogPostRow; related
       <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.content || ""}</ReactMarkdown>
     </div>
     <div className="mt-10 border-t border-border pt-6">
-      <ShareButtons path={`/blog/${post.slug}`} title={post.title} />
+      <ShareButtons post={post} />
+      <FollowUs />
     </div>
     {post.tags && post.tags.length > 0 && (
       <div className="mt-10 flex flex-wrap gap-2">

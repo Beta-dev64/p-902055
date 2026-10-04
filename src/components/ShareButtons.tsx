@@ -1,27 +1,21 @@
 import { useState } from "react";
 import { Linkedin, Twitter, Facebook, Link2, Check, Share2 } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
+import { buildPostText, shareIntents } from "@/lib/social";
 
-const SITE = "https://fuselabsio.lovable.app";
+type Post = { slug: string; title: string; excerpt?: string | null; content?: string | null; tags?: string[] | null };
 
-export function ShareButtons({ path, title }: { path: string; title: string }) {
+export function ShareButtons({ post }: { post: Post }) {
   const [copied, setCopied] = useState(false);
-  const url = `${SITE}${path}`;
-  const u = encodeURIComponent(url);
-  const t = encodeURIComponent(title);
+  const text = buildPostText(post, 160);
+  const s = shareIntents(post.slug, text);
+  const path = `/blog/${post.slug}`;
   const links = [
-    { name: "X", icon: Twitter, href: `https://twitter.com/intent/tweet?url=${u}&text=${t}` },
-    { name: "LinkedIn", icon: Linkedin, href: `https://www.linkedin.com/sharing/share-offsite/?url=${u}` },
-    { name: "Facebook", icon: Facebook, href: `https://www.facebook.com/sharer/sharer.php?u=${u}` },
+    { name: "X", icon: Twitter, href: s.x },
+    { name: "LinkedIn", icon: Linkedin, href: s.linkedin },
+    { name: "Facebook", icon: Facebook, href: s.facebook },
   ];
   const cls = "inline-flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted-foreground hover:border-primary hover:text-primary transition-colors";
-
-  const nativeShare = async () => {
-    try {
-      await navigator.share({ title, url });
-      trackEvent("share", { network: "native", path });
-    } catch { /* cancelled */ }
-  };
 
   return (
     <div className="flex flex-wrap items-center gap-2">
@@ -34,7 +28,7 @@ export function ShareButtons({ path, title }: { path: string; title: string }) {
       ))}
       <button type="button" aria-label="Copy link" className={cls}
         onClick={async () => {
-          await navigator.clipboard.writeText(url);
+          await navigator.clipboard.writeText(s.url);
           setCopied(true);
           trackEvent("share", { network: "copy", path });
           setTimeout(() => setCopied(false), 2000);
@@ -42,7 +36,8 @@ export function ShareButtons({ path, title }: { path: string; title: string }) {
         {copied ? <Check className="h-4 w-4" /> : <Link2 className="h-4 w-4" />}
       </button>
       {typeof navigator !== "undefined" && "share" in navigator && (
-        <button type="button" aria-label="More sharing options" className={cls} onClick={nativeShare}>
+        <button type="button" aria-label="More sharing options" className={cls}
+          onClick={() => navigator.share({ title: post.title, text, url: s.url }).then(() => trackEvent("share", { network: "native", path })).catch(() => {})}>
           <Share2 className="h-4 w-4" />
         </button>
       )}
