@@ -1,6 +1,6 @@
 ﻿import React from "react";
 import { Link } from "react-router-dom";
-import { Github, Linkedin, Twitter } from "lucide-react";
+import { SocialIcons } from "@/components/FollowUs";
 import { FuseLabsLogo } from "@/components/FuseLabsLogo";
 
 const Footer = () => {
@@ -17,29 +17,7 @@ const Footer = () => {
               We craft digital solutions that transform your business vision into powerful, scalable
               applications that drive growth and innovation.
             </p>
-            <div className="flex space-x-4">
-              <a
-                href="#"
-                className="text-muted-foreground transition-transform duration-300 hover:translate-x-1 hover:text-primary"
-                aria-label="Twitter"
-              >
-                <Twitter className="h-5 w-5" aria-hidden />
-              </a>
-              <a
-                href="#"
-                className="text-muted-foreground transition-transform duration-300 hover:translate-x-1 hover:text-primary"
-                aria-label="LinkedIn"
-              >
-                <Linkedin className="h-5 w-5" aria-hidden />
-              </a>
-              <a
-                href="#"
-                className="text-muted-foreground transition-transform duration-300 hover:translate-x-1 hover:text-primary"
-                aria-label="GitHub"
-              >
-                <Github className="h-5 w-5" aria-hidden />
-              </a>
-            </div>
+            <SocialIcons />
           </div>
 
           <div>
