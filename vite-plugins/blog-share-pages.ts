@@ -47,7 +47,19 @@ export function blogSharePages(): Plugin {
   return {
     name: "blog-share-pages",
     apply: "build",
-    async generateBundle() {
+    async generateBundle(_opts, bundle) {
+      // Academy pages get their own static head so link previews show the academy image.
+      const index = bundle["index.html"] as { source?: string | Uint8Array } | undefined;
+      if (index && typeof index.source === "string") {
+        const academy = index.source
+          .replace(/og-fuselabs\.jpg/g, "og-academy.jpg")
+          .replace(/FuseLabs IO — Software Development &(amp;)? Growth Agency/g, "FuseLabs Academy — Frontend, Backend & AI/ML Programs")
+          .replace(/(property="og:url" content=")[^"]*/, `$1${SITE}/academic`)
+          .replace(/(rel="canonical" href=")[^"]*/, `$1${SITE}/academic`);
+        for (const path of ["academic", "academic/frontend-development", "academic/backend-development", "academic/ai-ml-development"]) {
+          this.emitFile({ type: "asset", fileName: `${path}/index.html`, source: academy });
+        }
+      }
       try {
         const res = await fetch(
           `${SUPABASE_URL}/rest/v1/blog_posts?select=slug,title,excerpt,content,cover_image,published_at&published=eq.true`,
@@ -59,6 +71,10 @@ export function blogSharePages(): Plugin {
           if (!/^[a-z0-9-]+$/i.test(p.slug)) continue;
           this.emitFile({ type: "asset", fileName: `share/${p.slug}.html`, source: sharePageHtml(p) });
         }
+        const urls = posts.filter((p) => /^[a-z0-9-]+$/i.test(p.slug)).map((p) =>
+          `<url><loc>${SITE}/blog/${p.slug}</loc>${p.published_at ? `<lastmod>${p.published_at.slice(0, 10)}</lastmod>` : ""}<changefreq>monthly</changefreq><priority>0.7</priority></url>`);
+        this.emitFile({ type: "asset", fileName: "sitemap-blog.xml", source:
+          `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n<url><loc>${SITE}/blog</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>\n${urls.join("\n")}\n</urlset>` });
       } catch (e) {
         this.warn(`blog share pages skipped: ${(e as Error).message}`);
       }

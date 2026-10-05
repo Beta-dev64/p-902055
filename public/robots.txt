@@ -7,3 +7,5 @@ Disallow: /preview/
 Disallow: /thank-you
 
 Sitemap: https://fuselabsio.lovable.app/sitemap.xml
+
+Sitemap: https://fuselabsio.lovable.app/sitemap-blog.xml
