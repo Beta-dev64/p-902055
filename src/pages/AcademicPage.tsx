@@ -20,6 +20,7 @@ const AcademicPage = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Seo
+        image="https://fuselabsio.lovable.app/og-academy.jpg"
         title="Academy — Frontend, Backend & AI Courses | FuseLabs IO"
         description="FuseLabs Academy: hands-on, mentor-led training programs in frontend, backend and AI/ML development, with real projects, a demo day, and a certificate that means something."
         path="/academic"

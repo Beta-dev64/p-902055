@@ -21,7 +21,7 @@ export function sharePageHtml(post: Post) {
   const url = `${SITE}/blog/${post.slug}`;
   const shareUrl = `${SITE}/share/${post.slug}.html`;
   const desc = (post.excerpt || plain(post.content || "")).slice(0, 200);
-  const img = post.cover_image ? (post.cover_image.startsWith("http") ? post.cover_image : SITE + post.cover_image) : `${SITE}/new-og-image.png`;
+  const img = post.cover_image ? (post.cover_image.startsWith("http") ? post.cover_image : SITE + post.cover_image) : `${SITE}/og-fuselabs.jpg`;
   const t = esc(post.title), d = esc(desc), i = esc(img);
   return `<!doctype html><html lang="en"><head><meta charset="utf-8">
 <title>${t} | FuseLabs IO</title>
@@ -59,8 +59,28 @@ export function blogSharePages(): Plugin {
           if (!/^[a-z0-9-]+$/i.test(p.slug)) continue;
           this.emitFile({ type: "asset", fileName: `share/${p.slug}.html`, source: sharePageHtml(p) });
         }
+        const urls = posts.filter((p) => /^[a-z0-9-]+$/i.test(p.slug)).map((p) =>
+          `<url><loc>${SITE}/blog/${p.slug}</loc>${p.published_at ? `<lastmod>${p.published_at.slice(0, 10)}</lastmod>` : ""}<changefreq>monthly</changefreq><priority>0.7</priority></url>`);
+        this.emitFile({ type: "asset", fileName: "sitemap-blog.xml", source:
+          `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n<url><loc>${SITE}/blog</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>\n${urls.join("\n")}\n</urlset>` });
       } catch (e) {
         this.warn(`blog share pages skipped: ${(e as Error).message}`);
+      }
+    },
+    async writeBundle(opts) {
+      // Academy pages get their own static head so link previews show the academy image.
+      const fs = await import("node:fs"); const nodePath = await import("node:path");
+      const dir = opts.dir || "dist"; const file = nodePath.join(dir, "index.html");
+      if (fs.existsSync(file)) {
+        const academy = fs.readFileSync(file, "utf8")
+          .replace(/content="[^"]*(builds|build) MVPs[^"]*"/g, 'content="Hands-on, mentor-led FuseLabs Academy programs in frontend, backend and AI/ML development with real projects and a certificate."')
+          .replace(/og-fuselabs\.jpg/g, "og-academy.jpg")
+          .replace(/FuseLabs IO — Software Development &(amp;)? Growth Agency/g, "FuseLabs Academy — Frontend, Backend & AI/ML Programs")
+          .replace(/(property="og:url" content=")[^"]*/, `$1${SITE}/academic`)
+          .replace(/(rel="canonical" href=")[^"]*/, `$1${SITE}/academic`);
+        for (const path of ["academic", "academic/frontend-development", "academic/backend-development", "academic/ai-ml-development"]) {
+          fs.mkdirSync(nodePath.join(dir, path), { recursive: true }); fs.writeFileSync(nodePath.join(dir, path, "index.html"), academy);
+        }
       }
     },
   };

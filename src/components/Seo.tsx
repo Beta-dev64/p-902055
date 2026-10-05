@@ -17,7 +17,7 @@ const Seo = ({
   description,
   path,
   type = "website",
-  image = `${SITE_URL}/og-image-update.png`,
+  image = `${SITE_URL}/og-fuselabs.jpg`,
   jsonLd,
 }: SeoProps) => {
   const url = `${SITE_URL}${path}`;

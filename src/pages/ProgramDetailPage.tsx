@@ -90,7 +90,7 @@ const ProgramDetailPage = () => {
           `${program.title} at FuseLabs Academy — ${program.duration ?? "hands-on"} mentor-led training with real projects.`
         }
         path={`/academic/${program.slug}`}
-        image={program.image ?? undefined}
+        image={program.image ?? "https://fuselabsio.lovable.app/og-academy.jpg"}
         jsonLd={{
           "@context": "https://schema.org",
           "@type": "Course",
