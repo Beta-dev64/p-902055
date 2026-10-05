@@ -21,7 +21,7 @@ export function sharePageHtml(post: Post) {
   const url = `${SITE}/blog/${post.slug}`;
   const shareUrl = `${SITE}/share/${post.slug}.html`;
   const desc = (post.excerpt || plain(post.content || "")).slice(0, 200);
-  const img = post.cover_image ? (post.cover_image.startsWith("http") ? post.cover_image : SITE + post.cover_image) : `${SITE}/new-og-image.png`;
+  const img = post.cover_image ? (post.cover_image.startsWith("http") ? post.cover_image : SITE + post.cover_image) : `${SITE}/og-fuselabs.jpg`;
   const t = esc(post.title), d = esc(desc), i = esc(img);
   return `<!doctype html><html lang="en"><head><meta charset="utf-8">
 <title>${t} | FuseLabs IO</title>
