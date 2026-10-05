@@ -1,5 +1,6 @@
 import React from "react";
 import { Helmet } from "react-helmet-async";
+import socialImageAsset from "@/assets/fuselabs-systems-business-forward-og.jpg.asset.json";
 
 const SITE_URL = "https://fuselabsio.lovable.app";
 
@@ -17,7 +18,7 @@ const Seo = ({
   description,
   path,
   type = "website",
-  image = `${SITE_URL}/og-fuselabs.jpg`,
+  image = `${SITE_URL}${socialImageAsset.url}`,
   jsonLd,
 }: SeoProps) => {
   const url = `${SITE_URL}${path}`;
