@@ -73,6 +73,7 @@ export function blogSharePages(): Plugin {
       const dir = opts.dir || "dist"; const file = nodePath.join(dir, "index.html");
       if (fs.existsSync(file)) {
         const academy = fs.readFileSync(file, "utf8")
+          .replace(/content="[^"]*(builds|build) MVPs[^"]*"/g, 'content="Hands-on, mentor-led FuseLabs Academy programs in frontend, backend and AI/ML development with real projects and a certificate."')
           .replace(/og-fuselabs\.jpg/g, "og-academy.jpg")
           .replace(/FuseLabs IO — Software Development &(amp;)? Growth Agency/g, "FuseLabs Academy — Frontend, Backend & AI/ML Programs")
           .replace(/(property="og:url" content=")[^"]*/, `$1${SITE}/academic`)
