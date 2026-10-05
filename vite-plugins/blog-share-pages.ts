@@ -1,4 +1,5 @@
 import type { Plugin } from "vite";
+import socialImageAsset from "../src/assets/fuselabs-systems-business-forward-og.jpg.asset.json";
 
 // At build time, emit static /share/<slug>.html pages for every published blog
 // post. Each page carries Open Graph / Twitter card tags (cover image, title,
@@ -21,7 +22,7 @@ export function sharePageHtml(post: Post) {
   const url = `${SITE}/blog/${post.slug}`;
   const shareUrl = `${SITE}/share/${post.slug}.html`;
   const desc = (post.excerpt || plain(post.content || "")).slice(0, 200);
-  const img = post.cover_image ? (post.cover_image.startsWith("http") ? post.cover_image : SITE + post.cover_image) : `${SITE}/og-fuselabs.jpg`;
+  const img = post.cover_image ? (post.cover_image.startsWith("http") ? post.cover_image : SITE + post.cover_image) : `${SITE}${socialImageAsset.url}`;
   const t = esc(post.title), d = esc(desc), i = esc(img);
   return `<!doctype html><html lang="en"><head><meta charset="utf-8">
 <title>${t} | FuseLabs IO</title>
@@ -74,7 +75,8 @@ export function blogSharePages(): Plugin {
       if (fs.existsSync(file)) {
         const academy = fs.readFileSync(file, "utf8")
           .replace(/content="[^"]*(builds|build) MVPs[^"]*"/g, 'content="Hands-on, mentor-led FuseLabs Academy programs in frontend, backend and AI/ML development with real projects and a certificate."')
-          .replace(/og-fuselabs\.jpg/g, "og-academy.jpg")
+          .replaceAll(`${SITE}${socialImageAsset.url}`, `${SITE}/og-academy.jpg`)
+          .replace(/FuseLabs — Systems That Move Business Forward\. Software, AI, Automation and Products\./g, "FuseLabs Academy — Frontend, Backend and AI/ML Programs")
           .replace(/FuseLabs IO — Software Development &(amp;)? Growth Agency/g, "FuseLabs Academy — Frontend, Backend & AI/ML Programs")
           .replace(/(property="og:url" content=")[^"]*/, `$1${SITE}/academic`)
           .replace(/(rel="canonical" href=")[^"]*/, `$1${SITE}/academic`);
