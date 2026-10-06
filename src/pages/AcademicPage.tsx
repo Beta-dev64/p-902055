@@ -42,7 +42,7 @@ const AcademicPage = () => {
       />
       <Navbar />
 
-      <main className="academy-scope bg-background">
+      <main className="academy-scope bg-background text-foreground">
         <AcademyHero />
 
         <div className="reveal">
