@@ -44,7 +44,7 @@ export const trackCtaClick = (
 
 /** Successful lead / enrollment submission. */
 export const trackLeadSubmit = (
-  type: "project" | "enrollment",
+  type: "project" | "enrollment" | "contact",
   slug?: string,
 ) =>
   trackEvent(type === "enrollment" ? "enrollment_submitted" : "lead_submitted", {

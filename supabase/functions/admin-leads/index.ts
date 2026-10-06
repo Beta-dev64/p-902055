@@ -5,7 +5,7 @@ const ListSchema = z.object({
   action: z.literal("list"),
   search: z.string().trim().max(120).optional(),
   status: z.enum(["all", "new", "contacted", "qualified", "closed"]).default("all"),
-  type: z.enum(["all", "project", "enrollment"]).default("all"),
+  type: z.enum(["all", "project", "enrollment", "contact"]).default("all"),
   page: z.number().int().min(1).max(1000).default(1),
   pageSize: z.number().int().min(5).max(100).default(10),
 });
