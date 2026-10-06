@@ -12,6 +12,7 @@ import AcademyMemories from "@/components/academy/AcademyMemories";
 import AcademyInsights from "@/components/academy/AcademyInsights";
 import AcademyEnroll from "@/components/academy/AcademyEnroll";
 import AcademyClosing from "@/components/academy/AcademyClosing";
+import AcademyCurriculum from "@/components/academy/AcademyCurriculum";
 
 const AcademicPage = () => {
   const { programs, loading } = useAcademyPrograms();
@@ -41,7 +42,7 @@ const AcademicPage = () => {
       />
       <Navbar />
 
-      <main className="academy-scope bg-background">
+      <main className="academy-scope bg-background text-foreground">
         <AcademyHero />
 
         <div className="reveal">
@@ -55,6 +56,10 @@ const AcademicPage = () => {
             selectedSlug={selectedSlug}
             onSelectSlug={setSelectedSlug}
           />
+        </div>
+
+        <div className="reveal">
+          <AcademyCurriculum programs={programs} loading={loading} />
         </div>
 
         <div className="reveal">
