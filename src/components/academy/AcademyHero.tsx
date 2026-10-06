@@ -3,6 +3,9 @@ import heroPhoto from "@/assets/academy/academy-hero-photo.jpg";
 
 const IN_PAGE_LINKS = [
   { label: "Tracks", href: "#tracks" },
+  { label: "Curriculum", href: "#curriculum" },
+  { label: "Schedule", href: "#schedule" },
+  { label: "Student stories", href: "#student-stories" },
   { label: "Outcomes", href: "#outcomes" },
   { label: "Memories", href: "#memories" },
   { label: "Enroll", href: "#enroll" },
