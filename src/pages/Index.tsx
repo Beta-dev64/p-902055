@@ -16,6 +16,7 @@ import MadeByHumans from "@/components/MadeByHumans";
 import Footer from "@/components/Footer";
 import logoAsset from "@/assets/fuselabs-logo-black.png.asset.json";
 import AcademyHomepage from "@/components/AcademyHomepage";
+import ContactSection from "@/components/ContactSection";
 
 const Index = () => {
   useEffect(() => {
@@ -93,6 +94,9 @@ const Index = () => {
           </div>
           <div className="reveal">
             <DetailsSection />
+          </div>
+          <div className="reveal">
+            <ContactSection />
           </div>
           <div className="reveal">
             <Newsletter />

@@ -5,7 +5,7 @@ const MAX_PER_WINDOW = 5;
 const WINDOW_MINUTES = 60;
 
 const BodySchema = z.object({
-  type: z.enum(["project", "enrollment"]),
+  type: z.enum(["project", "enrollment", "contact"]),
   name: z.string().trim().min(2).max(120),
   email: z.string().trim().email().max(255),
   phone: z.string().trim().max(40).optional().or(z.literal("")),
@@ -16,6 +16,10 @@ const BodySchema = z.object({
   program_slug: z.string().trim().max(120).optional().or(z.literal("")),
   message: z.string().trim().max(2000).optional().or(z.literal("")),
   captchaToken: z.string().min(10, "Captcha is required").max(5000),
+}).superRefine((body, ctx) => {
+  if (body.type === "contact" && (body.message?.length ?? 0) < 10) {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["message"], message: "Enter a message of at least 10 characters" });
+  }
 });
 
 async function hashIp(ip: string) {
@@ -63,7 +67,7 @@ Deno.serve(async (req) => {
       .eq("ip_hash", ipHash)
       .gte("created_at", since);
 
-    if (countError) console.error("rate limit check failed", countError);
+    if (countError) throw countError;
     if ((count ?? 0) >= MAX_PER_WINDOW) {
       return json(
         { error: "Too many submissions. Please try again in an hour." },
@@ -76,7 +80,7 @@ Deno.serve(async (req) => {
     }
 
     const payload = {
-      type: lead.type === "enrollment" ? "enrollment" : "project",
+      type: lead.type,
       name: lead.name,
       email: lead.email,
       phone: lead.phone || null,
@@ -95,7 +99,7 @@ Deno.serve(async (req) => {
     await supabase.from("form_submissions").insert({ ip_hash: ipHash, form: payload.type });
 
     // Best-effort notification; never blocks the submission
-    try {
+    if (payload.type !== "contact") try {
       await supabase.functions.invoke("send-contact-email", {
         body: {
           firstName: payload.name,

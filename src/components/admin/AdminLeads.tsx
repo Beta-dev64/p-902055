@@ -43,7 +43,7 @@ const AdminLeads = () => {
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState<"all" | LeadStatus>("all");
-  const [type, setType] = useState<"all" | "project" | "enrollment">("all");
+  const [type, setType] = useState<"all" | "project" | "enrollment" | "contact">("all");
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
 
@@ -117,7 +117,7 @@ const AdminLeads = () => {
       <div className="mb-6">
         <h2 className="text-xl font-semibold text-foreground">Leads</h2>
         <p className="text-sm text-muted-foreground">
-          Project inquiries and academy enrollments, newest first.
+          Contact enquiries, project inquiries and academy enrollments, newest first.
         </p>
       </div>
 
@@ -166,6 +166,7 @@ const AdminLeads = () => {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All types</SelectItem>
+            <SelectItem value="contact">Contact enquiry</SelectItem>
             <SelectItem value="project">Project inquiry</SelectItem>
             <SelectItem value="enrollment">Enrollment</SelectItem>
           </SelectContent>
