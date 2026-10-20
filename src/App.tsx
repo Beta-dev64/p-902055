@@ -7,6 +7,8 @@ import { HelmetProvider } from "react-helmet-async";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { RevealObserver } from "@/components/Reveal";
+import { ScrollProgress } from "@/components/motion/ScrollProgress";
+import { PageCurtainProvider } from "@/components/motion/PageCurtain";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import CaseStudyPage from "./pages/CaseStudyPage";
@@ -28,33 +30,36 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <HelmetProvider>
-    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem storageKey="fuselabs-theme">
+    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} storageKey="fuselabs-theme">
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
           <Toaster />
           <Sonner />
           <BrowserRouter>
-            <ScrollToTop />
-            <RevealObserver />
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/portfolio" element={<PortfolioPage />} />
-              <Route path="/case-study/:slug" element={<CaseStudyPage />} />
-              <Route path="/academic" element={<AcademicPage />} />
-              <Route path="/academic/:slug" element={<ProgramDetailPage />} />
-              <Route path="/services" element={<ServicesPage />} />
-              <Route path="/services/:slug" element={<ServiceDetailPage />} />
-              <Route path="/blog" element={<BlogPage />} />
-              <Route path="/blog/:slug" element={<BlogPostPage />} />
-              <Route path="/share/:file" element={<ShareRedirect />} />
-              <Route path="/start-project" element={<StartProjectPage />} />
-              <Route path="/enroll" element={<EnrollPage />} />
-              <Route path="/thank-you" element={<ThankYouPage />} />
-              <Route path="/preview/:type/:slug" element={<PreviewPage />} />
-              <Route path="/admin" element={<AdminPage />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+            <PageCurtainProvider>
+              <ScrollToTop />
+              <RevealObserver />
+              <ScrollProgress />
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/portfolio" element={<PortfolioPage />} />
+                <Route path="/case-study/:slug" element={<CaseStudyPage />} />
+                <Route path="/academic" element={<AcademicPage />} />
+                <Route path="/academic/:slug" element={<ProgramDetailPage />} />
+                <Route path="/services" element={<ServicesPage />} />
+                <Route path="/services/:slug" element={<ServiceDetailPage />} />
+                <Route path="/blog" element={<BlogPage />} />
+                <Route path="/blog/:slug" element={<BlogPostPage />} />
+                <Route path="/share/:file" element={<ShareRedirect />} />
+                <Route path="/start-project" element={<StartProjectPage />} />
+                <Route path="/enroll" element={<EnrollPage />} />
+                <Route path="/thank-you" element={<ThankYouPage />} />
+                <Route path="/preview/:type/:slug" element={<PreviewPage />} />
+                <Route path="/admin" element={<AdminPage />} />
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </PageCurtainProvider>
           </BrowserRouter>
         </TooltipProvider>
       </QueryClientProvider>

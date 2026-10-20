@@ -1,30 +1,32 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
-import { Menu, X } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { ArrowUpRight, Menu, X } from "lucide-react";
+import { useLocation } from "react-router-dom";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { FuseLabsLogo } from "@/components/FuseLabsLogo";
+import { MaskLabel, usePageCurtain } from "@/components/motion";
 
 type NavItem = {
   label: string;
-  to?: string;
-  href?: string;
+  to: string;
 };
 
 const NAV_ITEMS: NavItem[] = [
   { label: "Home", to: "/" },
-  { label: "Services", href: "/#features" },
+  { label: "Services", to: "/#features" },
   { label: "Portfolio", to: "/portfolio" },
   { label: "Academy", to: "/academic" },
   { label: "Blog", to: "/blog" },
-  { label: "Our Team", href: "/#testimonials" },
-  { label: "Contact", href: "/#details" },
+  { label: "Our Team", to: "/#team" },
+  { label: "Contact", to: "/#details" },
 ];
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const toggleRef = useRef<HTMLButtonElement>(null);
   const location = useLocation();
+  const { go } = usePageCurtain();
   const isHome = location.pathname === "/";
   const isAcademy = location.pathname === "/academic";
   const overDarkHero = isHome && !isScrolled;
@@ -50,6 +52,13 @@ const Navbar = () => {
     return () => window.removeEventListener("keydown", onKey);
   }, [isMenuOpen]);
 
+  // Never leave focus stranded inside the closed (aria-hidden) menu.
+  useEffect(() => {
+    if (isMenuOpen) return;
+    const menu = document.getElementById("fullscreen-nav");
+    if (menu && menu.contains(document.activeElement)) toggleRef.current?.focus();
+  }, [isMenuOpen]);
+
   const openMenu = () => {
     setIsMenuOpen(true);
     document.body.style.overflow = "hidden";
@@ -60,43 +69,51 @@ const Navbar = () => {
     document.body.style.overflow = "";
   };
 
-  const handleNavClick = () => {
+  const handleNavClick = (to: string) => (e: React.MouseEvent) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+    e.preventDefault();
     closeMenu();
+    go(to);
   };
 
   const desktopLinkClass = (active?: boolean) =>
     cn(
       "rounded-full px-3.5 py-1.5 text-[11px] font-medium uppercase tracking-[0.16em] transition-colors",
-      overDarkHero &&
-        "text-white/70 hover:bg-white/10 hover:text-white",
-      overLightHero &&
-        "text-[#1e1b16]/65 hover:bg-[#1e1b16]/10 hover:text-[#1e1b16]",
+      overDarkHero && "text-white/70 hover:bg-white/10 hover:text-white",
+      overLightHero && "text-[#1e1b16]/65 hover:bg-[#1e1b16]/10 hover:text-[#1e1b16]",
       !overDarkHero &&
         !overLightHero &&
         "text-foreground/70 hover:bg-foreground/5 hover:text-foreground",
       active &&
         (overDarkHero
-          ? "bg-white/10 text-white"
+          ? "text-white"
           : overLightHero
-            ? "bg-[#1e1b16]/10 text-[#1e1b16]"
-            : "bg-foreground/5 text-foreground")
+            ? "text-[#1e1b16]"
+            : "text-foreground")
     );
+
+  const activeClass = (to: string) => to === location.pathname;
 
   return (
     <>
       <header
         className={cn(
-          "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-          isScrolled
-            ? "border-b border-border/60 bg-background/75 py-3 backdrop-blur-xl"
-            : "bg-transparent py-4"
+          "fixed top-0 left-0 right-0 z-50 transition-[padding,background-color,backdrop-filter] duration-500 ease-out",
+          isScrolled ? "bg-background/70 py-2.5 backdrop-blur-2xl" : "bg-transparent py-4"
         )}
       >
+        <span
+          aria-hidden="true"
+          className={cn(
+            "pointer-events-none absolute inset-x-6 bottom-0 h-px origin-center bg-gradient-to-r from-transparent via-border to-transparent transition-transform duration-700 ease-out",
+            isScrolled ? "scale-x-100" : "scale-x-0"
+          )}
+        />
         <div className="container flex items-center justify-between px-4 sm:px-6 lg:px-8">
-          <Link
-            to="/"
+          <a
+            href="/"
             className={cn(
-              "flex items-center",
+              "flex items-center transition-opacity duration-300 hover:opacity-80",
               overDarkHero
                 ? "text-white"
                 : overLightHero
@@ -104,13 +121,13 @@ const Navbar = () => {
                   : "text-foreground"
             )}
             aria-label="FuseLabs IO home"
-            onClick={closeMenu}
+            onClick={handleNavClick("/")}
           >
             <FuseLabsLogo
               variant={overDarkHero ? "onAccent" : "default"}
-              markClassName="h-12 w-12"
+              markClassName={cn("transition-all duration-500 ease-out", isScrolled ? "h-10 w-10" : "h-12 w-12")}
             />
-          </Link>
+          </a>
 
           <nav
             className={cn(
@@ -121,25 +138,16 @@ const Navbar = () => {
             )}
             aria-label="Primary"
           >
-            {NAV_ITEMS.filter((item) => item.label !== "Home").map((item) => {
-              const active = item.to ? location.pathname === item.to : false;
-              if (item.to) {
-                return (
-                  <Link
-                    key={item.label}
-                    to={item.to}
-                    className={desktopLinkClass(active)}
-                  >
-                    {item.label}
-                  </Link>
-                );
-              }
-              return (
-                <a key={item.label} href={item.href} className={desktopLinkClass()}>
-                  {item.label}
-                </a>
-              );
-            })}
+            {NAV_ITEMS.filter((item) => item.label !== "Home").map((item) => (
+              <a
+                key={item.label}
+                href={item.to}
+                className={desktopLinkClass(activeClass(item.to))}
+                onClick={handleNavClick(item.to)}
+              >
+                <MaskLabel text={item.label} />
+              </a>
+            ))}
           </nav>
 
           <div className="flex items-center gap-2 sm:gap-3">
@@ -151,12 +159,15 @@ const Navbar = () => {
             />
             <a
               href="/#details"
-              className="btn-motion hidden items-center rounded-full bg-primary px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-primary-foreground sm:inline-flex"
+              onClick={handleNavClick("/#details")}
+              className="btn-motion group hidden items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-primary-foreground transition-colors hover:bg-primary-600 sm:inline-flex"
             >
               Start a Project
+              <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
             </a>
             <button
               type="button"
+              ref={toggleRef}
               className={cn(
                 "btn-motion inline-flex h-10 w-10 items-center justify-center rounded-full border backdrop-blur-md lg:hidden",
                 overDarkHero && "border-white/20 bg-white/10 text-white",
@@ -187,15 +198,19 @@ const Navbar = () => {
             : "pointer-events-none invisible opacity-0"
         )}
       >
-        <div className="flex items-center justify-between px-4 py-4 sm:px-8">
-          <Link
-            to="/"
-            onClick={handleNavClick}
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_115%,rgba(222,131,33,0.28),transparent_60%)]"
+        />
+        <div className="relative flex items-center justify-between px-4 py-4 sm:px-8">
+          <a
+            href="/"
+            onClick={handleNavClick("/")}
             className="text-white dark:text-text-950"
             aria-label="FuseLabs IO home"
           >
             <FuseLabsLogo variant="onAccent" markClassName="h-12 w-12" />
-          </Link>
+          </a>
 
           <div className="flex items-center gap-3">
             <ThemeToggle variant="menu" />
@@ -210,54 +225,42 @@ const Navbar = () => {
           </div>
         </div>
 
-        <nav className="flex flex-1 flex-col items-center justify-center gap-5 px-6 pb-16 sm:gap-7">
-          {NAV_ITEMS.map((item, index) => {
-            const className = cn(
-              "nav-fullscreen-link font-display text-[clamp(2rem,7vw,3.5rem)] font-semibold uppercase leading-none tracking-[0.04em]",
-              "text-white hover:text-black dark:text-text-950 dark:hover:text-primary-500",
-              isMenuOpen && "nav-fullscreen-enter"
-            );
-            const style = { animationDelay: `${index * 60}ms` } as React.CSSProperties;
+        <nav
+          className="relative flex flex-1 flex-col items-center justify-center gap-3 px-6 pb-10 sm:gap-5"
+          aria-label="Mobile"
+        >
+          {NAV_ITEMS.map((item, index) => (
+            <span
+              key={item.label}
+              className={cn("mask-sleeve", isMenuOpen && "nav-mask-enter")}
+              style={{ animationDelay: `${120 + index * 70}ms` } as React.CSSProperties}
+            >
+            <a
+              href={item.to}
+              onClick={handleNavClick(item.to)}
+              className="font-display text-[clamp(2rem,7vw,3.5rem)] font-semibold uppercase leading-none tracking-[0.04em]"
+            >
+              <MaskLabel text={item.label} className="mask-alt-on-primary" />
+            </a>
+            </span>
+          ))}
 
-            if (item.to) {
-              return (
-                <Link
-                  key={item.label}
-                  to={item.to}
-                  className={className}
-                  style={style}
-                  onClick={handleNavClick}
-                >
-                  {item.label}
-                </Link>
-              );
-            }
-
-            return (
-              <a
-                key={item.label}
-                href={item.href}
-                className={className}
-                style={style}
-                onClick={handleNavClick}
-              >
-                {item.label}
-              </a>
-            );
-          })}
-
-          <a
-            href="/#details"
-            onClick={handleNavClick}
-            className={cn(
-              "btn-motion mt-6 inline-flex items-center rounded-full px-6 py-3 text-xs font-semibold uppercase tracking-[0.16em]",
-              "bg-background text-primary-700 dark:bg-primary-500 dark:text-background-50",
-              isMenuOpen && "nav-fullscreen-enter"
-            )}
-            style={{ animationDelay: `${NAV_ITEMS.length * 60}ms` }}
+          <span
+            className={cn("mask-sleeve mt-3", isMenuOpen && "nav-mask-enter")}
+            style={{ animationDelay: `${120 + NAV_ITEMS.length * 70}ms` } as React.CSSProperties}
           >
-            Start a Project
-          </a>
+            <a
+              href="/#details"
+              onClick={handleNavClick("/#details")}
+              className={cn(
+                "btn-motion inline-flex items-center gap-2 rounded-full px-6 py-3 text-xs font-semibold uppercase tracking-[0.16em]",
+                "bg-background text-primary-700 dark:bg-primary-500 dark:text-background-50"
+              )}
+            >
+                Start a Project
+              <ArrowUpRight className="h-4 w-4" />
+            </a>
+          </span>
         </nav>
       </div>
     </>

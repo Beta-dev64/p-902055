@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import Seo from "@/components/Seo";
-import { Reveal } from "@/components/Reveal";
+import { PageHero, Reveal } from "@/components/motion";
 
 interface CaseStudy {
   id: string;
@@ -55,10 +55,29 @@ const CaseStudyDetail = () => {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
-        <div className="text-center">
-          <div className="mx-auto mb-4 h-16 w-16 animate-spin rounded-full border-b-2 border-primary" />
-          <p className="text-muted-foreground">Loading case study...</p>
+      <div className="min-h-screen animate-pulse bg-background">
+        <div className="bg-[#070605] px-5 pb-16 pt-36 sm:px-8 sm:pb-20 sm:pt-44">
+          <div className="mx-auto w-full max-w-6xl">
+            <div className="h-6 w-28 rounded-full bg-white/10" />
+            <div className="mt-6 h-10 w-3/4 rounded-full bg-white/10" />
+            <div className="mt-3 h-10 w-1/2 rounded-full bg-white/10" />
+            <div className="mt-6 h-4 w-2/3 rounded-full bg-white/[0.06]" />
+            <div className="mt-9 aspect-video w-full rounded-2xl bg-white/[0.06]" />
+          </div>
+        </div>
+        <div className="container mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-3">
+            <div className="space-y-4 lg:col-span-2">
+              <div className="h-7 w-48 rounded-full bg-muted" />
+              <div className="h-4 w-full rounded-full bg-muted/70" />
+              <div className="h-4 w-11/12 rounded-full bg-muted/70" />
+              <div className="h-4 w-3/4 rounded-full bg-muted/50" />
+              <div className="mt-8 h-7 w-40 rounded-full bg-muted" />
+              <div className="h-4 w-full rounded-full bg-muted/70" />
+              <div className="h-4 w-5/6 rounded-full bg-muted/50" />
+            </div>
+            <div className="h-48 rounded-2xl border border-border bg-muted/40" />
+          </div>
         </div>
       </div>
     );
@@ -99,42 +118,41 @@ const CaseStudyDetail = () => {
         }}
       />
 
-      {/* Hero — top padding clears fixed header so banner content is never covered */}
-      <section className="relative min-h-[28rem] overflow-hidden md:min-h-[34rem]">
-        <img
-          src={caseStudy.image}
-          alt={caseStudy.title}
-          className="absolute inset-0 h-full w-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/55 to-black/40" />
-        <div className="relative flex min-h-[28rem] items-start md:min-h-[34rem]">
-          <div className="container mx-auto px-4 pb-14 pt-[7.5rem] sm:px-6 sm:pt-36 lg:px-8">
+      {/* Dark immersive header band; cover art, tags and back link live inside it */}
+      <PageHero
+        eyebrow="Case Study"
+        title={caseStudy.title}
+        description={caseStudy.description}
+      >
+        <div className="space-y-8">
+          <div>
             <Link
               to="/portfolio"
-              className="group mb-6 inline-flex items-center text-sm font-medium uppercase tracking-[0.12em] text-white/90 transition-transform duration-300 hover:translate-x-2 hover:text-primary-400"
+              className="group inline-flex items-center text-sm font-medium uppercase tracking-[0.12em] text-white/90 transition-transform duration-300 hover:translate-x-2 hover:text-primary-400"
             >
               <ArrowLeft className="mr-2 h-4 w-4 transition-transform duration-300 group-hover:-translate-x-1" />
               Back to Portfolio
             </Link>
-            <h1 className="mb-4 max-w-4xl font-display text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">
-              {caseStudy.title}
-            </h1>
-            <p className="max-w-2xl text-lg text-white/90">{caseStudy.description}</p>
-            {caseStudy.tags?.length > 0 && (
-              <div className="mt-6 flex flex-wrap gap-2">
-                {caseStudy.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs uppercase tracking-wider text-white/90 backdrop-blur-sm"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            )}
           </div>
+          <img
+            src={caseStudy.image}
+            alt={caseStudy.title}
+            className="aspect-video w-full max-w-3xl rounded-2xl border border-white/10 object-cover"
+          />
+          {caseStudy.tags?.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {caseStudy.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs uppercase tracking-wider text-white/90 backdrop-blur-sm"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
-      </section>
+      </PageHero>
 
       <section className="bg-background py-16">
         <div className="container mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">

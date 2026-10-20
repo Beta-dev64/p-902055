@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { ArrowLeft, Check, Loader2 } from "lucide-react";
+import { ArrowLeft, Check } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Seo from "@/components/Seo";
 import LeadForm from "@/components/LeadForm";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
+import { PageHero, Reveal, Magnetic } from "@/components/motion";
 import type { ServiceRow } from "./ServicesPage";
 import { trackCtaClick } from "@/lib/analytics";
 
@@ -26,6 +27,27 @@ const ListBlock = ({ title, items }: { title: string; items?: string[] | null })
     </section>
   );
 };
+
+const ServiceDetailSkeleton = () => (
+  <div className="min-h-screen animate-pulse bg-background">
+    <div className="bg-[#070605] px-5 pb-16 pt-36 sm:px-8 sm:pb-20 sm:pt-44">
+      <div className="mx-auto w-full max-w-6xl">
+        <div className="h-6 w-24 rounded-full bg-white/10" />
+        <div className="mt-6 h-10 w-3/4 rounded-full bg-white/10" />
+        <div className="mt-3 h-10 w-1/2 rounded-full bg-white/10" />
+        <div className="mt-6 h-4 w-2/3 rounded-full bg-white/[0.06]" />
+        <div className="mt-9 h-11 w-44 rounded-md bg-white/10" />
+      </div>
+    </div>
+    <div className="container mx-auto max-w-4xl space-y-4 px-4 py-12 sm:px-6">
+      <div className="h-64 w-full rounded-2xl bg-muted" />
+      <div className="mt-8 h-7 w-40 rounded-full bg-muted" />
+      <div className="h-4 w-full rounded-full bg-muted/70" />
+      <div className="h-4 w-5/6 rounded-full bg-muted/70" />
+      <div className="h-4 w-4/6 rounded-full bg-muted/50" />
+    </div>
+  </div>
+);
 
 const ServiceDetailPage = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -54,11 +76,7 @@ const ServiceDetailPage = () => {
   }, [slug]);
 
   if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-background text-muted-foreground">
-        <Loader2 className="mr-2 h-5 w-5 animate-spin" /> Loading…
-      </div>
-    );
+    return <ServiceDetailSkeleton />;
   }
 
   if (!service) {
@@ -103,33 +121,35 @@ const ServiceDetailPage = () => {
       />
       <Navbar />
 
-      <main className="pb-20 pt-24">
+      <PageHero
+        eyebrow="Service"
+        title={service.title}
+        description={
+          <>
+            {service.tagline && <span className="block text-primary">{service.tagline}</span>}
+            {service.description}
+          </>
+        }
+      >
+        <Magnetic strength={0.2}>
+          <Button asChild size="lg">
+            <a
+              href="#start"
+              onClick={() => trackCtaClick("service", service.slug, "hero")}
+            >
+              Start a project
+            </a>
+          </Button>
+        </Magnetic>
+      </PageHero>
+
+      <main className="pb-20">
         <div className="container mx-auto max-w-4xl px-4 sm:px-6">
-          <Button variant="ghost" size="sm" asChild className="mb-6 -ml-2">
+          <Button variant="ghost" size="sm" asChild className="mb-8 -ml-2">
             <Link to="/services">
               <ArrowLeft className="mr-1 h-4 w-4" /> All services
             </Link>
           </Button>
-
-          <header className="mb-10 space-y-4">
-            <h1 className="font-display text-3xl font-bold sm:text-5xl">{service.title}</h1>
-            {service.tagline && <p className="text-lg text-primary">{service.tagline}</p>}
-            {service.description && (
-              <p className="text-lg leading-relaxed text-muted-foreground">
-                {service.description}
-              </p>
-            )}
-            <div className="pt-2">
-              <Button asChild size="lg">
-                <a
-                  href="#start"
-                  onClick={() => trackCtaClick("service", service.slug, "hero")}
-                >
-                  Start a project
-                </a>
-              </Button>
-            </div>
-          </header>
 
           {service.image && (
             <img
@@ -140,16 +160,19 @@ const ServiceDetailPage = () => {
             />
           )}
 
-          <div className="space-y-12">
-            <ListBlock title="What you get" items={service.highlights} />
-            <ListBlock title="Deliverables" items={service.deliverables} />
-            <ListBlock title="How we work" items={service.process} />
-          </div>
+          <Reveal stagger={80}>
+            <div className="space-y-12">
+              <ListBlock title="What you get" items={service.highlights} />
+              <ListBlock title="Deliverables" items={service.deliverables} />
+              <ListBlock title="How we work" items={service.process} />
+            </div>
+          </Reveal>
 
-          <section
-            id="start"
-            className="mt-16 rounded-2xl border border-border bg-card p-6 shadow-sm sm:p-8"
-          >
+          <Reveal>
+            <section
+              id="start"
+              className="mt-16 rounded-2xl border border-border bg-card p-6 shadow-sm sm:p-8"
+            >
             <h2 className="mb-2 font-display text-2xl font-semibold">
               Start your {service.title.toLowerCase()} project
             </h2>
@@ -157,7 +180,8 @@ const ServiceDetailPage = () => {
               Share a few details and we'll come back with scope, timeline and next steps.
             </p>
             <LeadForm type="project" serviceSlug={service.slug} submitLabel="Request a proposal" />
-          </section>
+            </section>
+          </Reveal>
         </div>
       </main>
 

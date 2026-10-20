@@ -1,99 +1,50 @@
-﻿
-import React, { useRef, useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { Reveal, SplitHeadline } from "@/components/motion";
 
 interface TestimonialProps {
   content: string;
   author: string;
   role: string;
-  gradient: string;
   backgroundImage?: string;
   avatar?: string;
 }
 
-const Testimonials = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const [testimonials, setTestimonials] = useState<TestimonialProps[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchTestimonials();
-  }, []);
-
-  const fetchTestimonials = async () => {
-    try {
-      let query = supabase
-        .from("testimonials")
-        .select("*")
-        .order("created_at", { ascending: false });
-
-      // Prefer approved-only once moderation columns exist
-      const { data, error } = await query.eq("status", "approved");
-
-      if (error) {
-        // Fallback for databases that have not applied the moderation migration yet
-        const fallback = await supabase
-          .from("testimonials")
-          .select("*")
-          .order("created_at", { ascending: false });
-        if (fallback.error) throw fallback.error;
-
-        const formatted =
-          fallback.data?.map((item, index) => ({
-            content: item.content,
-            author: item.author,
-            role: item.role,
-            gradient: [
-              "from-blue-700 via-indigo-800 to-purple-900",
-              "from-indigo-900 via-purple-800 to-orange-500",
-              "from-purple-800 via-pink-700 to-red-500",
-              "from-orange-600 via-red-500 to-purple-600",
-            ][index % 4],
-            backgroundImage: item.background_image || "/background-section1.png",
-            avatar: item.avatar || undefined,
-          })) || [];
-        setTestimonials(formatted);
-        return;
-      }
-
-      const formattedTestimonials =
-        data?.map((item, index) => ({
-          content: item.content,
-          author: item.author,
-          role: item.role,
-          gradient: [
-            "from-blue-700 via-indigo-800 to-purple-900",
-            "from-indigo-900 via-purple-800 to-orange-500",
-            "from-purple-800 via-pink-700 to-red-500",
-            "from-orange-600 via-red-500 to-purple-600",
-          ][index % 4],
-          backgroundImage: item.background_image || "/background-section1.png",
-          avatar: item.avatar || undefined,
-        })) || [];
-
-      setTestimonials(formattedTestimonials);
-    } catch (error) {
-      console.error("Error fetching testimonials:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+const TestimonialSkeleton = () => (
+  <div className="relative h-72 animate-pulse overflow-hidden rounded-2xl border border-white/5 bg-white/[0.03]">
+    <div className="space-y-4 p-8">
+      <div className="h-5 w-3/4 rounded-full bg-white/10" />
+      <div className="h-5 w-2/3 rounded-full bg-white/10" />
+      <div className="mt-10 flex items-center gap-4">
+        <div className="h-16 w-16 rounded-lg bg-white/10" />
+        <div className="space-y-2">
+          <div className="h-4 w-28 rounded-full bg-white/10" />
+          <div className="h-3 w-20 rounded-full bg-white/5" />
+        </div>
+      </div>
+    </div>
+  </div>
+);
 
 const TestimonialCard = ({
   content,
   author,
   role,
   backgroundImage = "/background-section1.png",
-  avatar
+  avatar,
 }: TestimonialProps) => {
   return (
-    <div className="bg-cover bg-center rounded-lg p-8 h-full flex flex-col justify-between text-white transform transition-transform duration-300 hover:-translate-y-2 relative overflow-hidden" style={{
-      backgroundImage: `url('${backgroundImage}')`
-    }}>
-      <div className="absolute inset-0 bg-black/40"></div>
-      
+    <div className="group relative flex h-full flex-col justify-between overflow-hidden rounded-2xl p-8 text-white transition-transform duration-500 hover:-translate-y-1.5">
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-105"
+        style={{ backgroundImage: `url('${backgroundImage}')` }}
+      />
+      <div aria-hidden="true" className="absolute inset-0 bg-black/50" />
       <div className="relative z-10">
-        <p className="text-xl mb-8 font-medium leading-relaxed">{`"${content}"`}</p>
+        <p className="mb-8 text-lg font-medium leading-relaxed sm:text-xl">
+          &ldquo;{content}&rdquo;
+        </p>
         <div className="flex items-center space-x-4">
           {avatar ? (
             <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg">
@@ -106,7 +57,7 @@ const TestimonialCard = ({
           )}
           <div>
             <h4 className="text-xl font-semibold">{author}</h4>
-            <p className="text-white/80">{role}</p>
+            <p className="text-white/70">{role}</p>
           </div>
         </div>
       </div>
@@ -114,38 +65,75 @@ const TestimonialCard = ({
   );
 };
 
+const Testimonials = () => {
+  const [testimonials, setTestimonials] = useState<TestimonialProps[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const format = (
+      items: {
+        content: string;
+        author: string;
+        role: string;
+        background_image?: string | null;
+        avatar?: string | null;
+      }[]
+    ) =>
+      items.map((item) => ({
+        content: item.content,
+        author: item.author,
+        role: item.role,
+        backgroundImage: item.background_image || "/background-section1.png",
+        avatar: item.avatar || undefined,
+      }));
+
+    (async () => {
+      try {
+        const { data, error } = await supabase
+          .from("testimonials")
+          .select("*")
+          .eq("status", "approved")
+          .order("created_at", { ascending: false });
+
+        if (error) {
+          // Fallback for databases that have not applied the moderation migration yet
+          const fallback = await supabase
+            .from("testimonials")
+            .select("*")
+            .order("created_at", { ascending: false });
+          if (!fallback.error) setTestimonials(format(fallback.data || []));
+          return;
+        }
+        setTestimonials(format(data || []));
+      } catch (error) {
+        console.error("Error fetching testimonials:", error);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
+
   return (
-    <section className="py-12 bg-background relative" id="testimonials" ref={sectionRef}>
-      <div className="section-container opacity-0 animate-on-scroll">
-        <div className="flex items-center gap-4 mb-6">
-          <div className="inline-flex items-center rounded-xl border border-primary/25 bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
-            <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-pulse-500 text-white mr-2">03</span>
+    <section className="scroll-mt-24 py-16 bg-background relative sm:py-24" id="testimonials">
+      <div className="section-container">
+        <Reveal className="mb-12">
+          <div className="mb-6 inline-flex items-center rounded-xl border border-primary/25 bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
             <span>Client Success</span>
           </div>
-        </div>
-        
-        <h2 className="text-5xl font-display font-bold mb-12 text-left">What clients say</h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <SplitHeadline text="What clients say" className="text-5xl font-display font-bold text-left" />
+        </Reveal>
+
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           {loading ? (
-            <div className="col-span-2 text-center py-8">
-              <p className="text-muted-foreground">Loading testimonials...</p>
-            </div>
-          ) : testimonials.length === 0 ? (
-            <div className="col-span-2 text-center py-8">
-              <p className="text-muted-foreground">No testimonials available yet.</p>
-            </div>
-          ) : (
+            <>
+              <TestimonialSkeleton />
+              <TestimonialSkeleton />
+            </>
+          ) : testimonials.length === 0 ? null : (
             testimonials.map((testimonial, index) => (
-              <TestimonialCard 
-                key={index} 
-                content={testimonial.content} 
-                author={testimonial.author} 
-                role={testimonial.role} 
-                gradient={testimonial.gradient} 
-                backgroundImage={testimonial.backgroundImage}
-                avatar={testimonial.avatar}
-              />
+              <Reveal key={index} delay={index * 90}>
+                <TestimonialCard {...testimonial} />
+              </Reveal>
             ))
           )}
         </div>

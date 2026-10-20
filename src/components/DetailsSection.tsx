@@ -4,6 +4,7 @@ import { CheckCircle2 } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
+import { Reveal, SplitHeadline } from "@/components/motion";
 
 const emptyForm = {
   firstName: "",
@@ -110,19 +111,19 @@ const DetailsSection = () => {
   ];
 
   return (
-    <section id="details" className="w-full bg-background py-0">
+    <section id="details" className="scroll-mt-24 w-full bg-background py-0">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-8 flex items-center gap-4 sm:mb-16">
+        <Reveal className="mb-8 flex items-center gap-4 sm:mb-16">
           <div className="pulse-chip">
-            <span className="mr-2 inline-flex h-5 w-5 items-center justify-center rounded-full bg-pulse-500 text-white">
+            <span className="mr-2 inline-flex h-5 w-5 items-center justify-center rounded-full bg-primary text-primary-foreground">
               04
             </span>
             <span>Approach</span>
           </div>
           <div className="h-[1px] flex-1 bg-border" />
-        </div>
+        </Reveal>
 
-        <div className="mb-8 max-w-5xl pl-4 sm:mb-12 sm:pl-8">
+        <Reveal className="mb-8 max-w-5xl pl-4 sm:mb-12 sm:pl-8" y={28} delay={120}>
           <h2 className="font-display text-2xl leading-tight sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl">
             <span className="block bg-[url('/text-mask-image.jpg')] bg-cover bg-center bg-clip-text text-transparent">
               We work alongside your team. By automating complex processes, streamlining workflows,
@@ -130,9 +131,9 @@ const DetailsSection = () => {
               business and serving your customers.
             </span>
           </h2>
-        </div>
+        </Reveal>
 
-        <div className="grid grid-cols-1 gap-6 md:gap-8 lg:grid-cols-2">
+        <Reveal stagger={140}>
           <div className="overflow-hidden rounded-2xl border border-border shadow-elegant sm:rounded-3xl">
             <div
               className="relative flex h-48 items-end p-6 sm:h-64 sm:p-8"
@@ -155,7 +156,7 @@ const DetailsSection = () => {
                   <AccordionItem key={step.id} value={step.id} className="border-b border-border">
                     <AccordionTrigger className="flex items-center gap-4 py-4 hover:no-underline">
                       <div className="flex flex-1 items-center gap-4">
-                        <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-pulse-500 text-sm font-semibold text-white">
+                        <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
                           {step.number}
                         </div>
                         <span className="text-left font-semibold">{step.title}</span>
@@ -221,7 +222,7 @@ const DetailsSection = () => {
                       value={formData.firstName}
                       onChange={handleChange}
                       placeholder="First name *"
-                      className="w-full rounded-xl border border-border bg-background px-4 py-3 text-foreground focus:border-transparent focus:outline-none focus:ring-2 focus:ring-pulse-500"
+                      className="w-full rounded-xl border border-border bg-background px-4 py-3 text-foreground focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary"
                       required
                     />
                     <input
@@ -230,7 +231,7 @@ const DetailsSection = () => {
                       value={formData.lastName}
                       onChange={handleChange}
                       placeholder="Last name *"
-                      className="w-full rounded-xl border border-border bg-background px-4 py-3 text-foreground focus:border-transparent focus:outline-none focus:ring-2 focus:ring-pulse-500"
+                      className="w-full rounded-xl border border-border bg-background px-4 py-3 text-foreground focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary"
                       required
                     />
                   </div>
@@ -241,7 +242,7 @@ const DetailsSection = () => {
                     value={formData.email}
                     onChange={handleChange}
                     placeholder="Email address *"
-                    className="w-full rounded-xl border border-border bg-background px-4 py-3 text-foreground focus:border-transparent focus:outline-none focus:ring-2 focus:ring-pulse-500"
+                    className="w-full rounded-xl border border-border bg-background px-4 py-3 text-foreground focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary"
                     required
                   />
 
@@ -251,7 +252,7 @@ const DetailsSection = () => {
                     value={formData.companyWebsite}
                     onChange={handleChange}
                     placeholder="Company website (optional)"
-                    className="w-full rounded-xl border border-border bg-background px-4 py-3 text-foreground focus:border-transparent focus:outline-none focus:ring-2 focus:ring-pulse-500"
+                    className="w-full rounded-xl border border-border bg-background px-4 py-3 text-foreground focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary"
                   />
 
                   <Select
@@ -291,13 +292,13 @@ const DetailsSection = () => {
                     onChange={handleChange}
                     placeholder="Tell us more about what you're looking to achieve..."
                     rows={4}
-                    className="w-full resize-none rounded-xl border border-border bg-background px-4 py-3 text-foreground focus:border-transparent focus:outline-none focus:ring-2 focus:ring-pulse-500"
+                    className="w-full resize-none rounded-xl border border-border bg-background px-4 py-3 text-foreground focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary"
                   />
 
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="btn-motion w-full rounded-full bg-pulse-500 px-6 py-3 font-medium text-white transition-colors duration-300 hover:bg-pulse-600 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="btn-motion w-full rounded-full bg-primary px-6 py-3 font-medium text-primary-foreground transition-colors duration-300 hover:bg-primary-600 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     {isSubmitting ? "Sending..." : "Start My Project"}
                   </button>
@@ -305,7 +306,7 @@ const DetailsSection = () => {
               )}
             </div>
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

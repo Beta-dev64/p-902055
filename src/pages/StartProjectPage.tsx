@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Seo from "@/components/Seo";
 import LeadForm from "@/components/LeadForm";
+import { PageHero, Reveal } from "@/components/motion";
 
 const StartProjectPage = () => {
   const [params] = useSearchParams();
@@ -17,17 +18,18 @@ const StartProjectPage = () => {
         path="/start-project"
       />
       <Navbar />
-      <main className="pt-24 pb-16">
+      <main className="pb-16">
+        <PageHero
+          eyebrow="New project"
+          title="Start your project"
+          description="A few details is all we need to scope the work and come back with a plan."
+        />
         <div className="container mx-auto max-w-3xl px-4 sm:px-6">
-          <h1 className="mb-3 font-display text-3xl font-bold sm:text-4xl">
-            Start your project
-          </h1>
-          <p className="mb-8 text-muted-foreground">
-            A few details is all we need to scope the work and come back with a plan.
-          </p>
-          <div className="rounded-2xl border border-border bg-card p-6 shadow-sm sm:p-8">
-            <LeadForm type="project" serviceSlug={service} />
-          </div>
+          <Reveal>
+            <div className="rounded-2xl border border-border bg-card p-6 shadow-sm sm:p-8">
+              <LeadForm type="project" serviceSlug={service} />
+            </div>
+          </Reveal>
         </div>
       </main>
       <Footer />

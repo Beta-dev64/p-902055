@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Seo from "@/components/Seo";
 import LeadForm from "@/components/LeadForm";
+import { PageHero, Reveal } from "@/components/motion";
 
 const EnrollPage = () => {
   const [params] = useSearchParams();
@@ -17,19 +18,22 @@ const EnrollPage = () => {
         path="/enroll"
       />
       <Navbar />
-      <main className="pt-24 pb-16">
-        <div className="container mx-auto max-w-3xl px-4 sm:px-6">
-          <h1 className="mb-3 font-display text-3xl font-bold sm:text-4xl">
-            Academy enrollment
-          </h1>
-          <p className="mb-8 text-muted-foreground">
-            {program
+      <main className="pb-16">
+        <PageHero
+          eyebrow="Academy"
+          title="Academy enrollment"
+          description={
+            program
               ? `You're applying for the ${program.replace(/-/g, " ")} program.`
-              : "Tell us where you are today and which track you want to join."}
-          </p>
-          <div className="rounded-2xl border border-border bg-card p-6 shadow-sm sm:p-8">
-            <LeadForm type="enrollment" programSlug={program} />
-          </div>
+              : "Tell us where you are today and which track you want to join."
+          }
+        />
+        <div className="container mx-auto max-w-3xl px-4 sm:px-6">
+          <Reveal>
+            <div className="rounded-2xl border border-border bg-card p-6 shadow-sm sm:p-8">
+              <LeadForm type="enrollment" programSlug={program} />
+            </div>
+          </Reveal>
         </div>
       </main>
       <Footer />

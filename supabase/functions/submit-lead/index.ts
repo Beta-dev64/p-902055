@@ -15,7 +15,6 @@ const BodySchema = z.object({
   service_slug: z.string().trim().max(120).optional().or(z.literal("")),
   program_slug: z.string().trim().max(120).optional().or(z.literal("")),
   message: z.string().trim().max(2000).optional().or(z.literal("")),
-  captchaToken: z.string().min(10, "Captcha is required").max(5000),
 }).superRefine((body, ctx) => {
   if (body.type === "contact" && (body.message?.length ?? 0) < 10) {
     ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["message"], message: "Enter a message of at least 10 characters" });
@@ -28,19 +27,6 @@ async function hashIp(ip: string) {
   return [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
-async function verifyCaptcha(token: string, ip: string): Promise<boolean> {
-  const secret = Deno.env.get("HCAPTCHA_SECRET");
-  if (!secret) return false;
-  const body = new URLSearchParams({ secret, response: token, remoteip: ip });
-  const res = await fetch("https://api.hcaptcha.com/siteverify", {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body,
-  });
-  const result = await res.json().catch(() => ({ success: false }));
-  return result?.success === true;
-}
-
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   if (req.method !== "POST") return json({ error: "Method not allowed" }, 405);
@@ -50,7 +36,7 @@ Deno.serve(async (req) => {
     if (!parsed.success) {
       return json({ error: parsed.error.flatten().fieldErrors }, 400);
     }
-    const { captchaToken, ...lead } = parsed.data;
+    const lead = parsed.data;
 
     const ip =
       req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
@@ -59,7 +45,7 @@ Deno.serve(async (req) => {
     const ipHash = await hashIp(ip);
     const supabase = serviceClient();
 
-    // Rate limit before spending a captcha verification
+    // Hashed-IP quota is the only abuse guard on these public forms.
     const since = new Date(Date.now() - WINDOW_MINUTES * 60_000).toISOString();
     const { count, error: countError } = await supabase
       .from("form_submissions")
@@ -73,10 +59,6 @@ Deno.serve(async (req) => {
         { error: "Too many submissions. Please try again in an hour." },
         429,
       );
-    }
-
-    if (!(await verifyCaptcha(captchaToken, ip))) {
-      return json({ error: "Captcha verification failed. Please try again." }, 400);
     }
 
     const payload = {
