@@ -343,31 +343,24 @@
     @apply relative py-2 text-foreground transition-all duration-300 hover:translate-x-1 hover:text-primary after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all hover:after:w-full;
   }
 
-  .nav-fullscreen-link {
-    display: inline-flex;
-    align-items: center;
-    transform: translateX(0);
-    transition:
-      transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-      color 0.3s ease;
-    will-change: transform;
+  /* Fullscreen menu links slide up out of a clipping sleeve, staggered by index. */
+  .mask-sleeve {
+    display: inline-block;
+    overflow: hidden;
+    padding-bottom: 0.14em;
+    margin-bottom: -0.14em;
   }
 
-  .nav-fullscreen-link:hover {
-    transform: translateX(1.25rem);
+  .nav-mask-enter {
+    animation: navMaskUp 0.66s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
-  /* Opacity-only enter so hover translate isn't locked by animation forwards */
-  .nav-fullscreen-enter {
-    animation: navFullscreenEnter 0.45s ease-out both;
-  }
-
-  @keyframes navFullscreenEnter {
+  @keyframes navMaskUp {
     from {
-      opacity: 0;
+      transform: translateY(115%);
     }
     to {
-      opacity: 1;
+      transform: translateY(0);
     }
   }
 
@@ -394,6 +387,51 @@
 
   .link-motion {
     @apply inline-block transition-transform duration-300 ease-out hover:translate-x-2;
+  }
+
+  /* Resonance-style dual-layer mask hover: base label slides up, brand
+     copy slides in from below. Used by nav and footer links. */
+  .mask-link {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom;
+    padding-bottom: 0.14em;
+    margin-bottom: -0.14em;
+  }
+
+  .mask-link .mask-base,
+  .mask-link .mask-alt {
+    display: block;
+    transition:
+      transform 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform;
+  }
+
+  .mask-link .mask-alt {
+    position: absolute;
+    inset: 0;
+    color: var(--mask-alt, #de8321);
+    transform: translateY(105%);
+  }
+
+  /* Amber surfaces (light-theme menu) need ink instead of amber. */
+  .mask-alt-on-primary {
+    --mask-alt: #160d03;
+  }
+
+  .dark .mask-alt-on-primary {
+    --mask-alt: var(--primary-500);
+  }
+
+  .mask-link:hover .mask-base,
+  .mask-link:focus-visible .mask-base {
+    transform: translateY(-110%);
+  }
+
+  .mask-link:hover .mask-alt,
+  .mask-link:focus-visible .mask-alt {
+    transform: translateY(0);
   }
 
   .animate-scroll-left {
@@ -426,12 +464,26 @@
     .animate-on-scroll,
     .animate-fade-in,
     .btn-motion,
-    .nav-fullscreen-link,
-    .nav-fullscreen-enter {
+    .nav-mask-enter {
       transition: none !important;
       transform: none !important;
       animation: none !important;
       opacity: 1 !important;
+    }
+
+    .mask-link .mask-base,
+    .mask-link .mask-alt {
+      transition: none !important;
+      transform: none !important;
+    }
+
+    .mask-link .mask-alt {
+      display: none;
+    }
+
+    .mask-link:hover .mask-base,
+    .mask-link:focus-visible .mask-base {
+      color: var(--mask-alt, #de8321);
     }
   }
 }

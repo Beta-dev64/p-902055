@@ -1,10 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { ArrowRight, Loader2, Search, X } from "lucide-react";
+import { ArrowRight, Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Seo from "@/components/Seo";
+import { PageHero, Reveal } from "@/components/motion";
 import { supabase } from "@/integrations/supabase/client";
 
 export interface BlogPostRow {
@@ -28,6 +29,18 @@ export const formatPostDate = (post: BlogPostRow) =>
     month: "long",
     day: "numeric",
   });
+
+const BlogCardSkeleton = () => (
+  <div className="animate-pulse overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+    <div className="h-48 w-full bg-muted" />
+    <div className="p-6">
+      <div className="mb-2 h-3 w-16 rounded-full bg-muted" />
+      <div className="mb-3 h-5 w-3/4 rounded-full bg-muted/80" />
+      <div className="mb-2 h-4 w-full rounded-full bg-muted/60" />
+      <div className="h-4 w-2/3 rounded-full bg-muted/50" />
+    </div>
+  </div>
+);
 
 const BlogPage = () => {
   const [posts, setPosts] = useState<BlogPostRow[]>([]);
@@ -88,19 +101,18 @@ const BlogPage = () => {
         path="/blog"
       />
       <Navbar />
-      <main className="pb-20 pt-24">
-        <div className="container mx-auto max-w-6xl px-4 sm:px-6">
-          <header className="mb-12 max-w-2xl">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-primary">Blog</p>
-            <h1 className="mb-4 font-display text-3xl font-bold sm:text-5xl">Ideas, guides & lessons</h1>
-            <p className="text-lg text-muted-foreground">
-              Practical writing on building products, growing startups and learning tech.
-            </p>
-          </header>
-
+      <main className="pb-20">
+        <PageHero
+          eyebrow="Blog"
+          title="Ideas, guides & lessons"
+          description="Practical writing on building products, growing startups and learning tech."
+        />
+        <div className="container mx-auto mt-12 max-w-6xl px-4 sm:px-6">
           {loading ? (
-            <div className="flex items-center justify-center py-20 text-muted-foreground">
-              <Loader2 className="mr-2 h-5 w-5 animate-spin" /> Loading articles…
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <BlogCardSkeleton key={i} />
+              ))}
             </div>
           ) : posts.length === 0 ? (
             <p className="text-muted-foreground">No articles yet. Check back soon.</p>
@@ -143,6 +155,7 @@ const BlogPage = () => {
             {filtered.length === 0 ? (
               <p className="text-muted-foreground">No articles match your search.</p>
             ) : (
+            <Reveal stagger={80}>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {filtered.map((post) => (
                 <Link
@@ -173,6 +186,7 @@ const BlogPage = () => {
                 </Link>
               ))}
             </div>
+            </Reveal>
             )}
             </>
           )}

@@ -9,6 +9,14 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
+    // Lovable serves /__l5e asset pointers from its own host; proxying keeps the
+    // CDN-referenced logo artwork rendering in dev without committing binaries.
+    proxy: {
+      "/__l5e": {
+        target: "https://fuselabsio.lovable.app",
+        changeOrigin: true,
+      },
+    },
   },
   plugins: [
     react(),

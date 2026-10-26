@@ -4,7 +4,6 @@ const HumanoidSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const cardsContainerRef = useRef<HTMLDivElement>(null);
   const [activeCardIndex, setActiveCardIndex] = useState(0);
-  const [isIntersecting, setIsIntersecting] = useState(false);
   const [imagesLoaded, setImagesLoaded] = useState(false);
   const ticking = useRef(false);
   const lastScrollY = useRef(0);
@@ -41,18 +40,6 @@ const HumanoidSection = () => {
   }, []);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const [entry] = entries;
-        setIsIntersecting(entry.isIntersecting);
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-    
     const handleScroll = () => {
       if (!ticking.current) {
         lastScrollY.current = window.scrollY;
@@ -89,13 +76,10 @@ const HumanoidSection = () => {
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
-      }
     };
   }, []);
 
-  const isFirstCardVisible = isIntersecting && imagesLoaded;
+  const isFirstCardVisible = imagesLoaded;
   const isSecondCardVisible = activeCardIndex >= 1 && imagesLoaded;
   const isThirdCardVisible = activeCardIndex >= 2 && imagesLoaded;
 
@@ -112,7 +96,7 @@ const HumanoidSection = () => {
               <div className="pulse-chip opacity-0 animate-fade-in" style={{
                 animationDelay: "0.1s"
               }}>
-                <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-pulse-500 text-white mr-2">02</span>
+                <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-primary text-primary-foreground mr-2">02</span>
                 <span>Our Edge</span>
               </div>
             </div>
@@ -125,7 +109,7 @@ const HumanoidSection = () => {
           <div ref={cardsContainerRef} className="relative flex-1 perspective-1000">
             {!imagesLoaded && (
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pulse-500"></div>
+                <div className="h-full w-full animate-pulse rounded-[20px] bg-white/5" />
               </div>
             )}
             
@@ -139,18 +123,17 @@ const HumanoidSection = () => {
               }}
             >
               <div
-                className="absolute inset-0 z-0 bg-gradient-to-b from-pulse-900/40 to-dark-900/80"
+                className="absolute inset-0 z-0"
                 style={{
-                  backgroundImage: "url('/background-section1.png')",
+                  backgroundImage: "linear-gradient(to bottom, rgba(44,26,7,0.4), rgba(14,12,12,0.8)), url('/background-section1.png')",
                   backgroundSize: "cover",
-                  backgroundPosition: "top center",
-                  backgroundBlendMode: "overlay"
+                  backgroundPosition: "top center"
                 }}
               ></div>
               
               <div className="absolute top-4 right-4 z-20">
                 <div className="inline-flex items-center justify-center px-4 py-2 rounded-xl bg-background/20 backdrop-blur-sm text-white">
-                  <span className="text-sm font-medium">The vision</span>
+                  <span className="text-sm font-medium">Speed</span>
                 </div>
               </div>
               
@@ -174,18 +157,17 @@ const HumanoidSection = () => {
               }}
             >
               <div
-                className="absolute inset-0 z-0 bg-gradient-to-b from-pulse-900/40 to-dark-900/80"
+                className="absolute inset-0 z-0"
                 style={{
-                  backgroundImage: "url('/background-section2.png')",
+                  backgroundImage: "linear-gradient(to bottom, rgba(44,26,7,0.4), rgba(14,12,12,0.8)), url('/background-section2.png')",
                   backgroundSize: "cover",
-                  backgroundPosition: "center",
-                  backgroundBlendMode: "overlay"
+                  backgroundPosition: "center"
                 }}
               ></div>
               
               <div className="absolute top-4 right-4 z-20">
                 <div className="inline-flex items-center justify-center px-4 py-2 rounded-xl bg-background/20 backdrop-blur-sm text-white">
-                  <span className="text-sm font-medium">The vision</span>
+                  <span className="text-sm font-medium">Scale</span>
                 </div>
               </div>
               
@@ -209,25 +191,24 @@ const HumanoidSection = () => {
               }}
             >
               <div
-                className="absolute inset-0 z-0 bg-gradient-to-b from-pulse-900/40 to-dark-900/80"
+                className="absolute inset-0 z-0"
                 style={{
-                  backgroundImage: "url('/background-section3.png')",
+                  backgroundImage: "linear-gradient(to bottom, rgba(44,26,7,0.4), rgba(14,12,12,0.8)), url('/background-section3.png')",
                   backgroundSize: "cover",
-                  backgroundPosition: "bottom center",
-                  backgroundBlendMode: "overlay"
+                  backgroundPosition: "bottom center"
                 }}
               ></div>
               
               <div className="absolute top-4 right-4 z-20">
                 <div className="inline-flex items-center justify-center px-4 py-2 rounded-xl bg-background/20 backdrop-blur-sm text-white">
-                  <span className="text-sm font-medium">The vision</span>
+                  <span className="text-sm font-medium">Skin in the game</span>
                 </div>
               </div>
               
               <div className="relative z-10 p-5 sm:p-6 md:p-8 h-full flex items-center">
                 <div className="max-w-lg">
                   <h3 className="text-2xl sm:text-3xl md:text-4xl font-display text-white font-bold leading-tight mb-4">
-                    If we don’t deliver,  <span className="text-[#FC4D0A]"> you don’t pay.</span> Simple.
+                    If we don’t deliver,  <span className="text-primary"> you don’t pay.</span> Simple.
                   </h3>
                 </div>
               </div>

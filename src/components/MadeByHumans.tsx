@@ -1,13 +1,13 @@
-﻿import React from "react";
 import { FuseLabsLogo } from "@/components/FuseLabsLogo";
+import { Reveal } from "@/components/motion";
 
 const MadeByHumans = () => {
 	return (
 		<section id="made-by-humans" className="w-full bg-background py-0">
-			<div className="section-container opacity-0 animate-on-scroll pb-2">
-				<div className="w-full rounded-2xl sm:rounded-3xl overflow-hidden relative mt-6 sm:mt-8">
+			<Reveal className="section-container pb-2">
+				<div className="relative mt-6 w-full overflow-hidden rounded-2xl sm:mt-8 sm:rounded-3xl">
 					<div
-						className="bg-no-repeat bg-cover bg-center p-4 sm:p-5 min-h-[250px] sm:min-h-[350px] flex flex-col justify-between"
+						className="flex min-h-[250px] flex-col justify-between bg-cover bg-center bg-no-repeat p-4 sm:min-h-[350px] sm:p-5"
 						style={{
 							backgroundImage: "url('/background-section3.png')",
 						}}
@@ -16,21 +16,21 @@ const MadeByHumans = () => {
 							<FuseLabsLogo variant="onAccent" markClassName="h-10 w-10 sm:h-12 sm:w-12" />
 						</div>
 
-						<div className="flex-1 flex items-center justify-center py-8 sm:py-12">
-							<h2 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-playfair text-white italic font-thin text-center px-4">
+						<div className="flex flex-1 items-center justify-center py-8 sm:py-12">
+							<h2 className="px-4 text-center font-academy text-3xl font-light italic text-white sm:text-5xl md:text-6xl lg:text-7xl">
 								Made for Visionaries
 							</h2>
 						</div>
 
 						{/* White box at the bottom with overflow */}
-						<div className="w-[120%] bg-background h-10 rounded-t-lg absolute left-[-10%] bottom-0">
-							<p className="text-foreground text-sm italic text-center mt-2">
+						<div className="absolute bottom-0 left-[-10%] h-10 w-[120%] rounded-t-lg bg-background">
+							<p className="mt-2 text-center text-sm italic text-foreground">
 								.....you dream it, we execute it.....
 							</p>
 						</div>
 					</div>
 				</div>
-			</div>
+			</Reveal>
 		</section>
 	);
 };

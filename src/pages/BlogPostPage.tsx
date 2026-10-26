@@ -14,18 +14,20 @@ import { FollowUs } from "@/components/FollowUs";
 
 export const BlogArticle = ({ post, related = [] }: { post: BlogPostRow; related?: BlogPostRow[] }) => (
   <article className="container mx-auto max-w-3xl px-4 sm:px-6">
-    <Link to="/blog" className="mb-6 inline-flex items-center text-sm text-muted-foreground hover:text-foreground">
-      <ArrowLeft className="mr-1 h-4 w-4" /> All articles
-    </Link>
-    {post.category && (
-      <Link to={`/blog?category=${encodeURIComponent(post.category)}`} className="mb-3 inline-block text-xs font-semibold uppercase tracking-widest text-primary">
-        {post.category}
+    <div className="mb-8 flex flex-col gap-3">
+      <Link to="/blog" className="inline-flex w-fit items-center text-sm text-muted-foreground hover:text-foreground">
+        <ArrowLeft className="mr-1 h-4 w-4" /> All articles
       </Link>
-    )}
-    <p className="mb-3 text-sm text-muted-foreground">
-      {formatPostDate(post)}
-      {post.author ? ` · ${post.author}` : ""}
-    </p>
+      {post.category && (
+        <Link to={`/blog?category=${encodeURIComponent(post.category)}`} className="w-fit text-xs font-semibold uppercase tracking-widest text-primary">
+          {post.category}
+        </Link>
+      )}
+      <p className="text-sm text-muted-foreground">
+        {formatPostDate(post)}
+        {post.author ? ` · ${post.author}` : ""}
+      </p>
+    </div>
     <h1 className="mb-4 font-display text-3xl font-bold sm:text-5xl">{post.title}</h1>
     {post.excerpt && <p className="mb-8 text-lg text-muted-foreground">{post.excerpt}</p>}
     {post.cover_image && (

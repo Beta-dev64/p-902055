@@ -2,7 +2,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Seo from "@/components/Seo";
-import { Reveal } from "@/components/Reveal";
+import { PageHero, Reveal } from "@/components/motion";
 import { Link } from "react-router-dom";
 import {
   Pagination,
@@ -22,6 +22,21 @@ interface CaseStudy {
   image: string;
   tags: string[];
 }
+
+const PortfolioCardSkeleton = () => (
+  <div className="animate-pulse overflow-hidden rounded-2xl border border-border bg-card shadow-elegant">
+    <div className="aspect-video w-full bg-muted" />
+    <div className="p-6">
+      <div className="mb-3 flex gap-2">
+        <div className="h-5 w-16 rounded-full bg-muted" />
+        <div className="h-5 w-20 rounded-full bg-muted/70" />
+      </div>
+      <div className="mb-3 h-6 w-2/3 rounded-full bg-muted" />
+      <div className="mb-2 h-4 w-full rounded-full bg-muted/60" />
+      <div className="h-4 w-4/5 rounded-full bg-muted/50" />
+    </div>
+  </div>
+);
 
 const PortfolioPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -75,29 +90,26 @@ const PortfolioPage = () => {
       />
       <Navbar />
 
-      <section className="border-b border-border bg-muted/40 pb-16 pt-28">
-        <Reveal className="container mx-auto px-4 text-center sm:px-6 lg:px-8">
-          <h1 className="mb-6 font-display text-4xl font-bold tracking-tight text-foreground sm:text-5xl md:text-6xl">
-            Our Portfolio
-          </h1>
-          <p className="mx-auto max-w-3xl text-xl text-muted-foreground">
-            Explore our complete collection of successful software projects and digital solutions.
-          </p>
-        </Reveal>
-      </section>
+      <PageHero
+        eyebrow="Work"
+        title="Our Portfolio"
+        description="Explore our complete collection of successful software projects and digital solutions."
+      />
 
       <section className="bg-background py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           {loading ? (
-            <div className="py-12 text-center">
-              <div className="mx-auto mb-4 h-16 w-16 animate-spin rounded-full border-b-2 border-primary" />
-              <p className="text-muted-foreground">Loading portfolio...</p>
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <PortfolioCardSkeleton key={i} />
+              ))}
             </div>
           ) : (
-            <div className="flex flex-col space-y-6 md:grid md:grid-cols-3 md:gap-8 md:space-y-0">
-              {caseStudies.map((study, i) => (
-                <Reveal key={study.id} delay={i * 70}>
+            <Reveal stagger={80}>
+              <div className="flex flex-col space-y-6 md:grid md:grid-cols-3 md:gap-8 md:space-y-0">
+                {caseStudies.map((study) => (
                   <Link
+                    key={study.id}
                     to={`/case-study/${study.slug}`}
                     className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-elegant transition-all duration-300 hover:-translate-y-2 hover:shadow-elegant-hover"
                   >
@@ -143,9 +155,9 @@ const PortfolioPage = () => {
                       </div>
                     </div>
                   </Link>
-                </Reveal>
-              ))}
-            </div>
+                ))}
+              </div>
+            </Reveal>
           )}
 
           {totalPages > 1 && (

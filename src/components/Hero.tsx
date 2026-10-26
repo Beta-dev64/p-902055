@@ -1,6 +1,7 @@
-﻿import { ArrowDown, ArrowRight } from "lucide-react";
+import { ArrowDown, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { FusionField } from "./FusionField";
+import { SplitHeadline, Magnetic } from "@/components/motion";
 
 const Hero = () => {
   return (
@@ -35,18 +36,23 @@ const Hero = () => {
           </span>
         </div>
 
-        <h1
-          className="font-display text-[clamp(2.6rem,7.2vw,6.25rem)] font-extrabold leading-[0.94] tracking-[-0.045em] text-balance opacity-0 animate-fade-in"
-          style={{ animationDelay: "0.18s" }}
-        >
-          The partner that builds,
-          <br className="hidden sm:block" /> ships, and{" "}
-          <span className="text-primary">grows</span>.
-        </h1>
+        <SplitHeadline
+          as="h1"
+          text="The partner that builds, ships, and"
+          delay={250}
+          staggerMs={70}
+          className="font-display text-[clamp(2.6rem,7.2vw,6.25rem)] font-extrabold leading-[0.94] tracking-[-0.045em] text-balance"
+          extra={
+            <>
+              <br className="hidden sm:block" />{" "}
+              <span className="text-primary">grows</span>.
+            </>
+          }
+        />
 
         <p
           className="mt-6 max-w-xl text-base leading-relaxed text-white/65 opacity-0 animate-fade-in sm:text-lg"
-          style={{ animationDelay: "0.32s" }}
+          style={{ animationDelay: "0.55s" }}
         >
           FuseLabs IO is the technical partner for founders who need an MVP, a
           growth engine, and a team that stays after launch. If we don&apos;t
@@ -55,20 +61,24 @@ const Hero = () => {
 
         <div
           className="mt-9 flex w-full flex-col items-center justify-center gap-3 opacity-0 animate-fade-in sm:w-auto sm:flex-row"
-          style={{ animationDelay: "0.46s" }}
+          style={{ animationDelay: "0.7s" }}
         >
-          <a href="#details" className="hero-cta-primary group">
-            Start a Project
-            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-          </a>
-          <Link to="/academic" className="hero-cta-secondary">
-            Join Academy
-          </Link>
+          <Magnetic strength={0.25}>
+            <a href="#details" className="hero-cta-primary group inline-flex">
+              Start a Project
+              <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+            </a>
+          </Magnetic>
+          <Magnetic strength={0.25}>
+            <Link to="/academic" className="hero-cta-secondary inline-flex">
+              Join Academy
+            </Link>
+          </Magnetic>
         </div>
 
         <p
           className="mt-8 text-[11px] uppercase tracking-[0.22em] text-white/40 opacity-0 animate-fade-in sm:text-xs"
-          style={{ animationDelay: "0.58s" }}
+          style={{ animationDelay: "0.82s" }}
         >
           60-day MVPs · Pay for results · No headaches
         </p>
@@ -79,7 +89,7 @@ const Hero = () => {
         className="absolute bottom-6 left-1/2 z-10 inline-flex -translate-x-1/2 items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em] text-white/45 transition-colors hover:text-white/80"
       >
         Scroll to explore
-        <ArrowDown className="h-3.5 w-3.5" />
+        <ArrowDown className="h-3.5 w-3.5 animate-bounce" />
       </a>
     </section>
   );

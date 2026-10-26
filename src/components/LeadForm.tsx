@@ -1,19 +1,113 @@
-import React, { useRef, useState } from "react";
-import { useForm } from "react-hook-form";
+import React, { useState } from "react";
+import { Controller, useForm, type Control } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { CheckCircle2, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 import { trackLeadSubmit } from "@/lib/analytics";
 
-const SITE_KEY =
-  import.meta.env.VITE_HCAPTCHA_SITE_KEY || "10000000-ffff-ffff-ffff-000000000001";
+const BUDGET_RANGES = [
+  "$500 – $2,000",
+  "$2,000 – $5,000",
+  "$5,000 – $10,000",
+  "$10,000 – $30,000",
+  "$30,000+",
+  "Still figuring it out",
+];
+
+const TIMELINES = [
+  "ASAP (next 2 weeks)",
+  "Within a month",
+  "1 – 3 months",
+  "3 – 6 months",
+  "6+ months",
+  "Flexible / not sure",
+];
+
+const CUSTOM = "__custom__";
+
+function OptionField({
+  id,
+  label,
+  name,
+  control,
+  options,
+  placeholder,
+  customLabel,
+  customPlaceholder,
+}: {
+  id: string;
+  label: string;
+  name: "budget" | "timeline";
+  control: Control<LeadFormValues>;
+  options: string[];
+  placeholder: string;
+  customLabel: string;
+  customPlaceholder: string;
+}) {
+  const [custom, setCustom] = useState(false);
+
+  return (
+    <div>
+      <label htmlFor={id} className="mb-2 block text-sm font-medium">
+        {label}
+      </label>
+      <Controller
+        control={control}
+        name={name}
+        render={({ field }) => (
+          <>
+            <Select
+              value={custom ? CUSTOM : field.value || undefined}
+              onValueChange={(value) => {
+                if (value === CUSTOM) {
+                  setCustom(true);
+                  field.onChange("");
+                } else {
+                  setCustom(false);
+                  field.onChange(value);
+                }
+              }}
+            >
+              <SelectTrigger id={id} className="h-auto w-full rounded-md px-3 py-[11px]">
+                <SelectValue placeholder={placeholder} />
+              </SelectTrigger>
+              <SelectContent>
+                {options.map((option) => (
+                  <SelectItem key={option} value={option}>
+                    {option}
+                  </SelectItem>
+                ))}
+                <SelectItem value={CUSTOM}>{customLabel}</SelectItem>
+              </SelectContent>
+            </Select>
+            {custom && (
+              <Input
+                className="mt-2"
+                placeholder={customPlaceholder}
+                maxLength={80}
+                value={field.value ?? ""}
+                onChange={(event) => field.onChange(event.target.value)}
+              />
+            )}
+          </>
+        )}
+      />
+    </div>
+  );
+}
 
 const schema = z.object({
   name: z.string().trim().min(2, "Please enter your full name").max(120),
@@ -36,24 +130,18 @@ interface LeadFormProps {
 
 const LeadForm = ({ type, serviceSlug, programSlug, submitLabel }: LeadFormProps) => {
   const navigate = useNavigate();
-  const captchaRef = useRef<HCaptcha>(null);
-  const [captchaToken, setCaptchaToken] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [received, setReceived] = useState(false);
 
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors },
     reset,
   } = useForm<LeadFormValues>({ resolver: zodResolver(type === "contact" ? schema.extend({ message: z.string().trim().min(10, "Please enter a message of at least 10 characters").max(2000) }) : schema) });
 
   const onSubmit = async (values: LeadFormValues) => {
-    if (!captchaToken) {
-      toast.error("Please complete the captcha first.");
-      return;
-    }
-
     setSubmitting(true);
     try {
       const { data, error } = await supabase.functions.invoke("submit-lead", {
@@ -62,7 +150,6 @@ const LeadForm = ({ type, serviceSlug, programSlug, submitLabel }: LeadFormProps
           type,
           service_slug: serviceSlug ?? "",
           program_slug: programSlug ?? "",
-          captchaToken,
         },
       });
 
@@ -74,17 +161,12 @@ const LeadForm = ({ type, serviceSlug, programSlug, submitLabel }: LeadFormProps
       if (type === "contact") {
         reset();
         setReceived(true);
-        setCaptchaToken("");
         return;
       }
       navigate(type === "enrollment" ? "/thank-you?type=enrollment" : "/thank-you?type=project");
     } catch (err) {
       console.error("Lead submission failed", err);
-      toast.error(
-        "We couldn't send that. Please complete the captcha again — or email us directly if it keeps failing.",
-      );
-      captchaRef.current?.resetCaptcha();
-      setCaptchaToken("");
+      toast.error("We couldn't send that right now. Please try again, or email us directly if it keeps failing.");
     } finally {
       setSubmitting(false);
     }
@@ -118,11 +200,19 @@ const LeadForm = ({ type, serviceSlug, programSlug, submitLabel }: LeadFormProps
           {fieldError("email")}
         </div>
         <div>
-          <Input placeholder="Phone (optional)" maxLength={40} {...register("phone")} />
+          <label htmlFor={`${type}-phone`} className="mb-2 block text-sm font-medium">
+            Phone
+          </label>
+          <Input id={`${type}-phone`} autoComplete="tel" placeholder="Phone (optional)" maxLength={40} {...register("phone")} />
           {fieldError("phone")}
         </div>
         <div>
+          <label htmlFor={`${type}-company`} className="mb-2 block text-sm font-medium">
+            Company
+          </label>
           <Input
+            id={`${type}-company`}
+            autoComplete="organization"
             placeholder={type === "enrollment" ? "Current role / school" : "Company"}
             maxLength={160}
             {...register("company")}
@@ -131,14 +221,26 @@ const LeadForm = ({ type, serviceSlug, programSlug, submitLabel }: LeadFormProps
         </div>
         {type === "project" && (
           <>
-            <div>
-              <Input placeholder="Budget range" maxLength={80} {...register("budget")} />
-              {fieldError("budget")}
-            </div>
-            <div>
-              <Input placeholder="Ideal timeline" maxLength={80} {...register("timeline")} />
-              {fieldError("timeline")}
-            </div>
+            <OptionField
+              id={`${type}-budget`}
+              label="Budget range"
+              name="budget"
+              control={control}
+              options={BUDGET_RANGES}
+              placeholder="Select a range"
+              customLabel="Custom amount"
+              customPlaceholder="e.g. ₦1.2M / $8,500"
+            />
+            <OptionField
+              id={`${type}-timeline`}
+              label="Ideal timeline"
+              name="timeline"
+              control={control}
+              options={TIMELINES}
+              placeholder="Select a timeline"
+              customLabel="Custom timeline"
+              customPlaceholder="e.g. before our Series A"
+            />
           </>
         )}
       </div>
@@ -158,14 +260,6 @@ const LeadForm = ({ type, serviceSlug, programSlug, submitLabel }: LeadFormProps
         />
         {fieldError("message")}
       </div>
-
-      <HCaptcha
-        ref={captchaRef}
-        sitekey={SITE_KEY}
-        onVerify={(token) => setCaptchaToken(token)}
-        onExpire={() => setCaptchaToken("")}
-        onError={() => setCaptchaToken("")}
-      />
 
       <Button type="submit" disabled={submitting} className="w-full sm:w-auto">
         {submitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
