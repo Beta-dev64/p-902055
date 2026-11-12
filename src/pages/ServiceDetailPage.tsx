@@ -107,17 +107,31 @@ const ServiceDetailPage = () => {
         }
         path={`/services/${service.slug}`}
         image={service.image ?? undefined}
-        jsonLd={{
-          "@context": "https://schema.org",
-          "@type": "Service",
-          name: service.title,
-          description: service.description ?? undefined,
-          provider: {
-            "@type": "Organization",
-            name: "FuseLabs IO",
-            url: "https://fuselabsio.lovable.app/",
+        jsonLd={[
+          {
+            "@context": "https://schema.org",
+            "@type": "Service",
+            name: service.title,
+            serviceType: service.title,
+            description: service.description ?? undefined,
+            url: `https://fuselabsio.lovable.app/services/${service.slug}`,
+            provider: {
+              "@type": "Organization",
+              "@id": "https://fuselabsio.lovable.app/#organization",
+              name: "FuseLabs IO",
+              url: "https://fuselabsio.lovable.app/",
+            },
           },
-        }}
+          {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Home", item: "https://fuselabsio.lovable.app/" },
+              { "@type": "ListItem", position: 2, name: "Services", item: "https://fuselabsio.lovable.app/services" },
+              { "@type": "ListItem", position: 3, name: service.title, item: `https://fuselabsio.lovable.app/services/${service.slug}` },
+            ],
+          },
+        ]}
       />
       <Navbar />
 

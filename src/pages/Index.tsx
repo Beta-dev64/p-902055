@@ -47,6 +47,7 @@ const Index = () => {
           {
             "@context": "https://schema.org",
             "@type": "Organization",
+            "@id": "https://fuselabsio.lovable.app/#organization",
             name: "FuseLabs IO",
             url: "https://fuselabsio.lovable.app/",
             logo: `https://fuselabsio.lovable.app${logoAsset.url}`,
@@ -56,7 +57,9 @@ const Index = () => {
           {
             "@context": "https://schema.org",
             "@type": "WebSite",
+            "@id": "https://fuselabsio.lovable.app/#website",
             name: "FuseLabs IO",
+            publisher: { "@id": "https://fuselabsio.lovable.app/#organization" },
             url: "https://fuselabsio.lovable.app/",
           },
         ]}
